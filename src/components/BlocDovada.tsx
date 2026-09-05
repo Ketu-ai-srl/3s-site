@@ -1,9 +1,9 @@
 import Eticheta from "./Eticheta";
 
-// Blocul care spune ce NU putem susține. Apare de două ori pe pagină, cu două
-// feluri: `declaratie` (ce nu scriem aici) și `limite` (ce nu poate face
-// instrumentul). E semnalul de onestitate al paginii, deci are voie să fie
-// vizibil, nu ascuns în subsol.
+// Blocul care spune ce NU putem sustine. Doua feluri: `declaratie` (ce nu scriem aici) si
+// `limite` (ce nu poate face instrumentul). E semnalul de onestitate al paginii, deci are
+// voie sa fie vizibil, nu ascuns in subsol - o linie de arama in stanga, pe fundalul cu o
+// treapta mai deschis decat pagina.
 
 type Fel = "declaratie" | "limite";
 
@@ -22,19 +22,16 @@ export default function BlocDovada({
 }: Props) {
   const stil =
     fel === "declaratie"
-      ? "border-l-[3px] border-arama bg-arama-moale px-6 py-4"
-      : "border border-linie-fn bg-hartie px-6 py-4";
+      ? "border-l-2 border-cerneala-accent bg-noapte-3 px-6 py-5"
+      : "border border-linie-suprafata bg-noapte-2 px-6 py-5";
 
   return (
     <div className={`${stil} ${className}`}>
-      {/* `arama-inchis`, nu `arama`: pe fundalul `arama-moale` al blocului de declaratie,
-          `arama` da 4,47:1, sub pragul de 4,5:1 pentru text mic. Perechea nu fusese randata
-          niciodata pe site, deci axe nu avea ce masura - a iesit la iveala cand o felie a
-          folosit blocul cu eticheta. `arama-inchis` da 6,55:1. */}
+      {/* `arama-clar` pe `noapte-3`: 5,72:1, deci trece si ca text mic. */}
       {eticheta ? (
-        <Eticheta className="mb-1.5 block text-arama-inchis!">{eticheta}</Eticheta>
+        <Eticheta className="mb-2 block text-cerneala-accent!">{eticheta}</Eticheta>
       ) : null}
-      <p className="max-w-[78ch] text-[16px] text-tus-2">{children}</p>
+      <p className="max-w-[70ch] text-[16px] leading-[1.55] text-cerneala-2">{children}</p>
     </div>
   );
 }

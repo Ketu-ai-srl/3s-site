@@ -42,36 +42,19 @@
   --color-hartie-2: #e9ece6;
   --color-suprafata: #ffffff;
 
-  --color-tus: #101914;
-  --color-tus-2: #4e5a53;
   /* Intunecat pe 2026-09-05 de la #737e77: masurat 3,78:1 pe hartie, sub pragul
      de 4,5:1 din WCAG 1.4.3, si poarta de accesibilitate a oprit lotul.
      #55605a da 5,86:1 pe hartie si 6,42:1 pe fila, deci rezista si variantelor
      cu opacitate, care erau chiar cazurile picate. */
-  --color-tus-3: #55605a;
 
-  --color-verde: #12432e;
-  --color-verde-apasat: #0c3122;
+  /* Suprafetele vechi raman culori adevarate: pe ele se ASEAZA cerneala, deci nu au voie
+     sa depinda de ea. `verde` si `arama` NU mai sunt aici - vezi aliasurile de mai jos. */
   --color-verde-adanc: #0b1d15;
   --color-verde-moale: #e3eae4;
-
-  /* ARAMA E CULOARE DE ACCENT, NU DE TEXT MIC. Masurat pe 5 sep 2026, contra fundalurilor:
-     hartie 4,75:1 (trece) - suprafata 5,30:1 (trece) - hartie-2 4,45:1 (PICA) -
-     arama-moale 4,47:1 (PICA). Pragul pentru text mic e 4,5:1.
-     Pentru text folositi `arama-inchis` (6,55:1 pe arama-moale). `arama` ramane pentru
-     chenare, linii si cifre mari, unde pragul e 3:1. Pe noapte se foloseste `arama-clar`. */
-  --color-arama: #a4571c;
-  --color-arama-inchis: #7e4315;
   --color-arama-clar: #c98a4b;
   --color-arama-moale: #f4eadf;
 
-  --color-linie: #d6dad2;
-  --color-linie-fn: #8a9089;
-  --color-linie-inchis: #22493a;
 
-  --color-pe-inchis: #e7ece6;
-  --color-pe-inchis-2: #a9b7ae;
-  --color-pe-inchis-3: #7e8f85;
 
   /* --- tipografie: scara in pixeli, ca sa nu se piarda 0,5 px */
   --text-eticheta: 12.5px;
@@ -102,6 +85,63 @@
 }
 
 @theme inline {
+  /* --- cerneala: culoarea de text pe care o decide SUPRAFATA, nu componenta ------------
+     O primitiva partajata (Buton, Eticheta, ListaBifa...) ajunge azi si pe noapte, si pe
+     o banda deschisa ramasa dintr-o pagina nerescrisa inca. Daca ar scrie `text-hartie-veche`
+     ar fi alba pe alb acolo; daca ar scrie `text-tus`, neagra pe negru aici. De aceea scrie
+     `text-cerneala` si lasa suprafata (`bg-noapte`, `bg-hartie`...) sa spuna ce inseamna.
+     Jetoanele sunt INLINE, obligatoriu: utilitarul trebuie sa contina `var(--cerneala)`
+     ca sa se rezolve pe element si sa mosteneasca de la cea mai apropiata suprafata.
+     Definit prin `@theme` obisnuit, s-ar fi calculat o data pe `:root` si ar fi ramas
+     de noapte peste tot. Valorile per suprafata sunt in `@layer base`, mai jos. */
+  --color-cerneala: var(--cerneala);
+  --color-cerneala-2: var(--cerneala-2);
+  --color-cerneala-3: var(--cerneala-3);
+  --color-cerneala-accent: var(--cerneala-accent);
+  --color-linie-suprafata: var(--linie-suprafata);
+
+  /* --- paleta veche, legata la aceeasi suprafata ----------------------------------------
+     Paginile altor felii inca scriu `text-tus-2`, `border-linie` si asa mai departe:
+     masurat pe arborele de azi, 95 de `text-tus`, 50 de `text-tus-2`, 47 de `border-linie`.
+     De cand `SectiuneRegistru` sta pe noapte, `text-tus-2` inseamna cerneala inchisa pe
+     negru - 2,2:1, adica exact incalcarea `serious` pe care axe o numara.
+
+     Se repara ca ALIAS, nu ca suprascriere de utilitar. O suprascriere scrisa de mana
+     (`@layer utilities { .text-tus-2 { ... } }`) tinteste UN selector, iar Tailwind
+     genereaza cate un selector pentru fiecare varianta: `.text-arama\!` si
+     `.hover\:text-arama:hover` sunt alti selectori si scapau - masurat, 23 de noduri
+     `serious` ramase pe trei pagini, toate din forma cu `!`. Ca alias in `@theme inline`,
+     valoarea intra in utilitarul insusi, deci fiecare varianta o mosteneste.
+
+     `verde` si `arama` sunt aliasate LA FEL, si merita spus de ce, fiindca prima varianta
+     a acestui fisier le tinea deoparte pe motiv ca "picteaza si suprafete". Remasurat pe
+     arborele de azi, cu potrivire stricta pe numele intreg: `bg-verde` are ZERO folosiri,
+     `bg-arama` are UNA si aceea e o liniuta de un pixel, `border-verde` una la trecerea cu
+     mausul, `border-arama` cinci, toate chenare de accent la stanga. Cifrele vechi -
+     3 si 3 - numarau si `bg-verde-moale`, `border-arama-clar` si celelalte rude, fiindca
+     numele lor incepe la fel. Nu exista deci niciun bloc verde care sa devina aramiu.
+
+     Diferenta practica e ca dispare ultima gaura: cat timp `arama` ramanea culoare
+     adevarata, forma cu semnul exclamarii (`text-arama!`, care ajunge in CSS ca alt
+     selector, cu `!important`) trecea pe langa orice suprascriere scrisa de mana - masurat,
+     4 noduri `serious` pe `/arhivare-fizica` si 6 pe `/cum-functioneaza`, la 3,7:1. Ca
+     alias, valoarea intra in utilitarul insusi si o mosteneste ORICE varianta: cu semnul
+     exclamarii, la trecerea cu mausul, la focalizare. Nu mai e nimic de enumerat, si nicio
+     pagina a altei felii nu trebuie atinsa ca sa treaca. */
+  --color-verde: var(--cerneala-accent);
+  --color-arama: var(--cerneala-accent);
+  --color-tus: var(--cerneala);
+  --color-tus-2: var(--cerneala-2);
+  --color-tus-3: var(--cerneala-3);
+  --color-pe-inchis: var(--cerneala);
+  --color-pe-inchis-2: var(--cerneala-2);
+  --color-pe-inchis-3: var(--cerneala-3);
+  --color-arama-inchis: var(--cerneala-accent);
+  --color-linie: var(--linie-suprafata);
+  --color-linie-fn: var(--linie-suprafata);
+  --color-linie-inchis: var(--linie-suprafata);
+  --color-verde-apasat: var(--cerneala-accent);
+
   /* Cele trei familii ale directiei. Variabilele `--fnt-*` le pune `next/font` pe
      `<html>` (vezi `layout.tsx`), deci exista pe `:root` si jetoanele de aici se rezolva
      si in regulile de baza de mai jos, nu doar in utilitare. */
@@ -118,6 +158,51 @@
 @layer base {
   :root {
     color-scheme: dark;
+  }
+
+  /* Cerneala pe fiecare suprafata. Implicitul (pe :root) e cel de noapte. O suprafata
+     deschisa o rastoarna pe cerneala veche (tus), iar o suprafata de noapte pusa INAUNTRUL
+     uneia deschise o intoarce la loc - de aceea ambele liste sunt scrise, nu doar cea
+     deschisa. Selectorii sunt clasele de fundal pe care le scriu paginile; regula pune
+     doar variabile SI cerneala mostenita, deci nu se bate cu utilitarul care pune
+     `background-color`.
+
+     `color`, nu doar variabilele, si asta a fost un defect masurat, nu o precautie: pe
+     `/solutii`, titlul fiecarei fise de domeniu (`FisaDomeniu.tsx`, `h3` fara nicio clasa de
+     culoare) se sprijinea pe culoarea mostenita de la `body`. Cand body-ul a trecut pe
+     hartie veche, cele sapte titluri au ramas aproape albe pe cartonasul alb - vazut pe
+     captura de la 1280 px, inainte sa ajunga la axe. Clasa e mai larga decat un fisier:
+     ORICE text fara clasa de culoare dintr-o banda deschisa ramasa cadea la fel. Suprafata
+     isi duce cerneala cu ea, deci se repara toate deodata si niciun autor nu trebuie sa-si
+     aminteasca. Utilitarele `text-*` stau in stratul `utilities`, dupa `base`, deci o
+     culoare scrisa explicit castiga in continuare. */
+  :root,
+  .bg-noapte,
+  .bg-noapte-2,
+  .bg-noapte-3,
+  .bg-verde-adanc {
+    --cerneala: var(--color-hartie-veche);
+    --cerneala-2: var(--color-hartie-veche-2);
+    --cerneala-3: var(--color-hartie-veche-3);
+    --cerneala-accent: var(--color-arama-clar);
+    --linie-suprafata: var(--color-linie-noapte);
+    color: var(--cerneala);
+  }
+
+  .bg-hartie,
+  .bg-hartie-2,
+  .bg-suprafata,
+  .bg-arama-moale,
+  .bg-verde-moale {
+    /* Cifre brute, obligatoriu: `--color-tus` si celelalte sunt de acum ALIASURI pe
+       `--cerneala`, deci `--cerneala: var(--color-tus)` ar fi un cerc si ar da culoare
+       nedefinita. Aici e locul unde traiesc valorile paletei vechi. */
+    --cerneala: #101914;
+    --cerneala-2: #4e5a53;
+    --cerneala-3: #55605a;
+    --cerneala-accent: #7e4315;
+    --linie-suprafata: #d6dad2;
+    color: var(--cerneala);
   }
 
   html {
@@ -231,4 +316,28 @@
   .respira {
     transform: none;
   }
+}
+
+/* --- voalul de sub textul unui ecran cu fotografie (vezi Ecran.tsx) -------------------
+   Trei straturi, toate din negrul paginii: jos (unde sta coloana de text), stanga (unde
+   incepe ea) si o dunga subtire sus, sub bara fixa. In coltul din stanga-jos straturile se
+   aduna spre 0,95; in dreapta-sus fotografia e neatinsa. */
+.voal {
+  background:
+    linear-gradient(
+      to top,
+      rgba(11, 11, 12, 0.94) 0%,
+      rgba(11, 11, 12, 0.82) 26%,
+      rgba(11, 11, 12, 0.5) 48%,
+      rgba(11, 11, 12, 0.18) 62%,
+      rgba(11, 11, 12, 0) 74%
+    ),
+    linear-gradient(
+      to right,
+      rgba(11, 11, 12, 0.78) 0%,
+      rgba(11, 11, 12, 0.5) 30%,
+      rgba(11, 11, 12, 0.14) 50%,
+      rgba(11, 11, 12, 0) 62%
+    ),
+    linear-gradient(to bottom, rgba(11, 11, 12, 0.85) 0, rgba(11, 11, 12, 0) 140px);
 }

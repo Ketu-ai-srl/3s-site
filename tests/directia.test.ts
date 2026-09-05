@@ -25,12 +25,22 @@ const COMPONENTE = join(RADACINA, 'src', 'components')
 
 // Primitivele partajate: cele pe care le importa paginile mai multor felii. Nu e toata
 // lista din `src/components/`: componentele unei singure pagini (Mecanism*, Termene*,
-// Juridic* etc.) sunt ale feliei lor si se muta odata cu pagina.
+// Juridic* etc.) sunt ale feliei lor si se muta odata cu pagina. `Ecran`, `StampilaCitare`,
+// `Navigatie` si `Subsol` nu sunt aici fiindca isi pun SINGURE fundalul de noapte si au
+// voie sa scrie culori explicite deasupra lui.
+//
+// `CadruScan`, `CardCompact`, `Pas` si `VerificatorTermene` SUNT in lista desi azi nu le
+// importa nicio pagina (verificat cu grep pe `src` si `tests`). Nu sunt cod mort din
+// neatentie: sunt piese pe care le cer feliile de pagini care vin dupa asta - pasii
+// mecanismului, verificatorul de termene - si au fost convertite acum tocmai ca sa nu
+// inceapa fiecare felie prin a repara o primitiva. Daca trec si fara ele, se sterg atunci,
+// cu masuratoarea de atunci, nu cu presupunerea de acum.
 const PRIMITIVE = [
   'AntetPagina',
   'BandaTitlu',
   'BlocDovada',
   'Buton',
+  'CadruScan',
   'CardCompact',
   'CardSegment',
   'Eticheta',

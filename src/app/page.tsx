@@ -109,7 +109,7 @@ export default function Acasa() {
           <p className="mb-5 font-mono text-[12px] tracking-[0.22em] uppercase text-arama-clar">
             Domenii
           </p>
-          <h2 className="font-afis max-w-[14ch] text-[clamp(2.75rem,8.5vw,7.25rem)] leading-[0.92] font-bold tracking-[-0.01em] uppercase text-hartie-veche">
+          <h2 className="font-afis max-w-[24ch] text-titlu-2 font-bold tracking-[-0.01em] uppercase text-hartie-veche">
             Aceeași arhivă.
             <br />
             Altă întrebare.

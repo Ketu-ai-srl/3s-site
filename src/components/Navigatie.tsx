@@ -11,12 +11,13 @@
 // masoara latimea, nu randurile, nici dublurile. Acum exista o proba care refuza ambele.
 //
 // Panoul de sub 768 px e HTML servit de la inceput, doar ascuns: cine citeste pagina fara
-// JavaScript vede toate legaturile.
+// JavaScript vede toate legaturile. Deschis, acopera tot ecranul de sub bara: un panou de
+// 434 px cu pagina vizibila dedesubt arata a lista cazuta peste text, nu a meniu.
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { CALE_DISCUTIE, rutePentruMeniu } from "@/content/rute";
+import { CALE_DISCUTIE, RUTE, rutePentruMeniu } from "@/content/rute";
 
 const LEGATURA =
   "font-afis text-[15px] font-semibold tracking-[0.12em] uppercase text-hartie-veche-2 no-underline transition-colors duration-200 hover:text-hartie-veche whitespace-nowrap";
@@ -41,6 +42,17 @@ export default function Navigatie() {
     return () => window.removeEventListener("scroll", laDerulare);
   }, []);
 
+  // Panoul acopera tot ecranul, deci pagina de sub el nu are voie sa se mai deruleze:
+  // altfel degetul care cauta un rand din meniu muta pagina, nu meniul.
+  useEffect(() => {
+    if (!deschis) return;
+    const inainte = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = inainte;
+    };
+  }, [deschis]);
+
   useEffect(() => {
     if (!deschis) return;
     const laTasta = (e: KeyboardEvent) => {
@@ -53,21 +65,25 @@ export default function Navigatie() {
     return () => document.removeEventListener("keydown", laTasta);
   }, [deschis]);
 
-  // Transparenta DOAR pe pagina de start, peste fotografia din primul ecran, unde voalul
-  // e deja negru. Pe orice alta pagina bara e opaca de la primul pixel: paginile interioare
-  // sunt inca deschise la culoare, iar text alb de hartie pe fundal deschis a picat axe pe
-  // 21 de pagini dintr-o data (color-contrast, serious, x9 pe fiecare).
-  const peAcasa = cale === "/";
-  const fundal = derulat || deschis || !peAcasa ? "bg-noapte/92 backdrop-blur-[10px]" : "bg-transparent";
+  // Transparenta peste primul ecran al ORICAREI pagini cunoscute, nu doar pe pagina de
+  // start: de la felia 25 fiecare pagina se deschide cu un `Ecran` de noapte sau cu
+  // fotografie, iar `Ecran` pune un voal de 0,85 -> 0 pe primii 140 px, exact sub bara.
+  // Singura exceptie e o cale care nu e in manifest - pagina de 404 - care e inca deschisa
+  // la culoare sus; acolo bara e opaca de la primul pixel. Regula veche (opaca pe orice
+  // pagina interioara) venea din vremea cand interioarele erau deschise la culoare si axe
+  // picase color-contrast pe 21 de pagini deodata.
+  const paginaCunoscuta = RUTE.some((r) => r.cale === cale);
+  const fundal =
+    derulat || deschis || !paginaCunoscuta ? "bg-noapte/92 backdrop-blur-[10px]" : "bg-transparent";
 
   return (
     <header className={"fixed inset-x-0 top-0 z-40 transition-colors duration-300 " + fundal}>
-      <div className="mx-auto flex h-[68px] max-w-[1400px] items-center gap-6 px-6 md:px-10">
+      <div className="mx-auto flex h-[68px] max-w-vitrina items-center gap-6 px-6 md:px-10">
         <Link href="/" className="flex items-baseline gap-3 no-underline">
           <span className="font-afis text-[30px] leading-none font-bold tracking-[0.02em] text-hartie-veche">
             3S
           </span>
-          <span className="hidden font-mono text-[11px] tracking-[0.2em] uppercase text-hartie-veche-3 sm:inline">
+          <span className="hidden font-mono text-[11px] tracking-[0.2em] uppercase text-hartie-veche-2 sm:inline">
             Scan · Store · Solve
           </span>
         </Link>
@@ -114,23 +130,31 @@ export default function Navigatie() {
         </nav>
       </div>
 
-      <div id="meniu-pliabil" hidden={!deschis} className="border-t border-linie-noapte bg-noapte md:hidden">
-        <div className="mx-auto flex max-w-[1400px] flex-col px-6 py-2">
+      {/* Inaltimea panoului e calculata, nu `bottom-0`: `backdrop-blur` de pe bara face din
+          ea blocul de referinta al copiilor fixati, si `bottom-0` ar fi insemnat marginea
+          de jos a barei, nu a ecranului. */}
+      <div
+        id="meniu-pliabil"
+        hidden={!deschis}
+        className="fixed inset-x-0 top-[68px] h-[calc(100dvh-68px)] overflow-y-auto border-t border-linie-noapte bg-noapte md:hidden"
+      >
+        <div className="mx-auto flex min-h-full max-w-vitrina flex-col px-6 pt-4 pb-10">
           {pagini.map((r) => (
             <Link
               key={r.cale}
               href={r.cale}
               aria-current={cale === r.cale ? "page" : undefined}
-              className="border-b border-linie-noapte py-3.5 font-afis text-[19px] font-semibold tracking-[0.1em] uppercase text-hartie-veche no-underline last:border-b-0"
+              className="border-b border-linie-noapte py-4 font-afis text-[26px] leading-none font-bold tracking-[0.06em] uppercase text-hartie-veche no-underline"
             >
               {r.scurt}
             </Link>
           ))}
           <Link
             href={CALE_DISCUTIE}
-            className="py-3.5 font-afis text-[19px] font-semibold tracking-[0.1em] uppercase text-arama-clar no-underline"
+            className="mt-auto inline-flex items-center gap-3 self-start border border-hartie-veche px-6 py-3.5 font-afis text-[15px] font-semibold tracking-[0.14em] uppercase text-hartie-veche no-underline"
           >
             Discuție de 30 de minute
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>

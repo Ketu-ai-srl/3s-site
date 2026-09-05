@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Buton from "./Buton";
-import Eticheta from "./Eticheta";
-import Invelis from "./Invelis";
+import Ecran from "./Ecran";
 
-// Antetul unei pagini interioare: firul de navigare, eticheta, singurul h1 al paginii,
-// paragraful de deschidere si acelasi apel la actiune ca pe pagina de start.
+// Antetul unei pagini interioare: acelasi ecran plin ca pe pagina de start (`Ecran`, nivel
+// `h1`), cu firul de navigare deasupra etichetei, singurul h1 al paginii, o linie, UN buton
+// si, optional, o legatura de text pentru drumul al doilea. Cu fotografie daca pagina da
+// una (`imagine`), altfel pe fundal de noapte-2.
 //
 // Firul de navigare nu e decor: e legatura inapoi, ceruta explicit in ambele sensuri.
 // Ultimul element e pagina curenta si NU are legatura - o legatura catre pagina in care
@@ -13,6 +13,9 @@ import Invelis from "./Invelis";
 // Datele structurate BreadcrumbList se emit din aceeasi lista, ca sa nu existe doua
 // surse pentru acelasi fir. Tipurile folosite - BreadcrumbList, ListItem - sunt in
 // vocabularul pe care poarta S-09 il accepta.
+//
+// Semnatura veche (fir, eticheta, titlu, lead, actiune, secundar, adresa) e pastrata
+// intreaga; `imagine` e singurul camp nou si e optional.
 
 export type Veriga = {
   text: string;
@@ -23,12 +26,14 @@ export type Veriga = {
 type Props = {
   fir: Veriga[];
   eticheta: string;
-  titlu: string;
-  lead: string;
+  titlu: React.ReactNode;
+  lead: React.ReactNode;
   actiune: { href: string; text: string };
   secundar?: { href: string; text: string };
   /** Adresa canonica a paginii, ca ultima veriga din datele structurate sa aiba adresa. */
   adresa: string;
+  /** Fotografie ilustrativa din `public/img/` (nume fara sufixul de marime). */
+  imagine?: { nume: string; alt: string; pozitie?: string };
 };
 
 const GAZDA = "https://3s.ke2.in";
@@ -41,6 +46,7 @@ export default function AntetPagina({
   actiune,
   secundar,
   adresa,
+  imagine,
 }: Props) {
   const firStructurat = {
     "@context": "https://schema.org",
@@ -53,59 +59,51 @@ export default function AntetPagina({
     })),
   };
 
+  const firNavigare = (
+    <nav aria-label="Firul de navigare" className="mb-8 md:mb-10">
+      <ol className="m-0 flex flex-wrap items-baseline gap-x-2 gap-y-1 p-0 font-mono text-[12.5px] tracking-[0.06em] text-cerneala-2">
+        {fir.map((v, i) => (
+          <li key={v.text} className="flex items-baseline gap-2">
+            {i > 0 ? (
+              <span aria-hidden className="text-cerneala-3">
+                /
+              </span>
+            ) : null}
+            {v.href ? (
+              <Link
+                href={v.href}
+                className="text-cerneala-2 underline decoration-cerneala-3 underline-offset-[3px] hover:text-cerneala"
+              >
+                {v.text}
+              </Link>
+            ) : (
+              <span aria-current="page" className="text-cerneala">
+                {v.text}
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+
   return (
-    <section className="bg-hartie pt-6 pb-12 md:pt-10 md:pb-16">
-      <Invelis>
-        <nav aria-label="Firul de navigare" className="mb-8 md:mb-10">
-          <ol className="m-0 flex flex-wrap items-baseline gap-x-2 gap-y-1 p-0 font-mono text-fisa tracking-[0.04em] text-tus-3">
-            {fir.map((v, i) => (
-              <li key={v.text} className="flex items-baseline gap-2">
-                {i > 0 ? (
-                  <span aria-hidden className="text-linie-fn">
-                    /
-                  </span>
-                ) : null}
-                {v.href ? (
-                  <Link
-                    href={v.href}
-                    className="text-tus-2 underline underline-offset-[3px] hover:text-verde"
-                  >
-                    {v.text}
-                  </Link>
-                ) : (
-                  <span aria-current="page">{v.text}</span>
-                )}
-              </li>
-            ))}
-          </ol>
-        </nav>
-
-        <Eticheta className="urca urca-1 block">{eticheta}</Eticheta>
-
-        <h1 className="urca urca-2 mt-4 mb-6 max-w-[20ch] text-[32px] leading-[1.08] tracking-[-0.02em] sm:text-[40px] lg:max-w-[24ch] lg:text-[50px]">
-          {titlu}
-        </h1>
-
-        <p className="urca urca-3 max-w-[64ch] text-[18px] leading-[1.55] text-tus-2 sm:text-[19px]">
-          {lead}
-        </p>
-
-        <div className="urca urca-4 mt-8 flex flex-wrap gap-3">
-          <Buton href={actiune.href} marime="mare" sageata className="max-sm:w-full">
-            {actiune.text}
-          </Buton>
-          {secundar ? (
-            <Buton href={secundar.href} fel="contur" marime="mare" className="max-sm:w-full">
-              {secundar.text}
-            </Buton>
-          ) : null}
-        </div>
-      </Invelis>
-
+    <>
+      <Ecran
+        nivel="h1"
+        ton={imagine ? "foto" : "plin"}
+        imagine={imagine}
+        inainte={firNavigare}
+        eticheta={eticheta}
+        titlu={titlu}
+        text={lead}
+        actiune={actiune}
+        secundar={secundar}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(firStructurat) }}
       />
-    </section>
+    </>
   );
 }

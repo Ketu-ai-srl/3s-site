@@ -16,3 +16,11 @@ atribuire obligatorie): https://www.pexels.com/license/
 **Sunt imagini ILUSTRATIVE, nu fotografii ale depozitului de la Golești.** Se înlocuiesc cu fotografii
 reale ale depozitului ADRIA în ziua în care există. Până atunci, site-ul nu afirmă nicăieri că ar fi
 depozitul nostru.
+
+## Cele două mărimi
+
+Fiecare fotografie are o variantă de 1920 px lățime, pentru ecran lat, și una de 960 px, servită
+sub 768 px. Variantele de 960 sunt toate PORTRET (2:3 sau 3:4): `cutii` și `dulapuri` sunt decupaje
+din centrul fotografiei originale (regenerate la felia 25, din fișierul de 1920, cu Pillow), fiindcă
+un peisaj de 960x637 întins cu `object-cover` pe un telefon ținut vertical se mărea de 1,32 ori și se
+înmuia. Decupajul e din aceeași fotografie, sub aceeași licență.

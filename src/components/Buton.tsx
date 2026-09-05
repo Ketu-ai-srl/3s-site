@@ -1,23 +1,29 @@
-// Butoanele paginii. `plin` e acțiunea principală (verde institutional),
-// `contur` e cea secundară. Butonul principal duce mereu la discuția de 30 de
-// minute, deci componenta nu are variantă de accent care să concureze cu el.
+import Link from "next/link";
+
+// Butoanele paginii. `plin` e actiunea principala - acelasi buton ca pe ecranele vitrinei:
+// contur de hartie veche, majuscule condensate, colturi drepte. `contur` e drumul al
+// doilea, mai stins. Butonul principal duce mereu la discutia de 30 de minute, deci
+// componenta nu are varianta de accent care sa concureze cu el.
+//
+// Semnatura (href, fel, marime, sageata, className) e cea veche, ca paginile care il
+// folosesc sa ramana compilabile si sa treaca singure in directia noua.
 
 type Fel = "plin" | "contur";
 type Marime = "mic" | "normal" | "mare";
 
 const FEL: Record<Fel, string> = {
-  plin: "border-verde bg-verde text-white hover:bg-verde-apasat",
-  contur: "border-linie-fn bg-transparent text-verde hover:border-verde hover:bg-verde-moale",
+  plin: "border-cerneala text-cerneala hover:border-cerneala-accent hover:text-cerneala-accent",
+  contur: "border-cerneala-3 text-cerneala-2 hover:border-cerneala hover:text-cerneala",
 };
 
 const MARIME: Record<Marime, string> = {
-  mic: "px-3.5 py-2.5 text-[14.5px]",
-  normal: "px-5 py-3 text-[15.5px]",
-  mare: "px-6 py-[15px] text-baza",
+  mic: "px-4 py-2.5 text-[13px]",
+  normal: "px-5 py-3 text-[14px]",
+  mare: "px-6 py-3.5 text-[15px]",
 };
 
 const BAZA =
-  "inline-flex items-center justify-center gap-2.5 rounded-[2px] border font-medium no-underline transition-colors duration-150 active:translate-y-px";
+  "group inline-flex items-center justify-center gap-3 border bg-transparent font-afis font-semibold tracking-[0.14em] uppercase no-underline transition-colors duration-200";
 
 type Props = {
   href: string;
@@ -37,13 +43,13 @@ export default function Buton({
   className = "",
 }: Props) {
   return (
-    <a href={href} className={`${BAZA} ${FEL[fel]} ${MARIME[marime]} ${className}`}>
+    <Link href={href} className={`${BAZA} ${FEL[fel]} ${MARIME[marime]} ${className}`}>
       {children}
       {sageata ? (
-        <span aria-hidden className="font-mono text-[14px] opacity-80">
+        <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
           →
         </span>
       ) : null}
-    </a>
+    </Link>
   );
 }
