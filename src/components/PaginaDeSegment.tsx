@@ -95,7 +95,7 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
           cota="III"
           eticheta="Dovada"
           titlu="Ce puteți verifica, și ce nu putem susține încă."
-          lead="Într-o relație care începe cu predarea unei arhive, afirmația nesusținută costă mai mult decât tăcerea. Punem pe masă coloana din stânga; pe cea din dreapta o scriem tot noi, primii."
+          lead="Într-o relație care începe cu predarea unei arhive, afirmația nesusținută costă mai mult decât tăcerea. Punem pe masă prima listă; pe a doua o scriem tot noi, primii."
         >
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
             <ListaBifa inchis titlu="Ce vă arătăm înainte de semnătură" elemente={segment.aratam} />

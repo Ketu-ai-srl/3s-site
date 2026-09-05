@@ -137,7 +137,7 @@ export default function CumFunctioneaza() {
         cota="V"
         eticheta="Dovada"
         titlu="Ce puteți verifica, și ce nu putem susține încă."
-        lead="Coloana din stânga se poate vedea înainte de semnătură. Pe cea din dreapta o scriem tot noi, primii, fiindcă o afirmație nesusținută costă mai mult decât tăcerea."
+        lead="Prima listă se poate vedea înainte de semnătură. Pe a doua o scriem tot noi, primii, fiindcă o afirmație nesusținută costă mai mult decât tăcerea."
       >
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           <ListaBifa inchis titlu="Ce vă arătăm înainte de semnătură" elemente={C.aratam} />

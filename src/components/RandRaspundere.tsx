@@ -1,5 +1,6 @@
 // Un rând din secțiunea de răspundere: întrebarea unui serviciu juridic pe
-// coloana din stânga, răspunsul scris pe cea din dreapta.
+// prima coloana pe ecran lat, raspunsul pe a doua; la 390 px se stivuiesc, si de aceea
+// textul paginilor nu trimite niciodata la "stanga" sau "dreapta".
 
 type Props = {
   intrebare: string;

@@ -74,7 +74,7 @@ export default function Despre() {
         cota="II"
         eticheta="Împărțirea"
         titlu="Ce este al ADRIEI și ce se construiește la 3S."
-        lead="Împărțirea contează la semnătură. Vechimea, autorizațiile și depozitul aparțin firmei-mamă, deci o afirmație despre ele se verifică la ea. Ce stă în coloana din dreapta este muncă nouă și nu are în spate niciun an de funcționare."
+        lead="Împărțirea contează la semnătură. Vechimea, autorizațiile și depozitul aparțin firmei-mamă, deci o afirmație despre ele se verifică la ea. Ce stă în a doua listă este muncă nouă și nu are în spate niciun an de funcționare."
       >
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           <ListaBifa
@@ -108,7 +108,7 @@ export default function Despre() {
         cota="IV"
         eticheta="Limite"
         titlu="Ce nu putem susține, scris de noi, primii."
-        lead="Într-o achiziție publică, afirmația nesusținută costă mai mult decât tăcerea. Coloana din stânga este lista lucrurilor care lipsesc de pe site fiindcă nu le putem dovedi; coloana din dreapta este ce punem în loc."
+        lead="Într-o achiziție publică, afirmația nesusținută costă mai mult decât tăcerea. Prima listă adună lucrurile care lipsesc de pe site fiindcă nu le putem dovedi; a doua este ce punem în loc."
       >
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
           <ListaBifa inchis titlu="Ce nu scriem pe site" elemente={NESCRIS} />
