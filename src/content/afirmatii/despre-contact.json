@@ -1,0 +1,74 @@
+[
+  {
+    "id": "3s-in-infiintare",
+    "text": "3S se infiinteaza ca firma romano-moldoveneasca si este in curs de inmatriculare",
+    "unde": "src/app/despre/page.tsx, src/content/despre.ts",
+    "stare": "neconfirmat",
+    "sursa": "",
+    "confirmat_de": "",
+    "data": ""
+  },
+  {
+    "id": "adresa-contact-primeste-mesaje",
+    "text": "Un mesaj trimis la contact@3s.ro ajunge la noi: domeniul este al nostru si cutia postala functioneaza",
+    "unde": "src/app/contact/page.tsx",
+    "stare": "neconfirmat",
+    "sursa": "",
+    "confirmat_de": "",
+    "data": ""
+  },
+  {
+    "id": "3s-fara-date-de-firma",
+    "text": "3S nu are cod fiscal, numar de ordine in registrul comertului, sediu declarat sau telefon propriu",
+    "unde": "src/app/contact/page.tsx, src/app/despre/page.tsx",
+    "stare": "confirmat",
+    "sursa": "config/entitate.ro.json: campurile sunt marcate `de completat`, ceea ce, dupa nota din acelasi fisier, inseamna ca datele NU exista inca; afirmatie negativa, verificabila prin absenta",
+    "confirmat_de": "Ketu, 2026-09-05",
+    "data": "2026-09-05"
+  },
+  {
+    "id": "formular-fara-destinatar",
+    "text": "Formularul de pe pagina de start nu trimite nimic: cererea completata acolo ramane in pagina",
+    "unde": "src/app/contact/page.tsx",
+    "stare": "confirmat",
+    "sursa": "src/components/FormularDiscutie.tsx: functia `trimite` doar apeleaza `setTrimis(true)`, nu exista niciun apel de retea in componenta, iar textul de confirmare o spune el insusi",
+    "confirmat_de": "Ketu, 2026-09-05",
+    "data": "2026-09-05"
+  },
+  {
+    "id": "adria-autorizatii-arhivare",
+    "text": "Autorizatiile pentru arhivare sunt ale ADRIA SERVICII ARHIVARE SRL si pot fi puse la dispozitie scanate, la cerere",
+    "unde": "src/content/despre.ts, src/app/despre/page.tsx",
+    "stare": "neconfirmat",
+    "sursa": "",
+    "confirmat_de": "",
+    "data": ""
+  },
+  {
+    "id": "raspuns-in-ziua-lucratoare",
+    "text": "La un mesaj primit raspundem in aceeasi zi lucratoare, cu doua intervale de discutie propuse",
+    "unde": "src/app/contact/page.tsx",
+    "stare": "neconfirmat",
+    "sursa": "",
+    "confirmat_de": "",
+    "data": ""
+  },
+  {
+    "id": "copii-digitale-in-ue",
+    "text": "Copiile digitale se pastreaza pe infrastructura din Uniunea Europeana, cu locul exact scris in contract",
+    "unde": "src/content/despre.ts",
+    "stare": "neconfirmat",
+    "sursa": "",
+    "confirmat_de": "",
+    "data": ""
+  },
+  {
+    "id": "mesajele-numai-pentru-raspuns",
+    "text": "Mesajele primite pe adresa de contact se folosesc numai pentru a raspunde cererii si nu se transmit in afara discutiei",
+    "unde": "src/app/contact/page.tsx",
+    "stare": "neconfirmat",
+    "sursa": "",
+    "confirmat_de": "",
+    "data": ""
+  }
+]

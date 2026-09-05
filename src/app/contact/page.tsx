@@ -1,0 +1,205 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import AntetPagina from "@/components/AntetPagina";
+import BlocDovada from "@/components/BlocDovada";
+import Buton from "@/components/Buton";
+import ContactDrumuri, { type Drum } from "@/components/ContactDrumuri";
+import ListaBifa from "@/components/ListaBifa";
+import SectiuneRegistru from "@/components/SectiuneRegistru";
+import { campLipsa, entitate } from "@/content/entitate";
+
+// PAGINA DE CONTACT, FĂRĂ FORMULAR. Decizia și motivul ei, scrise aici fiindcă e prima
+// întrebare pe care o pune oricine deschide fișierul.
+//
+// Pe pagina de start există `FormularDiscutie`. El spune, în propriul text, că nu trimite
+// nimic: nu pleacă niciun e-mail și nu se salvează nimic, fiindcă nu este legat de niciun
+// destinatar. Asta e adevărat azi.
+//
+// Aveam voie să îl refolosim aici ca atare. Nu am făcut-o, din două motive măsurabile:
+//
+//   1. Pe pagina de start, formularul este o secțiune din șapte. Pe o pagină numită
+//      „Contact”, ar fi singurul lucru pentru care omul a venit. Un vizitator care
+//      completează cinci câmpuri și abia apoi află că cererea rămâne în pagină a plătit
+//      efortul înainte de a primi informația. Ordinea corectă este inversă: întâi se spune
+//      ce ajunge la noi, apoi se scrie.
+//   2. Două locuri în care se poate scrie în gol sunt de două ori mai multe decât unul,
+//      iar al doilea l-am fi adăugat noi, azi, știind ce știm.
+//
+// Ce punem în loc: drumurile care chiar funcționează, plus rândurile pentru cele care nu
+// există încă, cu motivul lor. Formularul de pe pagina de start apare și el ca rând, cu
+// starea scrisă, fiindcă vizitatorul care l-a văzut acolo merită să afle aici de ce nu a
+// primit răspuns.
+//
+// DE CE VALORILE NU SUNT SCRISE ÎN PAGINĂ. Adresa și telefonul se citesc din
+// `config/entitate.ro.json`, prin `src/content/entitate.ts` - același loc din care le ia
+// poarta juridică și blocul de identificare din subsol. Consecința: nu putem inventa aici o
+// valoare care nu există în configurare, iar în ziua în care cineva completează telefonul
+// după înmatriculare, rândul se umple singur, fără să treacă nimeni prin fișierul acesta.
+// `campLipsa` este funcția care recunoaște substituenții, deci `de completat` nu poate
+// ajunge pe pagină arătând ca un număr.
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Adresa la care ne scrieți, ce ajută să conțină primul mesaj și care date de contact nu există încă, fiindcă 3S este o firmă în curs de înființare.",
+  alternates: { canonical: "/contact" },
+};
+
+const ARE_EMAIL = !campLipsa(entitate.email);
+const CATRE = "mailto:" + entitate.email;
+
+const DRUMURI: Drum[] = [
+  {
+    eticheta: "Poștă electronică",
+    valoare: ARE_EMAIL ? entitate.email : null,
+    href: ARE_EMAIL ? CATRE : undefined,
+    nota: ARE_EMAIL
+      ? "Drumul care funcționează azi. Scrieți de la adresa la care vreți să primiți răspunsul, ca discuția să rămână într-un singur fir."
+      : "Adresa se scrie aici din configurarea firmei. Cât timp lipsește de acolo, nu punem alta în loc.",
+  },
+  {
+    eticheta: "Telefon",
+    valoare: campLipsa(entitate.telefon) ? null : entitate.telefon,
+    nota: "3S nu are încă număr propriu. Numărul ADRIEI nu îl punem în loc: ar suna la altă firmă decât cea cu care discutați, iar cine răspunde nu ar avea de unde să știe despre ce este vorba. Rândul acesta se completează la înmatriculare.",
+  },
+  {
+    eticheta: "Sediu",
+    valoare: campLipsa(entitate.sediu) ? null : entitate.sediu,
+    nota: "Sediul se declară la înmatriculare și abia atunci se scrie. Depozitul în care ajunge hârtia este cel al ADRIEI, la Golești, județul Argeș, și poate fi vizitat cu programare înainte să semnați ceva.",
+  },
+  {
+    eticheta: "Formularul de pe pagina de start",
+    valoare: "/#discutie",
+    href: "/#discutie",
+    nota: "Există, dar nu are încă destinatar: cererea completată acolo rămâne în pagină, iar formularul o spune el însuși după apăsare. Îl lăsăm la vedere fiindcă arată ce vă întrebăm la începutul discuției. Până este legat, mesajul care ajunge la noi este cel de poștă electronică.",
+  },
+];
+
+const PRIMUL_MESAJ = [
+  "Instituția sau firma, și cine semnează pentru ea",
+  "Cât credeți că aveți: metri liniari, rafturi ocupate sau număr de cutii",
+  "Ce document se cere cel mai des și cât durează azi până este găsit",
+  "Dacă vă apasă un control, un termen sau o mutare de sediu, și până când",
+  "Un interval în care puteți vorbi treizeci de minute",
+];
+
+export default function Contact() {
+  return (
+    <main id="continut">
+      <AntetPagina
+        adresa="/contact"
+        fir={[{ text: "Pagina de start", href: "/" }, { text: "Contact" }]}
+        eticheta="Contact"
+        titlu="Ne scrieți pe e-mail. Restul drumurilor nu există încă."
+        lead="Scriem mai jos exact ce ajunge la noi și ce nu, fiindcă o pagină de contact care promite mai multe drumuri decât are transformă o cerere într-un mesaj pierdut. 3S se înființează acum, deci telefonul și sediul lipsesc, iar rândurile lor spun de ce."
+        actiune={
+          ARE_EMAIL
+            ? { href: CATRE, text: "Scrieți-ne la " + entitate.email }
+            : { href: "#drumuri", text: "Vedeți ce drumuri există" }
+        }
+        secundar={{ href: "/despre", text: "Cine suntem" }}
+      />
+
+      <SectiuneRegistru
+        id="drumuri"
+        ton="fisier"
+        cota="I"
+        eticheta="Drumuri"
+        titlu="Patru drumuri, din care unul singur ajunge la noi azi."
+        lead="Rândurile de mai jos se citesc din configurarea firmei, nu se scriu de mână în pagină. Unde valoarea lipsește, scrie că lipsește: nici substituent, nici datele firmei-mamă puse în locul lor."
+      >
+        <ContactDrumuri drumuri={DRUMURI} />
+
+        <BlocDovada className="mt-8">
+          <strong className="font-semibold text-tus">De ce nu punem un formular aici:</strong>{" "}
+          nu ar trimite nimic. Un buton care spune „Trimiteți cererea” și nu trimite costă mai
+          mult decât absența lui, fiindcă omul pleacă convins că a lăsat o cerere și așteaptă
+          un răspuns care nu are de unde să vină. Când formularul are destinatar, apare și
+          aici, iar rândul de mai sus se schimbă odată cu el.
+        </BlocDovada>
+      </SectiuneRegistru>
+
+      <SectiuneRegistru
+        ton="hartie"
+        cota="II"
+        eticheta="Primul mesaj"
+        titlu="Cinci rânduri de la dumneavoastră scurtează discuția cu o săptămână."
+        lead="Scrieți cât vreți și în ce ordine vreți. Lista de mai jos este ce ne trebuie oricum ca să vă putem răspunde cu ceva concret din primul mesaj, în loc să cerem detalii pe încă două."
+      >
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+          <ListaBifa titlu="Ce ajută să scrieți" elemente={PRIMUL_MESAJ} />
+          <ListaBifa
+            titlu="Ce primiți înapoi"
+            elemente={[
+              "Un răspuns în aceeași zi lucrătoare, cu două intervale de discuție propuse",
+              "O estimare a volumului, în metri liniari și în cutii, după discuție",
+              "Ce se digitizează primul și ce poate aștepta un an",
+              "Un calendar de preluare, cu datele scrise",
+            ]}
+          />
+        </div>
+      </SectiuneRegistru>
+
+      <SectiuneRegistru
+        ton="inchis"
+        cota="III"
+        eticheta="Datele din mesaj"
+        titlu="Ce facem cu ce ne scrieți."
+        lead="Un mesaj către un furnizor de arhivare conține adesea mai mult decât un salut: numele instituției, ce se caută des, uneori un termen de control. Deci merită spus dinainte ce se întâmplă cu el."
+      >
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+          <ListaBifa
+            inchis
+            titlu="Ce se întâmplă cu mesajul"
+            elemente={[
+              "Se folosește numai ca să răspundem cererii dumneavoastră",
+              "Temeiul prelucrării sunt demersuri precontractuale, făcute la cererea dumneavoastră",
+              "Nu ajunge la nimeni din afara discuției și nu intră în nicio listă de trimiteri",
+              "Rămâne în corespondența noastră, ca să existe o urmă scrisă a cererii și a răspunsului",
+            ]}
+          />
+          <ListaBifa
+            inchis
+            titlu="Ce nu vă cerem în primul mesaj"
+            elemente={[
+              "Documente scanate sau fișiere cu date personale",
+              "Numere de dosar, coduri numerice personale sau date medicale",
+              "Inventarul complet al arhivei: îl măsurăm împreună, la fața locului",
+            ]}
+          />
+        </div>
+      </SectiuneRegistru>
+
+      <SectiuneRegistru
+        ton="fisier"
+        cota="IV"
+        eticheta="Pasul următor"
+        titlu="Un mesaj de cinci rânduri este de ajuns ca să începem."
+      >
+        <p className="mb-8 max-w-[62ch] text-lead text-tus-2">
+          Discuția de treizeci de minute se programează din același mesaj. Ne uităm peste umăr
+          la arhiva dumneavoastră așa cum arată ea azi, nu la o prezentare a noastră.
+        </p>
+
+        <div className="flex flex-wrap gap-3">
+          {ARE_EMAIL ? (
+            <Buton href={CATRE} marime="mare" sageata className="max-sm:w-full">
+              Scrieți-ne la {entitate.email}
+            </Buton>
+          ) : null}
+          <Buton href="/despre" fel="contur" marime="mare" className="max-sm:w-full">
+            Cine suntem
+          </Buton>
+        </div>
+
+        <p className="mt-6 max-w-[62ch] text-[15.5px] text-tus-3">
+          Dacă vă interesează întâi ce facem pentru domeniul dumneavoastră, fișele stau la{" "}
+          <Link href="/solutii" className="text-verde underline underline-offset-[3px]">
+            domenii
+          </Link>
+          , iar termenele legale, cu actul normativ citat, în verificatorul de pe pagina de
+          start.
+        </p>
+      </SectiuneRegistru>
+    </main>
+  );
+}
