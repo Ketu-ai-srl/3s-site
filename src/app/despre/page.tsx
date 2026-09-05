@@ -86,7 +86,7 @@ export default function Despre() {
 
       <Ecran
         id="adria"
-        imagine={FOTOGRAFII.dosare}
+        imagine={FOTOGRAFII.maini}
         eticheta="Împărțirea · Firma-mamă"
         titlu={
           <>
