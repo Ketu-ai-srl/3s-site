@@ -188,7 +188,7 @@ export const RUTE: Ruta[] = [
     scurt: "Termene de păstrare",
     descriere:
       "Cât se păstrează fiecare categorie de documente, cu actul normativ și articolul pe rândul lui.",
-    inMeniu: false,
+    inMeniu: true,
     inHarta: true,
   },
   {
@@ -221,7 +221,7 @@ export const RUTE: Ruta[] = [
     scurt: "Despre",
     descriere:
       "Cine este 3S, ce vine de la ADRIA, firma-mamă, și ce nu putem susține încă.",
-    inMeniu: true,
+    inMeniu: false,
     inHarta: true,
   },
   {
@@ -255,7 +255,7 @@ export const RUTE: Ruta[] = [
     scurt: "Investiția",
     descriere:
       "Ce determină costul arhivării, ce se plătește o dată și ce recurent, și ce iese din discuția de 30 de minute.",
-    inMeniu: false,
+    inMeniu: true,
     inHarta: true,
   },
 
