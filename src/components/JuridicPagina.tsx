@@ -45,13 +45,19 @@ function SectiuneJuridica({
               aria-hidden
               className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie md:block"
             />
-            <span
-              aria-hidden
-              className="font-serif text-2xl leading-none font-normal text-arama md:block md:text-[34px]"
-            >
-              {numar}
+            {/* Marcajul de sectiune, ascuns de la cititoarele de ecran: intelesul e purtat
+                de titlul h2, iar o cifra citita inaintea lui nu adauga nimic. Cuvantul
+                "Secțiunea" apare doar sub 768 px, unde cifra singura, fara coloana de
+                margine care sa o explice, ar parea un rest de formatare. Pe ecran lat
+                ramane doar cifra, ca la cotele romane din restul site-ului. */}
+            <span aria-hidden className="flex items-baseline gap-2 md:block">
+              <span className="font-mono text-eticheta font-medium tracking-[0.1em] text-tus-2 uppercase md:hidden">
+                Secțiunea
+              </span>
+              <span className="font-serif text-2xl leading-none font-normal text-arama md:text-[34px]">
+                {numar}
+              </span>
             </span>
-            <Eticheta className="md:hidden">Secțiunea</Eticheta>
           </div>
 
           <div>
