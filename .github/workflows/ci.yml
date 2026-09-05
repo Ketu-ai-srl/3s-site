@@ -6,7 +6,11 @@ on:
   # refuzat cu "zero rulari CI" - o poarta care blocheaza exact cazul pentru care exista.
   # Depozitul e public, deci minutele nu sunt argument.
   push:
-    branches: [main]
+    # `lot/**` e aici fiindca promovarea cere un verdict CI pe sha-ul EXACT al lotului,
+    # inainte ca el sa atinga `main`. Fara asta, `promoveaza.sh` refuza corect cu "zero
+    # rulari CI", iar singurul drum ramas ar fi sa impingi direct in `main` si sa afli
+    # dupa. Un lot pe zi inseamna o rulare in plus, pe un depozit public.
+    branches: [main, 'lot/**']
   pull_request:
     branches: [main]
   workflow_dispatch:
