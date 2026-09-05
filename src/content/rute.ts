@@ -91,6 +91,33 @@ export const RUTE: Ruta[] = [
   },
 
   // <<felie:segmente>>
+  // Lotul doi de segmente. Nu urca in bara de sus, din acelasi motiv scris la notari:
+  // intrarea in domenii se face prin hub. In harta de site intra toate trei, fiindca
+  // fiecare e o pagina de sine statatoare, cu titlu, descriere si canonical proprii.
+  {
+    cale: "/solutii/primarii",
+    scurt: "Primării și instituții publice",
+    descriere:
+      "Fond moștenit peste mandate, categorii cu termen permanent și cereri care se rezolvă la ghișeu.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/solutii/contabilitate",
+    scurt: "Birouri de contabilitate",
+    descriere:
+      "Fond separat pe firmă și pe exercițiu financiar, cu statele de salarii ținute deoparte de la preluare.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/solutii/avocatura",
+    scurt: "Case de avocatură",
+    descriere:
+      "Dosare inventariate, acces nominal pe dosar cu jurnal și un rând de termen lăsat gol, dinadins.",
+    inMeniu: false,
+    inHarta: true,
+  },
 
   // <<felie:despre-contact>>
 
