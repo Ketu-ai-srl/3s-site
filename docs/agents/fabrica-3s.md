@@ -4,13 +4,27 @@
 > pe `3s.ke2.in`. Definitiile agentilor sunt in `.claude/agents/`. Starile de pe tabla sunt in
 > `tabla-status.md`, langa acest fisier.
 
-**Ce e verificat la 2026-09-05, 13:45, si ce nu.** Poarta locala ruleaza: `pnpm porti` iese 0 pe
-arborele curent, iar pe o fixtura cu o afirmatie neatribuita iese 1 si numeste fisierul si randul.
-Cele patru definitii de agenti exista. In `.claude/scripts/fabrica/` existau la ora aceea patru
-fisiere - `lib.sh`, `provizioneaza.sh`, `plieaza.sh`, `poarta.sh` - **citite, nu rulate de mine**.
-**Scriptul de promovare nu exista inca**, deci comenzile din pasul 8 sunt cele planificate, iar
-numele lui se confirma cand apare. Nimic din ce urmeaza nu presupune ca un script a rulat verde:
-ce nu a fost masurat e marcat ca atare.
+**Ce e verificat la 2026-09-05, 15:40, si de cine.** Masurat de dispecer, pe masina lui, nu
+raportat de agentul care a scris codul:
+
+- `pnpm verifica` iese **0** pe `main`: 12 pasi, din care 8 porti, fiecare cu martor pozitiv si
+  martor negativ rulate in aceeasi trecere. Cele 17 probe de browser trec.
+- Suita fabricii, `pnpm lot`: **6 fisiere de proba, 156 de cazuri, 0 picate**, in ~92 s.
+- `poarta.sh --proba` citeste **7 pasi** direct din `scripts.verifica` - lista nu e scrisa de
+  mana nicaieri, deci poarta locala si CI nu pot diverge.
+- Lantul complet, cap la cap: poarta locala verde -> push -> **CI verde in 1m47s** (rularea
+  101305086610, cu cele 17 probe de browser) -> deploy -> marcajul `E1-0005` regasit **pe viu**
+  la `https://3s.ke2.in/stamp`, identic cu fisierul din arbore.
+
+**Ce NU e masurat, si trebuie spus:**
+
+- Partea de **retea** a lui `promoveaza.sh` (sha pe origin, check-runs, compare, PATCH pe ref)
+  e probata pe un `gh` fals. Ce s-a dovedit e logica scriptului - ce accepta si ce refuza - nu
+  contractul API GitHub. Se masoara la primul lot promovat pe viu.
+- **Criticul adversarial al fabricii nu a rulat**: agentul a murit cu eroare de API. Deci nimeni
+  n-a atacat proiectarea din afara; ce sustine calitatea sunt probele de mai sus, nu o revizuire.
+- Pragul de lungime a caii, 275, e imprumutat de la alt proiect si nemasurat pe stiva asta.
+  De aceea e avertisment, nu refuz.
 
 ---
 

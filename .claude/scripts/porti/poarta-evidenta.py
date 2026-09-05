@@ -5,7 +5,11 @@ De ce exista: owner-ul a decis ca site-ul se scrie ACUM, iar confirmarea de la c
 vine la final, ca runda de editare. Fara un registru, "le editam la final" se transforma
 intr-o recitire din memorie, si memoria dispecerului cedeaza prima sub viteza.
 
-Registrul e `src/content/afirmatii.json`, o lista de intrari:
+Registrul e un DIRECTOR, `src/content/afirmatii/`, cu cate un fisier JSON per pagina.
+Nu un singur fisier: in fabrica lucreaza mai multi agenti deodata, iar un singur fisier
+cu o lista ar fi produs conflict de imbinare la fiecare lot cu doua pagini noi. Un fisier
+per felie inseamna multimi de fisiere disjuncte, adica exact conditia paralelismului.
+Fiecare fisier e o lista de intrari:
   {
     "id": "depozit-golesti",
     "text": "Depozitul este la Golesti, langa Pitesti",
@@ -31,6 +35,7 @@ CONTROALE la fiecare rulare:
 
 IESIRE: 0 curat - 1 probleme gasite - 2 folosire gresita - 3 control picat
 """
+import glob
 import io
 import json
 import os
@@ -41,7 +46,7 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 RADACINA = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-REGISTRU = os.path.join(RADACINA, 'src', 'content', 'afirmatii.json')
+REGISTRU = os.path.join(RADACINA, 'src', 'content', 'afirmatii')
 LISTA = os.path.join(RADACINA, 'docs', 'afirmatii-de-confirmat.md')
 STARI = {'confirmat', 'neconfirmat', 'retras'}
 OBLIGATORII = ('id', 'text', 'unde', 'stare')
@@ -113,19 +118,34 @@ def main():
         print('CONTROL PICAT: ' + motiv, file=sys.stderr)
         return 3
 
-    if not os.path.isfile(REGISTRU):
-        print('Registrul lipseste: ' + os.path.relpath(REGISTRU, RADACINA), file=sys.stderr)
-        print('Se creeaza cu o lista goala `[]` si se completeaza pe masura ce se scrie continut.', file=sys.stderr)
+    if not os.path.isdir(REGISTRU):
+        print('Registrul lipseste: ' + os.path.relpath(REGISTRU, RADACINA) + os.sep, file=sys.stderr)
+        print('E un DIRECTOR cu cate un fisier JSON per pagina. Se creeaza si se pune in el', file=sys.stderr)
+        print('cate o lista pentru fiecare felie de continut.', file=sys.stderr)
         return 1
 
-    try:
-        intrari = json.load(io.open(REGISTRU, encoding='utf-8'))
-    except ValueError as e:
-        print('Registrul nu e JSON valid: ' + str(e), file=sys.stderr)
-        return 1
-    if not isinstance(intrari, list):
-        print('Registrul trebuie sa fie o lista de intrari.', file=sys.stderr)
-        return 1
+    cai = sorted(glob.glob(os.path.join(REGISTRU, '*.json')))
+    if not cai:
+        print('Registrul e gol: niciun fisier .json in ' + os.path.relpath(REGISTRU, RADACINA),
+              file=sys.stderr)
+        print('Un registru gol pe un site cu text nu e "curat", e NEMASURAT.', file=sys.stderr)
+        return 3
+
+    intrari = []
+    for c in cai:
+        rel = os.path.relpath(c, RADACINA)
+        try:
+            bucata = json.load(io.open(c, encoding='utf-8'))
+        except ValueError as e:
+            print(rel + ': nu e JSON valid: ' + str(e), file=sys.stderr)
+            return 1
+        if not isinstance(bucata, list):
+            print(rel + ': fiecare fisier de registru trebuie sa fie o lista de intrari.', file=sys.stderr)
+            return 1
+        for intrare in bucata:
+            if isinstance(intrare, dict):
+                intrare.setdefault('fisier_registru', rel)
+        intrari.extend(bucata)
 
     gasite = probleme(intrari)
     for g in gasite:
