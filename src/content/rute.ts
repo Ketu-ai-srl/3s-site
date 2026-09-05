@@ -52,6 +52,22 @@ export const RUTE: Ruta[] = [
     inMeniu: true,
     inHarta: true,
   },
+  // ANCORE DE FELIE. Fiecare felie de pagini isi scrie intrarile NUMAI sub marcajul ei si
+  // nu atinge celelalte marcaje. Motivul e mecanic, nu organizatoric: `rute.ts` e singurul
+  // fisier pe care mai multe felii trebuie sa il modifice deodata, iar imbinarea in trei
+  // puncte reuseste doar daca hunk-urile au randuri de context intre ele. Marcajele sunt
+  // acele randuri. Fara ele, doua felii care adauga cate o pagina se ciocnesc de fiecare data.
+  //
+  // Ordinea marcajelor = ordinea din bara de sus. Se muta doar de dispecer.
+
+  // <<felie:mecanism>>
+
+  // <<felie:segmente>>
+
+  // <<felie:despre-contact>>
+
+  // <<felie:juridic>>
+
   {
     cale: "/solutii/notari",
     scurt: "Birouri notariale",
