@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "porti:sursa": "python .claude/scripts/porti/poarta-scurgeri.py && python .claude/scripts/porti/poarta-tipografie.py && python .claude/scripts/porti/poarta-limba.py && python .claude/scripts/porti/poarta-afirmatii.py && python .claude/scripts/porti/poarta-evidenta.py && python .claude/scripts/porti/poarta-regresie.py",
+    "porti:sursa": "python .claude/scripts/porti/poarta-scurgeri.py && python .claude/scripts/porti/poarta-rute.py && python .claude/scripts/porti/poarta-tipografie.py && python .claude/scripts/porti/poarta-limba.py && python .claude/scripts/porti/poarta-afirmatii.py && python .claude/scripts/porti/poarta-evidenta.py && python .claude/scripts/porti/poarta-regresie.py",
     "porti:build": "python .claude/scripts/porti/poarta-seo.py && python .claude/scripts/porti/poarta-juridic.py",
     "porti:browser": "node .claude/scripts/porti/browser-toate.mjs",
     "porti": "pnpm porti:sursa && pnpm build && pnpm porti:build",

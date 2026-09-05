@@ -58,10 +58,29 @@ export const entitate: Entitate = {
   cod_fiscal: date.cod_fiscal,
 };
 
-/** Un camp e gol cand lipseste sau cand poarta marcajul de necompletat. */
+// Substituentii pe care ii recunoaste si `poarta-juridic.py`. Lista trebuie sa fie ACEEASI
+// in cele doua locuri. Cat timp aici erau doar doua forme, iar in poarta noua, o valoare ca
+// `TODO` sau `completati aici` trecea de amandoua: blocul de identificare s-ar fi randat pe
+// productie cu substituentul la vedere, cu poarta verde. Doua definitii ale aceluiasi lucru
+// nu se contrazic zgomotos - se contrazic exact pe cazul dintre ele.
+const SUBSTITUENTI = [
+  NECOMPLETAT,
+  "de-completat",
+  "completati aici",
+  "completați aici",
+  "todo",
+  "tbd",
+  "xxx",
+  "???",
+  "n/a",
+  "necunoscut",
+  "lorem",
+];
+
+/** Un camp e gol cand lipseste sau cand poarta un marcaj de necompletat. */
 export function campLipsa(valoare: string): boolean {
   const v = valoare.trim().toLowerCase();
-  return v === "" || v === NECOMPLETAT;
+  return v === "" || SUBSTITUENTI.includes(v);
 }
 
 /** Campurile care inca nu au valoare. Lista goala inseamna identitate completa. */

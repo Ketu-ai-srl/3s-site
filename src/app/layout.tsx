@@ -93,7 +93,13 @@ export default function RootLayout({
         </a>
         <BaraAnunt />
         <Navigatie />
-        <div id="zona-continut">{children}</div>
+        {/* `tabIndex={-1}` nu e decorativ: fara el, "Sariti la continut" schimba doar hash-ul,
+            iar focalizarea ramane pe BODY - masurat: dupa Enter, document.activeElement
+            era BODY, deci urmatorul Tab relua de la capatul paginii. Cu el, focalizarea
+            chiar aterizeaza in continut. -1 inseamna focalizabil din cod, nu din Tab. */}
+        <div id="zona-continut" tabIndex={-1}>
+          {children}
+        </div>
         <Subsol />
       </body>
     </html>

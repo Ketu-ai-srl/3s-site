@@ -18,7 +18,7 @@ sunt ale **ADRIA SERVICII ARHIVARE SRL**, firma-mama. 3S e firma fiica.
 ## Cum se aplica
 
 Fiecare afirmatie verificabila din continut are o intrare in evidenta afirmatiilor
-(`src/content/afirmatii.json`, se creeaza in E3) cu textul, sursa si data verificarii.
+(`src/content/afirmatii/ (cate un fisier per pagina)`, se creeaza in E3) cu textul, sursa si data verificarii.
 
 **Poarta mecanica se scrie in E1.** Pana atunci regula e proza, si proza nu apara nimic:
 se aplica de om, la fiecare text.

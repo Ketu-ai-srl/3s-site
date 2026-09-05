@@ -25,6 +25,25 @@ import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA } from "@/content/rute";
 // actele citate) si EXACT ce nu s-a facut inca (confirmarea de catre un arhivist autorizat).
 // O data fara verb e un sigiliu; o data cu verb e o informatie.
 
+// De ce subsolul are alte coloane decat inainte, si de ce e o reparatie, nu o pierdere.
+//
+// Varianta veche avea trei coloane scrise de mana, cu 14 legaturi. Masurat in ele:
+//   - coloana "Servicii" avea CINCI etichete diferite - arhivare, scanare, nomenclator,
+//     selectionare, cautare - din care PATRU duceau la aceeasi ancora, `#mecanism`;
+//   - coloana "Documente" avea patru documente juridice - termeni, confidentialitate,
+//     prelucrarea datelor, accesibilitate - si toate patru duceau la `#discutie`,
+//     adica la formularul de contact. Niciunul nu exista.
+// Un subsol care promite paisprezece destinatii si livreaza cinci nu e o harta a site-ului,
+// e decor. Cel mai rau, e decor CREDIBIL: omul care cauta politica de confidentialitate o
+// vede scrisa si ajunge la un formular.
+//
+// Varianta de acum se genereaza din `RUTE` si `SECTIUNI_ACASA`, deci nu poate arata o
+// destinatie care nu exista, iar `poarta-rute.py` verifica in ambele directii ca manifestul
+// si paginile coincid. Serviciile se intorc in subsol cand au pagini proprii - ca legaturi,
+// nu ca etichete. Pana atunci, absenta lor e adevarul: nu au pagina.
+//
+// Documentele juridice raman semnalate de poarta juridica (AVERT L-15) pana cand exista.
+
 const TITLU_COLOANA =
   "mb-3 font-mono text-eticheta font-medium tracking-[0.1em] uppercase text-pe-inchis-3";
 const LEGATURA = "text-pe-inchis no-underline hover:text-white hover:underline";

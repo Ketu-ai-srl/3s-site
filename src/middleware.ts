@@ -1,14 +1,31 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Mediul de proba se inchide complet: cere autentificare de baza si marcheaza
-// fiecare raspuns cu noindex. Fara SITE_ENV=staging, middleware-ul nu adauga nimic,
-// ca productia sa nu mosteneasca noindex-ul din staging.
+// Antetul de neindexare se pune peste tot IN AFARA de productie, nu doar cand mediul se
+// numeste exact `staging`.
+//
+// Ce s-a masurat, pe 5 sep 2026, pe porturi distincte si cu control pozitiv (cu BASIC_AUTH
+// setat, `staging` chiar da 401, deci mediul chiar ajunsese la proces):
+//
+//     SITE_ENV=staging    HTTP 401  X-Robots-Tag: noindex, nofollow
+//     SITE_ENV=proba      HTTP 200  X-Robots-Tag: ABSENT
+//     SITE_ENV=(nesetat)  HTTP 200  X-Robots-Tag: ABSENT
+//
+// Conditia veche era `!== 'staging'`, iar `src/content/rute.ts` foloseste `=== 'productie'`.
+// Nu sunt complemente: orice alta valoare cadea intre ele. Sursa de la construire ramanea
+// sigura implicit, deci gaura nu deschidea singura site-ul - dar asta ERA plasa de siguranta
+// la rulare, iar cazul pentru care exista (mediul schimbat fara build nou) era chiar cazul
+// pe care nu-l acoperea.
+//
+// Regula, scrisa in directia asta deliberat: implicitul e NEindexarea. O variabila uitata
+// trebuie sa lase site-ul in afara indexului, nu in el.
 export function middleware(request: NextRequest) {
-  if (process.env.SITE_ENV !== 'staging') {
+  if (process.env.SITE_ENV === 'productie') {
     return NextResponse.next()
   }
 
+  // Autentificarea de baza ramane optionala si separata: e o poarta de ACCES, nu de
+  // indexare, iar owner-ul a scos-o pentru mediul de proba, care e public.
   const user = process.env.BASIC_AUTH_USER
   const pass = process.env.BASIC_AUTH_PASS
 

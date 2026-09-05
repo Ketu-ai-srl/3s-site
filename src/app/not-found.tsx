@@ -39,8 +39,7 @@ export default function PaginaNegasita() {
             </h1>
             <p className="mb-8 max-w-[60ch] text-lead text-tus-2">
               Fie adresa a fost scrisă altfel, fie pagina pe care o căutați nu există pe acest
-              site. Mai jos sunt drumurile care există acum, luate din structura site-ului, nu
-              scrise de mână.
+              site. Mai jos sunt paginile care există acum.
             </p>
 
             <div className="grid gap-8 sm:grid-cols-2">
