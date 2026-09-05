@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Poarta de limba romana: diacritice complete si o singura forma de adresare.
 
-De ce exista: concurentul analizat (arhivix.com) livreaza pe site-ul lui ROMANESC
+De ce exista: un site de arhivare din regiune, masurat de noi, livreaza in ROMANA
 titluri fara diacritice, o pagina intreaga netradusa si o cheie de traducere ramasa
 in tabelul de preturi. Sunt exact defectele pe care le prinde un om abia dupa ce
 le-a vazut clientul. Le prindem mecanic, la fiecare lot.
@@ -28,18 +28,19 @@ EXTENSII = ('.tsx', '.mdx', '.md')
 SARITE = {'node_modules', '.next', '.git', '__pycache__'}
 
 # Cuvinte care in romana corecta NU pot aparea fara diacritice. Lista e scurta si
-# curata deliberat: fiecare intrare de aici trebuie sa fie fara alta lectura valida.
+# curata deliberat: fiecare intrare trebuie sa nu aiba alta lectura valida.
+#
+# Ce s-a SCOS din lista, si de ce - nota ramane aici ca sa nu le readaug din reflex:
+# 'arhivare', 'contabilitate', 'termene', 'facturi', 'documentatie' si 'digitalizare'
+# se scriu EXACT asa, fara niciun semn. Cat au stat in lista, poarta se inrosea pe
+# text CORECT (ultima, 'digitalizare', pe 5 sep 2026, in JSON-LD, unde restul randului
+# chiar era fara diacritice - deci acuza nimerea fisierul si rata cuvantul).
+# Regula: cand poarta acuza o forma corecta, se repara POARTA, nu textul.
 CUVINTE = [
     'romana', 'romaneasca', 'romanesti', 'pastrare', 'pastram', 'cautare', 'cautati',
-    'raspuns', 'raspunde', 'raspundem', 'intrebare', 'intrebati', 'documentatie',
-    'arhivare', 'incredere', 'primarie', 'primarii', 'contabilitate', 'inregistrare',
-    'digitalizare', 'urmarire', 'termene', 'sanatate', 'siguranta', 'facturi',
+    'raspuns', 'raspunde', 'raspundem', 'intrebare', 'intrebati', 'incredere',
+    'primarie', 'primarii', 'inregistrare', 'urmarire', 'sanatate', 'siguranta',
 ]
-# "termene" si "facturi" nu au diacritice; le scoatem ca sa nu producem zgomot.
-# Se scot cuvintele care in romana corecta NU au diacritice: le pusesem din reflex si
-# produceau fals pozitive pe text corect. "termene", "facturi", "arhivare" si
-# "contabilitate" se scriu exact asa. "documentatie" ramane afara pana verific forma.
-CUVINTE = [c for c in CUVINTE if c not in ('termene', 'facturi', 'arhivare', 'documentatie', 'contabilitate')]
 
 TIPAR_CUVINTE = re.compile(r'\b(' + '|'.join(CUVINTE) + r')\b', re.I)
 TIPAR_CHEIE = re.compile(r'\b[a-z][a-z0-9]{2,}\.[a-z][a-z0-9_]*_\s')
@@ -96,8 +97,10 @@ def analizeaza(text):
         # sarim adresele si caile, unde diacriticele nu au ce cauta
         curat = re.sub(r'https?://\S+', ' ', rand)
         curat = re.sub(r'[\w./-]+\.(?:tsx|ts|mdx|md|png|svg|json)\b', ' ', curat)
-        m = TIPAR_CUVINTE.search(curat)
-        if m:
+        # Se raporteaza TOATE potrivirile de pe rand, nu doar prima: cu `search`, un
+        # rand cu trei cuvinte gresite se repara in trei rulari, iar ultimele doua par
+        # aparute din senin dupa ce le-am "reparat" pe primele.
+        for m in TIPAR_CUVINTE.finditer(curat):
             gasiri.append(('cuvant fara diacritice: ' + m.group(1), numar, rand.strip()[:110]))
         k = TIPAR_CHEIE.search(curat)
         if k:

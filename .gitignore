@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python: cache-ul poate purta text vechi din porti (a purtat numele unui concurent)
+__pycache__/
+*.pyc

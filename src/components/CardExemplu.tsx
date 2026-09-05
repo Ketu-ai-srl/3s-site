@@ -62,14 +62,14 @@ export default function CardExemplu() {
               <span className="rounded-[2px] bg-verde-moale px-2.5 py-1.5 font-mono text-fisa text-verde">
                 {e.sursa}
               </span>
-              <a href="#termene" className="text-[14.5px] text-verde underline-offset-[3px]">
+              <a href="#termene" className="text-[14.5px] text-verde underline underline-offset-[3px]">
                 {e.legatura}
               </a>
             </div>
           )}
         </div>
 
-        <p className="mt-4 text-fisa text-tus-3">
+        <p className="mt-4 text-fisa text-tus-2">
           Exemplu construit pe documente-model. Când răspunsul nu se află în documentele
           dumneavoastră, primiți „nu am găsit asta în documente”, nu o presupunere.
         </p>

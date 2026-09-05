@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
+import DateStructurate from "@/components/DateStructurate";
 
 // Subsetul `latin-ext` e obligatoriu, nu decorativ: fara el, s si t cu virgula
 // (U+0219 / U+021B) cad pe fontul de rezerva si diacriticele romanesti se vad
@@ -32,8 +33,13 @@ export const metadata: Metadata = {
     default: "3S - Scan Store Solve | Arhiva care raspunde",
     template: "%s | 3S - Scan Store Solve",
   },
+  // Descrierea sta sub 160 de caractere: peste prag, motoarele o taie si ultima
+  // propozitie se pierde. Poarta S-01 masoara si opreste lotul.
   description:
-    "Arhivare fizica, digitalizare si cautare in documente pentru primarii, notari, cabinete de avocatura si firme. Intrebi in limba romana, primesti raspunsul cu pagina din care vine.",
+    "Arhivare fizica, digitalizare si cautare in documente pentru primarii, notari si firme. Intrebati in romana, raspunsul vine cu pagina din care provine.",
+  // Canonical auto-referential: fara el, un mediu de proba indexat concureaza cu
+  // productia pe aceleasi cuvinte, iar motorul alege singur care adresa castiga.
+  alternates: { canonical: "/" },
   robots: { index: false, follow: false },
   openGraph: {
     type: "website",
@@ -52,6 +58,7 @@ export default function RootLayout({
       <body
         className={`${serifa.variable} ${corp.variable} ${masina.variable} antialiased`}
       >
+        <DateStructurate />
         {children}
       </body>
     </html>

@@ -272,7 +272,7 @@ export default function Acasa() {
 
               <p className="mt-6 max-w-[60ch] text-[15.5px] text-tus-3">
                 Scrieți-ne și direct, dacă preferați:{" "}
-                <a href="mailto:contact@3s.ro" className="text-verde underline-offset-[3px]">
+                <a href="mailto:contact@3s.ro" className="text-verde underline underline-offset-[3px]">
                   contact@3s.ro
                 </a>
                 . Nu afișăm număr de telefon: solicitările intră prin formular sau email, ca să

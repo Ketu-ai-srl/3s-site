@@ -17,7 +17,11 @@
 
   --color-tus: #101914;
   --color-tus-2: #4e5a53;
-  --color-tus-3: #737e77;
+  /* Intunecat pe 2026-09-05 de la #737e77: masurat 3,78:1 pe hartie, sub pragul
+     de 4,5:1 din WCAG 1.4.3, si poarta de accesibilitate a oprit lotul.
+     #55605a da 5,86:1 pe hartie si 6,42:1 pe fila, deci rezista si variantelor
+     cu opacitate, care erau chiar cazurile picate. */
+  --color-tus-3: #55605a;
 
   --color-verde: #12432e;
   --color-verde-apasat: #0c3122;
