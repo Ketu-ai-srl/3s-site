@@ -285,7 +285,7 @@ export const ARHIVARE_FIZICA = {
   ] as Fisa[],
 
   notaTemei:
-    "Actele de mai sus sunt numite ca să le puteți citi la sursă. Nu punem numere de articol acolo unde nu le-am verificat cuvânt cu cuvânt și nu dăm consultanță juridică: termenul care vă obligă este cel din nomenclatorul propriu, avizat. Unde legea specifică domeniului dumneavoastră spune altceva decât regula generală, ea are prioritate. Dacă o cunoașteți și lipsește de aici, scrieți-ne și o adăugăm cu trimiterea la act.",
+    "Actele de mai sus sunt numite ca să le puteți citi la sursă. Numerele de articol care apar sunt cele culese odată cu tabelul de termene, din actele citate pe fiecare rând; nu au fost recitite la sursă în ziua în care s-a scris pagina, iar confirmarea de către un arhivist autorizat se face înainte de publicare. Nu dăm consultanță juridică: termenul care vă obligă este cel din nomenclatorul propriu, avizat. Unde legea specifică domeniului dumneavoastră spune altceva decât regula generală, ea are prioritate. Dacă o cunoașteți și lipsește de aici, scrieți-ne și o adăugăm cu trimiterea la act.",
 
   aratam: [
     "Depozitul, rafturile și spațiul de manipulare, la o vizită anunțată din timp",
