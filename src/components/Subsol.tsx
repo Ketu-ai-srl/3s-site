@@ -15,10 +15,15 @@ import {
 } from "@/content/entitate";
 import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA } from "@/content/rute";
 
-// Data la care a fost verificat ultima oara continutul subsolului. Se schimba aici, intr-un
-// singur loc. Nu e acelasi lucru cu data la care au fost preluate termenele din actele
-// normative: aceea sta in `src/app/page.tsx`, langa textul pe care il califica.
-const VERIFICAT = "5 septembrie 2026";
+// Aici a stat "Pagină verificată la <data>", pe fiecare pagina a site-ului. S-a scos, si
+// merita spus de ce, ca sa nu se intoarca: nimeni nu verificase nimic. Odata ce subsolul a
+// trecut in layout, sigiliul a ajuns si pe pagini pe care nu le citise nimeni niciodata -
+// o afirmatie despre propria noastra rigoare, nesustinuta, tiparita peste tot.
+//
+// Data calificata si adevarata a ramas unde are inteles: in `src/app/page.tsx`, langa
+// tabelul de termene, unde spune EXACT ce s-a facut la acea data (preluarea termenelor din
+// actele citate) si EXACT ce nu s-a facut inca (confirmarea de catre un arhivist autorizat).
+// O data fara verb e un sigiliu; o data cu verb e o informatie.
 
 const TITLU_COLOANA =
   "mb-3 font-mono text-eticheta font-medium tracking-[0.1em] uppercase text-pe-inchis-3";
@@ -137,7 +142,6 @@ export default function Subsol() {
         <Identificare />
 
         <div className="flex flex-wrap gap-x-6 gap-y-2 pt-6 text-[14px]">
-          <span>Pagină verificată la {VERIFICAT}</span>
           <span>Contract în limba română, sub lege română</span>
         </div>
       </Invelis>
