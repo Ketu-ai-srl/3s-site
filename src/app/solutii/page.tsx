@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AntetPagina from "@/components/AntetPagina";
+import BandaTitlu from "@/components/BandaTitlu";
 import BaraAnunt from "@/components/BaraAnunt";
 import BaraNavigare from "@/components/BaraNavigare";
 import BlocDovada from "@/components/BlocDovada";
@@ -21,6 +22,12 @@ export const metadata: Metadata = {
   description: HUB.descriereMeta,
   alternates: { canonical: "/solutii" },
 };
+
+// Impartirea se face dupa DATE, nu dupa o lista scrisa aici: un domeniu are legatura
+// exact atunci cand are pagina. Asa nu poate exista o fisa care promite o ruta
+// inexistenta, si nici o pagina scrisa pe care hub-ul sa o tina ascunsa.
+const CU_FISA = SEGMENTE.filter((s) => s.pagina !== null);
+const PE_LISTA = SEGMENTE.filter((s) => s.pagina === null);
 
 export default function Solutii() {
   return (
@@ -54,17 +61,31 @@ export default function Solutii() {
           titlu="Patru domenii, în ordinea în care le luăm."
           lead="Ordinea este a noastră, nu a dumneavoastră. O scriem ca să știți dacă intrați în prima serie sau vă punem pe listă onest. Domeniile fără fișă sunt pe listă, nu în lucru."
         >
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {SEGMENTE.map((s) => (
-              <FisaDomeniu
-                key={s.slug}
-                titlu={s.nume}
-                href={s.pagina ? "/solutii/" + s.slug : undefined}
-              >
-                {s.rezumat}
-              </FisaDomeniu>
-            ))}
-          </div>
+          {CU_FISA.length > 0 ? (
+            <>
+              <BandaTitlu eticheta="Scrise" titlu="Domeniile care au fișa lor" />
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {CU_FISA.map((s) => (
+                  <FisaDomeniu key={s.slug} titlu={s.nume} href={"/solutii/" + s.slug}>
+                    {s.rezumat}
+                  </FisaDomeniu>
+                ))}
+              </div>
+            </>
+          ) : null}
+
+          {PE_LISTA.length > 0 ? (
+            <>
+              <BandaTitlu eticheta="Pe listă" titlu="Urmează, în ordinea de mai jos" />
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {PE_LISTA.map((s) => (
+                  <FisaDomeniu key={s.slug} titlu={s.nume}>
+                    {s.rezumat}
+                  </FisaDomeniu>
+                ))}
+              </div>
+            </>
+          ) : null}
         </SectiuneRegistru>
 
         <SectiuneRegistru
