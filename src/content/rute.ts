@@ -78,7 +78,7 @@ export const RUTE: Ruta[] = [
     scurt: "Cum funcționează",
     descriere:
       "Mecanismul cap la cap: preluare, inventar, digitizare, căutare cu sursa citată, retur, ieșire.",
-    inMeniu: false,
+    inMeniu: true,
     inHarta: true,
   },
   {
@@ -86,7 +86,7 @@ export const RUTE: Ruta[] = [
     scurt: "Arhivare fizică",
     descriere:
       "Depozitul, condițiile de păstrare, preluarea cu proces-verbal, cotele și selecționarea cu aviz.",
-    inMeniu: false,
+    inMeniu: true,
     inHarta: true,
   },
 
@@ -140,7 +140,7 @@ export const RUTE: Ruta[] = [
     scurt: "Despre",
     descriere:
       "Cine este 3S, ce vine de la ADRIA, firma-mamă, și ce nu putem susține încă.",
-    inMeniu: false,
+    inMeniu: true,
     inHarta: true,
   },
   {
@@ -148,7 +148,7 @@ export const RUTE: Ruta[] = [
     scurt: "Contact",
     descriere:
       "Pe ce drum ajunge un mesaj la noi și care drumuri nu există încă.",
-    inMeniu: false,
+    inMeniu: true,
     inHarta: true,
   },
 

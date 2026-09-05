@@ -28,6 +28,15 @@
   --color-verde-adanc: #0b1d15;
   --color-verde-moale: #e3eae4;
 
+  /* ARAMA E CULOARE DE ACCENT, NU DE TEXT MIC. Masurat pe 5 sep 2026, contra fundalurilor:
+     hartie 4,75:1 (trece) - suprafata 5,30:1 (trece) - hartie-2 4,45:1 (PICA) -
+     arama-moale 4,47:1 (PICA). Pragul pentru text mic e 4,5:1.
+     Pentru text folositi `arama-inchis` (6,55:1 pe arama-moale). `arama` ramane pentru
+     chenare, linii si cifre mari, unde pragul e 3:1.
+     Nu am inchis tokenul ca sa treaca peste tot: pe paginile care exista azi combinatiile
+     care pica NU se randeaza (axe da 0 incalcari blocante pe toate cele 13), deci ar fi
+     insemnat sa schimb identitatea vizuala pentru un caz care nu exista. Cifrele stau aici
+     ca urmatorul care scrie text aramiu sa nu le remasoare. */
   --color-arama: #a4571c;
   --color-arama-inchis: #7e4315;
   --color-arama-clar: #c98a4b;

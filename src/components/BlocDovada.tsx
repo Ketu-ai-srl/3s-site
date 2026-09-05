@@ -27,8 +27,12 @@ export default function BlocDovada({
 
   return (
     <div className={`${stil} ${className}`}>
+      {/* `arama-inchis`, nu `arama`: pe fundalul `arama-moale` al blocului de declaratie,
+          `arama` da 4,47:1, sub pragul de 4,5:1 pentru text mic. Perechea nu fusese randata
+          niciodata pe site, deci axe nu avea ce masura - a iesit la iveala cand o felie a
+          folosit blocul cu eticheta. `arama-inchis` da 6,55:1. */}
       {eticheta ? (
-        <Eticheta className="mb-1.5 block text-arama!">{eticheta}</Eticheta>
+        <Eticheta className="mb-1.5 block text-arama-inchis!">{eticheta}</Eticheta>
       ) : null}
       <p className="max-w-[78ch] text-[16px] text-tus-2">{children}</p>
     </div>

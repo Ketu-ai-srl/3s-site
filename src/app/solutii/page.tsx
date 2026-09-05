@@ -39,7 +39,10 @@ export default function Solutii() {
           titlu={HUB.h1}
           lead={HUB.lead}
           actiune={{ href: "/#discutie", text: "Programați o discuție de 30 de minute" }}
-          secundar={{ href: "/", text: "Vedeți cum funcționează" }}
+          // Butonul asta a dus la `/` pana cand pagina cerută de el a existat: felia care a
+          // scris hub-ul nu avea voie sa lege o ruta inexistenta, si poarta de legaturi ar
+          // fi oprit lotul pe drept. Acum tinta reala exista.
+          secundar={{ href: "/cum-functioneaza", text: "Vedeți cum funcționează" }}
         />
 
         <SectiuneRegistru
