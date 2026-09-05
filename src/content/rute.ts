@@ -61,6 +61,34 @@ export const RUTE: Ruta[] = [
   // Ordinea marcajelor = ordinea din bara de sus. Se muta doar de dispecer.
 
   // <<felie:mecanism>>
+  //
+  // De ce cele doua pagini de mai jos NU urca in bara de sus, cu cifre, nu cu impresii.
+  // Le-am pus intai cu `inMeniu: true` si am rulat poarta de derapaj: la 390 px,
+  // scrollWidth 529 peste innerWidth 390, si nu pe paginile mele, ci pe TOATE CINCI -
+  // `/`, `/solutii`, `/solutii/notari` incluse. Bara sta in layout, deci doua randuri in
+  // plus in meniu sparg fiecare pagina a site-ului deodata; masurat pe 2026-09-05, lot
+  // felie/9. Cu `inMeniu: false` derapajul dispare pe toate cinci.
+  //
+  // Deci intrarea in pagini se face din corpul paginilor (butonul secundar de pe fisele
+  // de domeniu, legaturile incrucisate dintre cele doua) si din subsol, unde lista de
+  // rute e un cuprins si are loc sa creasca. Se muta in bara de sus in ziua in care
+  // `Navigatie` primeste un meniu pliabil sub 768 px - atunci se remasoara, nu inainte.
+  {
+    cale: "/cum-functioneaza",
+    scurt: "Cum funcționează",
+    descriere:
+      "Mecanismul cap la cap: preluare, inventar, digitizare, căutare cu sursa citată, retur, ieșire.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/arhivare-fizica",
+    scurt: "Arhivare fizică",
+    descriere:
+      "Depozitul, condițiile de păstrare, preluarea cu proces-verbal, cotele și selecționarea cu aviz.",
+    inMeniu: false,
+    inHarta: true,
+  },
 
   // <<felie:segmente>>
 
