@@ -152,6 +152,32 @@ export const RUTE: Ruta[] = [
     inHarta: true,
   },
 
+  // <<felie:comparatie>>
+  // Cele doua pagini de decizie. NU urca in bara de sus, si nu fiindca ar fi secundare:
+  // sunt paginile catre care trimit butoanele secundare din corpul site-ului, deci se intra
+  // in ele de acolo, nu din meniu. Motivul mecanic e cel deja masurat pe felia 9: bara sta
+  // in layout, iar fiecare intrare in plus se plateste pe TOATE paginile deodata. Cine
+  // decide ce urca in bara vede bara intreaga, adica dispecerul; o felie singura nu are cum
+  // sa masoare efectul cumulat al altor felii care scriu in acelasi timp.
+  // In harta de site intra amandoua: sunt pagini publice, cu titlu, descriere si canonical
+  // proprii, si raspund exact la intrebarile cu care lumea ajunge din cautare.
+  {
+    cale: "/comparatie",
+    scurt: "Comparație",
+    descriere:
+      "Dulapul din birou, colegul care se ocupă și de arhivă, depozitarea fără căutare și arhiva administrată. Inclusiv când nu merită.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/investitia",
+    scurt: "Investiția",
+    descriere:
+      "Ce determină costul arhivării, ce se plătește o dată și ce recurent, și ce iese din discuția de 30 de minute.",
+    inMeniu: false,
+    inHarta: true,
+  },
+
   // <<felie:juridic>>
   // Cele trei pagini juridice. NU urca in bara de sus: o bara care creste cu termeni,
   // confidentialitate si cookie-uri impinge afara exact paginile pentru care vine lumea.
