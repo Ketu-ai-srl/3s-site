@@ -28,12 +28,12 @@
   },
   {
     "id": "formular-fara-destinatar",
-    "text": "Formularul de pe pagina de start nu trimite nimic: cererea completata acolo ramane in pagina",
+    "text": "RETRASA pe 2026-09-06: formularul de pe pagina de start nu mai exista, deci nu mai exista nici afirmatia despre el. Textul retras: formularul de pe pagina de start nu trimite nimic, cererea completata acolo ramane in pagina",
     "unde": "src/app/contact/page.tsx",
-    "stare": "confirmat",
-    "sursa": "src/components/FormularDiscutie.tsx: functia `trimite` doar apeleaza `setTrimis(true)`, nu exista niciun apel de retea in componenta, iar textul de confirmare o spune el insusi",
-    "confirmat_de": "Ketu, 2026-09-05",
-    "data": "2026-09-05"
+    "stare": "retras",
+    "sursa": "componenta src/components/FormularDiscutie.tsx a fost stearsa odata cu reasezarea paginii de start in directia noua (felia 25), iar randul care o descria a fost scos de pe /contact in acelasi commit",
+    "confirmat_de": "Ketu, felia 28, 2026-09-06",
+    "data": "2026-09-06"
   },
   {
     "id": "adria-autorizatii-arhivare",
@@ -70,5 +70,14 @@
     "sursa": "",
     "confirmat_de": "",
     "data": ""
+  },
+  {
+    "id": "fara-formular-pe-site",
+    "text": "Pe site nu exista niciun formular: nici pe /contact, nici pe pagina de start, nici pe alta pagina",
+    "unde": "src/app/contact/page.tsx",
+    "stare": "confirmat",
+    "sursa": "afirmatie negativa, verificabila prin absenta: cautare pe tot `src/` dupa `<form`, `<input`, `<textarea` si `<select` intoarce zero potriviri (2026-09-06), iar componenta `FormularDiscutie` nu mai exista in arbore",
+    "confirmat_de": "Ketu, felia 28, 2026-09-06",
+    "data": "2026-09-06"
   }
 ]

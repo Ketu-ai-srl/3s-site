@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import AntetPagina from "@/components/AntetPagina";
+import HartaLista from "@/components/HartaLista";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { PAGINI_JURIDICE } from "@/content/juridic";
 import { RUTE, SECTIUNI_ACASA, type Ruta } from "@/content/rute";
@@ -19,6 +19,11 @@ import { FOTOGRAFII } from "@/content/fotografii";
 // ruta dintr-o categorie la care nu m-am gandit apare oricum in pagina, la "Paginile
 // principale", in loc sa dispara tacut dintr-o harta care se declara completa. Ce se
 // pierde e doar asezarea ei ideala, si aia se vede.
+//
+// FORMA RANDULUI e cea a listelor tipografice ale directiei (`HartaLista`), aceeasi cu a
+// fiselor de domeniu de pe /solutii. Inainte era o legatura subliniata cu doua randuri de
+// text sub ea, adica al doilea limbaj vizual pentru acelasi fel de continut, la un clic
+// distanta de hub.
 
 export const metadata: Metadata = {
   title: "Harta site-ului",
@@ -45,26 +50,6 @@ function imparte() {
   return { principale, domenii, instrumente, juridice };
 }
 
-function ListaRute({ rute }: { rute: Ruta[] }) {
-  return (
-    <ul className="m-0 grid list-none gap-0 p-0">
-      {rute.map((r) => (
-        <li key={r.cale} className="border-t border-linie py-4 first:border-t-0 first:pt-0">
-          <Link
-            href={r.cale}
-            title={r.descriere}
-            className="text-[18px] font-medium text-verde underline underline-offset-[3px]"
-          >
-            {r.scurt}
-          </Link>
-          <p className="mt-1 max-w-[70ch] text-corp text-tus-2">{r.descriere}</p>
-          <p className="mt-1 font-mono text-fisa text-tus-3">{r.cale}</p>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 export default function HartaSite() {
   const { principale, domenii, instrumente, juridice } = imparte();
 
@@ -75,88 +60,95 @@ export default function HartaSite() {
         imagine={FOTOGRAFII.cutii}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Harta site-ului" }]}
         eticheta="Cuprins"
-        titlu="Tot ce scrie pe site, într-o singură listă"
-        lead="Paginile de mai jos sunt grupate după ce caută omul, nu după cum sunt așezate dosarele. Lista se face din manifestul de rute al site-ului, deci nu poate arăta o pagină care nu există și nici ascunde una care există."
-        actiune={{ href: "/#discutie", text: "Programați o discuție de 30 de minute" }}
+        titlu={
+          <>
+            Tot ce scrie pe site,
+            <br />
+            într-o singură listă
+          </>
+        }
+        lead="Lista se face din manifestul de rute al site-ului, deci nu poate arăta o pagină care nu există și nici ascunde una care există."
+        actiune={{ href: "#pagini", text: "Vedeți toate paginile" }}
         secundar={{ href: "/cum-functioneaza", text: "Vedeți cum funcționează" }}
       />
 
       <SectiuneRegistru
         id="pagini"
-        ton="fisier"
+        dens
         cota="I"
         eticheta="Prezentarea"
         titlu="Paginile principale."
         lead="De aici începe oricine ne vede prima dată: ce facem, cum lucrăm, cine suntem și pe ce drum ne scrieți."
       >
-        <ListaRute rute={principale} />
+        <HartaLista rute={principale} />
       </SectiuneRegistru>
 
       <SectiuneRegistru
         id="domenii"
-        ton="hartie"
+        ton="inchis"
         cota="II"
         eticheta="Domeniile"
         titlu="Fișele pe domenii."
         lead="Aceleași etape, scrise cu documentele și termenele fiecărui domeniu. Hubul le adună pe toate."
       >
-        <ListaRute rute={domenii} />
+        <HartaLista rute={domenii} />
       </SectiuneRegistru>
 
       <SectiuneRegistru
         id="instrumente"
-        ton="fisier"
         cota="III"
         eticheta="Instrumentele"
         titlu="Ce puteți folosi fără să ne cumpărați nimic."
         lead="Pagini scrise ca să fie utile singure. Se pot tipări, trimite prin mesaj sau cita, iar noi le corectăm când cineva ne arată că un rând contrazice actul citat."
       >
-        <ListaRute rute={instrumente} />
+        <HartaLista rute={instrumente} />
       </SectiuneRegistru>
 
       <SectiuneRegistru
         id="juridic"
-        ton="hartie"
+        ton="inchis"
         cota="IV"
         eticheta="Documentele"
         titlu="Textele juridice ale site-ului."
-        lead="Cine răspunde de site, ce date primim prin formular și ce scriem în browserul dumneavoastră. Sunt scurte dinadins."
+        lead="Cine răspunde de site, ce date primim printr-un mesaj și ce scriem în browserul dumneavoastră. Sunt scurte dinadins."
       >
-        <ListaRute rute={juridice} />
+        <HartaLista rute={juridice} />
       </SectiuneRegistru>
 
       <SectiuneRegistru
         id="sectiuni"
-        ton="inchis"
         cota="V"
         eticheta="Pagina de start"
         titlu="Secțiunile paginii de start."
         lead="Nu sunt pagini separate, sunt locuri din pagina de start. Legăturile duc direct la ele."
       >
-        <ul className="m-0 grid list-none gap-x-10 gap-y-3 p-0 md:grid-cols-2">
+        <ul className="m-0 grid list-none border-t border-linie-noapte p-0 md:grid-cols-3">
           {SECTIUNI_ACASA.map((s) => (
-            <li key={s.ancora} className="text-[16px]">
+            <li key={s.ancora} className="border-b border-linie-noapte">
               <a
                 href={"/#" + s.ancora}
-                className="text-pe-inchis underline underline-offset-[3px] hover:text-white"
+                className="group flex items-baseline justify-between py-5 pr-2 font-afis text-[clamp(1.35rem,2.2vw,1.95rem)] font-semibold tracking-[0.04em] uppercase text-hartie-veche-2 no-underline transition-colors duration-200 hover:text-hartie-veche md:pr-8"
               >
                 {s.scurt}
+                <span
+                  aria-hidden="true"
+                  className="text-arama-clar transition-transform duration-200 group-hover:translate-x-1"
+                >
+                  →
+                </span>
               </a>
             </li>
           ))}
         </ul>
 
-        <p className="mt-8 max-w-[68ch] text-corp text-pe-inchis-2">
+        <p className="mt-10 max-w-[68ch] text-[16px] leading-[1.55] text-hartie-veche-2">
           Pagini publice pe tot site-ul: {RUTE.length}. Toate sunt listate mai sus, în cele
           patru grupe, fiindcă ultima grupă ia tot ce nu a intrat în celelalte.
         </p>
 
-        <p className="mt-4 max-w-[68ch] text-corp text-pe-inchis-2">
+        <p className="mt-5 max-w-[68ch] text-[16px] leading-[1.55] text-hartie-veche-2">
           Harta pentru mașini stă la{" "}
-          <a
-            href="/sitemap.xml"
-            className="text-arama-clar underline underline-offset-[3px]"
-          >
+          <a href="/sitemap.xml" className="text-arama-clar underline underline-offset-[3px]">
             sitemap.xml
           </a>
           . Se face din același manifest, păstrând rutele marcate pentru indexare. Pagina

@@ -1,5 +1,3 @@
-import Eticheta from "./Eticheta";
-
 // Registrul drumurilor de contact: fiecare drum pe un rând, cu valoarea lui sau cu motivul
 // pentru care nu are încă una.
 //
@@ -11,6 +9,12 @@ import Eticheta from "./Eticheta";
 // De ce marcajul de lipsă nu este o liniuță: o liniuță se citește ca „necompletat din
 // neatenție”. Cuvintele spun că absența este o stare cunoscută, nu o scăpare, iar nota de
 // alături spune de ce.
+//
+// VALOAREA CARE EXISTĂ E O ȘTAMPILĂ MONO, cu linie de aramă în stânga - același obiect cu
+// citarea din răspunsuri. Nu e ornament: pe pagina asta, singurul lucru care se copiază
+// dintr-o privire este adresa, iar mono este litera în care o cifră sau o adresă se citește
+// caracter cu caracter. Rândul fără valoare primește aceeași ștampilă în cenușiu, deci
+// absența ocupă exact locul pe care îl va ocupa valoarea.
 
 export type Drum = {
   /** Numele drumului, așa cum îl caută cineva: „Telefon”, „Poștă electronică”. */
@@ -23,29 +27,47 @@ export type Drum = {
   nota: string;
 };
 
+const STAMPILA =
+  "inline-block border-l-2 px-3 py-1.5 font-mono text-[14px] tracking-[0.04em] break-words";
+
 export default function ContactDrumuri({ drumuri }: { drumuri: Drum[] }) {
   return (
-    <div>
+    <div className="border-t border-linie-noapte">
       {drumuri.map((d) => (
         <div
           key={d.eticheta}
-          className="grid gap-2 border-t border-linie py-6 last:border-b lg:grid-cols-[270px_1fr] lg:gap-8"
+          className="grid gap-3 border-b border-linie-noapte py-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.2fr)] lg:gap-10"
         >
-          <h3 className="text-[19px] text-tus">{d.eticheta}</h3>
+          <h3 className="font-afis text-[clamp(1.2rem,2vw,1.6rem)] font-semibold tracking-[0.03em] uppercase text-hartie-veche">
+            {d.eticheta}
+          </h3>
           <div>
             {d.valoare === null ? (
-              <Eticheta className="block text-tus-3!">Nu există încă</Eticheta>
+              <span
+                className={
+                  STAMPILA + " border-linie-noapte bg-noapte-2 uppercase text-hartie-veche-3"
+                }
+              >
+                Nu există încă
+              </span>
             ) : d.href ? (
               <a
                 href={d.href}
-                className="font-mono text-[17px] text-verde underline underline-offset-[3px]"
+                className={
+                  STAMPILA +
+                  " border-arama-clar bg-noapte-3 text-arama-clar underline underline-offset-[3px]"
+                }
               >
                 {d.valoare}
               </a>
             ) : (
-              <span className="font-mono text-[17px] text-tus">{d.valoare}</span>
+              <span className={STAMPILA + " border-arama-clar bg-noapte-3 text-arama-clar"}>
+                {d.valoare}
+              </span>
             )}
-            <p className="mt-2 max-w-[62ch] text-corp text-tus-2">{d.nota}</p>
+            <p className="mt-3 max-w-[62ch] text-[16px] leading-[1.55] text-hartie-veche-2">
+              {d.nota}
+            </p>
           </div>
         </div>
       ))}

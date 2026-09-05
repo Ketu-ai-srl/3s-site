@@ -90,7 +90,7 @@ export const PAGINA_TERMENE = {
 
   cuprins: {
     titlu: "Toate rândurile, pe scurt.",
-    lead: "Alegeți categoria ca să ajungeți la rândul întreg, cu actul, cu momentul din care curge și cu nota lui. Pe ecran îngust, coloana cu actul normativ se ascunde: trei coloane de text la 390 px se rup după fiecare cuvânt, iar actul se citește oricum în rândul întreg.",
+    lead: "Actul normativ stă pe rând, sub numele categoriei, la orice lățime de ecran. Categoria duce la fișa întreagă, cu momentul din care curge termenul și cu nota lui.",
     antetDocument: "Categoria de documente",
     antetTermen: "Termen",
     antetTemei: "Actul normativ",

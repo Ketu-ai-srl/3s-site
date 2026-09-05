@@ -27,7 +27,7 @@ export const DESPRE = {
   eticheta: "Despre noi",
   h1: "Firma este nouă. Depozitul din care a crescut lucrează din 2019.",
   lead:
-    "3S se înființează acum, ca firmă româno-moldovenească. Arhivarea fizică, depozitul de la Golești și anii de la 2019 încoace sunt ale ADRIA Servicii Arhivare SRL, firma-mamă. Mai jos scriem ce este al ei, ce se construiește la noi și ce nu putem susține deocamdată.",
+    "Arhivarea fizică, depozitul de la Golești și anii de la 2019 încoace sunt ale ADRIA Servicii Arhivare SRL, firma-mamă. Mai jos scriem ce este al ei și ce se construiește la noi.",
 };
 
 /** Ce există azi, ce se construiește și ce lipsește. Trei fișe, în ordinea asta. */
@@ -96,5 +96,5 @@ export const ARATAM: string[] = [
   "Depozitul de la Golești, cu programare, înainte să semnați ceva",
   "Procesul-verbal de predare-primire, în forma exactă în care se semnează",
   "Contractul și anexa de prelucrare a datelor, în română, înainte de preluare",
-  "Termenele legale cu actul normativ citat, în verificatorul de pe pagina de start",
+  "Termenele legale cu actul normativ citat, în instrumentul de termene de păstrare",
 ];
