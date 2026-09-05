@@ -10,6 +10,21 @@
    ========================================================================== */
 
 @theme {
+  /* --- vitrina: negru de depozit, hartie veche, o singura arama ----------------
+     Directia noua (sep 2026): "exaggerated minimalism", fotografie pe tot ecranul,
+     titluri uriase cu majuscule, un buton pe ecran. Negrul nu e #000 - e #0b0b0c,
+     un fir mai cald, ca hartia sa nu para ecran. Textul e alb de hartie, nu alb pur.
+     Accentul ramane arama de eticheta de dosar: e a noastra, si nu e verdele-acid
+     pe negru pe care il produce orice unealta cand i se cere "dark". ------------- */
+  --color-noapte: #0b0b0c;
+  --color-noapte-2: #141416;
+  --color-noapte-3: #1e1e21;
+  --color-hartie-veche: #f2f0eb;
+  --color-hartie-veche-2: #a8a49c;
+  /* -3 e pentru etichete mici: trebuie sa treaca 4,5:1 si pe noapte-3. #6f6c66 dadea 3,18-3,76 si PICA. */
+  --color-hartie-veche-3: #8a877f;
+  --color-linie-noapte: #2a2a2e;
+
   /* --- culoare ---------------------------------------------------------- */
   --color-hartie: #f1f3ef;
   --color-hartie-2: #e9ece6;
@@ -70,6 +85,11 @@
 
 @theme inline {
   --font-serif: var(--font-serifa), Georgia, "Times New Roman", serif;
+  /* Titlurile vitrinei: condensat industrial, cu majuscule. Barlow Condensed e ruda
+     libera a lui DIN - aceeasi familie de forme ca titlurile de pe site-urile pe care
+     owner-ul le-a dat ca standard, fara sa fie copia lor. */
+  --font-afis: var(--font-afis), "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-vitrina: var(--font-vitrina), "Barlow", system-ui, sans-serif;
   --font-sans: var(--font-corp), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-masina), ui-monospace, "Cascadia Mono", Consolas, monospace;
 }

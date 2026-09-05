@@ -322,11 +322,13 @@ export type SectiuneAcasa = {
 // pentru acelasi gest. In subsol ancorele apar pe orice pagina, dar scrise `/#ancora`,
 // fiindca acolo sunt un cuprins al paginii de start, nu navigatia paginii curente.
 export const SECTIUNI_ACASA: SectiuneAcasa[] = [
-  { ancora: "dovada", scurt: "Ce puteți verifica", inMeniu: false },
-  { ancora: "mecanism", scurt: "Cum funcționează", inMeniu: true },
-  { ancora: "termene", scurt: "Termene legale", inMeniu: true },
-  { ancora: "domenii", scurt: "Domenii", inMeniu: true },
-  { ancora: "raspundere", scurt: "Răspundere", inMeniu: true },
+  // Niciuna nu urca in bara: cand au stat acolo langa pagini, bara arata "Cum functioneaza"
+  // de doua ori si "Domenii" de doua ori. Raman pentru subsol, unde sunt cuprins.
+  { ancora: "scan", scurt: "Scan", inMeniu: false },
+  { ancora: "store", scurt: "Store", inMeniu: false },
+  { ancora: "solve", scurt: "Solve", inMeniu: false },
+  { ancora: "domenii", scurt: "Domenii", inMeniu: false },
+  { ancora: "discutie", scurt: "Discuție", inMeniu: false },
 ];
 
 /**
@@ -334,7 +336,7 @@ export const SECTIUNI_ACASA: SectiuneAcasa[] = [
  * duce mereu la discutia de treizeci de minute. Se scrie cu calea in fata, nu doar
  * `#discutie`, ca sa functioneze si de pe o pagina care nu are sectiunea aceea.
  */
-export const CALE_DISCUTIE = "/#discutie";
+export const CALE_DISCUTIE = "/contact";
 
 /** Rutele care apar ca element separat in bara de sus. */
 export function rutePentruMeniu(): Ruta[] {
