@@ -67,6 +67,34 @@ export const RUTE: Ruta[] = [
   // <<felie:despre-contact>>
 
   // <<felie:juridic>>
+  // Cele trei pagini juridice. NU urca in bara de sus: o bara care creste cu termeni,
+  // confidentialitate si cookie-uri impinge afara exact paginile pentru care vine lumea.
+  // Locul lor e subsolul, care se genereaza tot din lista asta, deci le preia singur.
+  // In harta de site intra: sunt pagini publice, indexabile si cautate adesea direct.
+  {
+    cale: "/termeni",
+    scurt: "Termeni și condiții",
+    descriere:
+      "Cine răspunde de site, ce face el azi și ce nu face, plus datele de identificare cerute de lege.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/confidentialitate",
+    scurt: "Confidențialitate",
+    descriere:
+      "Ce date primim prin formular, în ce temei le folosim, cât le păstrăm și ce drepturi aveți.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/cookies",
+    scurt: "Ce stocăm în browser",
+    descriere:
+      "Site-ul nu pune cookie-uri și nu scrie nimic în browser. De ce nu vă cerem acordul și cum verificăm.",
+    inMeniu: false,
+    inHarta: true,
+  },
 
   {
     cale: "/solutii/notari",

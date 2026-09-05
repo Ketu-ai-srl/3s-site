@@ -1,0 +1,178 @@
+import Link from "next/link";
+import AntetPagina from "./AntetPagina";
+import Buton from "./Buton";
+import Eticheta from "./Eticheta";
+import Invelis from "./Invelis";
+import JuridicBlocuri from "./JuridicBlocuri";
+import { PAGINI_JURIDICE, type PaginaJuridica, type Sectiune } from "@/content/juridic";
+
+// Forma unei pagini juridice, o singura data pentru toate trei.
+//
+// CE SE REFOLOSESTE DIN SISTEMUL DE DESIGN, si ce se schimba fata de o pagina de segment:
+//   - antetul e acelasi `AntetPagina`: fir de navigare, eticheta, singurul h1, lead, si
+//     aceleasi doua butoane. De acolo vin si datele structurate BreadcrumbList, deci nu
+//     exista o a doua sursa pentru firul de navigare;
+//   - sectiunile pastreaza gramatica de registru - banda cu linie sus, coloana de margine
+//     cu cifra in serifa de arama, continutul pe corp - dar la o densitate mai mica:
+//     `py-10` in loc de `py-24`. Motivul e ca un act cu noua sectiuni scris la ritmul
+//     paginii de prezentare ar avea cinci ecrane numai de spatiu alb, iar cine cauta o
+//     clauza ar derula prin ele;
+//   - cifrele sunt ARABE, nu romane ca pe restul site-ului. Nu e o scapare: pe o pagina de
+//     prezentare cota romana e ornament, pe un text juridic cifra e un mijloc de trimitere.
+//     "Secțiunea 4" se citeaza intr-un e-mail; "Secțiunea IV" se citeaza mai greu.
+//
+// CUPRINSUL sta pe banda inchisa, imediat sub antet. Pe un text de noua sectiuni e singura
+// piesa care transforma pagina din perete de text in document navigabil, iar fiecare intrare
+// duce la o ancora scrisa citibil (`#temeiul`, nu `#s-3`), ca sa poata fi trimisa prin mesaj.
+
+const FUNDAL_ALTERNANT = ["bg-suprafata", "bg-hartie"];
+
+function SectiuneJuridica({
+  sectiune,
+  numar,
+  fundal,
+}: {
+  sectiune: Sectiune;
+  numar: number;
+  fundal: string;
+}) {
+  return (
+    <section id={sectiune.id} className={`border-t border-linie ${fundal}`}>
+      <Invelis>
+        <div className="grid gap-4 py-10 md:grid-cols-[148px_1fr] md:gap-8 md:py-14">
+          <div className="flex items-baseline gap-3 border-b border-linie pb-3 md:relative md:block md:border-b-0 md:pb-0">
+            <span
+              aria-hidden
+              className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie md:block"
+            />
+            <span
+              aria-hidden
+              className="font-serif text-2xl leading-none font-normal text-arama md:block md:text-[34px]"
+            >
+              {numar}
+            </span>
+            <Eticheta className="md:hidden">Secțiunea</Eticheta>
+          </div>
+
+          <div>
+            <h2 className="mb-5 max-w-[26ch] text-[23px] text-tus md:text-[27px]">
+              {sectiune.titlu}
+            </h2>
+            <JuridicBlocuri blocuri={sectiune.blocuri} />
+          </div>
+        </div>
+      </Invelis>
+    </section>
+  );
+}
+
+function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
+  return (
+    <section className="border-t border-linie-inchis bg-verde-adanc">
+      <Invelis>
+        <div className="py-10 md:py-12">
+          <h2 className="mb-5 font-mono text-eticheta font-medium tracking-[0.1em] text-pe-inchis-2 uppercase">
+            Cuprins
+          </h2>
+          <ol className="m-0 grid list-none gap-x-10 gap-y-2.5 p-0 md:grid-cols-2">
+            {sectiuni.map((s, i) => (
+              <li key={s.id} className="flex items-baseline gap-3 text-[15.5px]">
+                <span
+                  aria-hidden
+                  className="w-5 shrink-0 font-mono text-fisa text-arama-clar"
+                >
+                  {i + 1}
+                </span>
+                <a
+                  href={"#" + s.id}
+                  className="text-pe-inchis no-underline hover:text-white hover:underline"
+                >
+                  {s.titlu}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Invelis>
+    </section>
+  );
+}
+
+function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
+  const celelalte = PAGINI_JURIDICE.filter((p) => p.cale !== pagina.cale);
+
+  return (
+    <section className="border-t border-linie bg-suprafata">
+      <Invelis>
+        <div className="py-12 md:py-16">
+          <div className="mb-8 max-w-[74ch] border border-linie-fn bg-hartie px-6 py-5">
+            <Eticheta className="mb-1.5 block">Despre textul acesta</Eticheta>
+            <p className="text-corp text-tus-2">{pagina.redactat}</p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
+              Programați o discuție de 30 de minute
+            </Buton>
+            {celelalte.map((p) => (
+              <Buton
+                key={p.cale}
+                href={p.cale}
+                fel="contur"
+                marime="mare"
+                className="max-sm:w-full"
+              >
+                {p.titluMeta}
+              </Buton>
+            ))}
+          </div>
+
+          <p className="mt-6 max-w-[62ch] text-[15.5px] text-tus-3">
+            Dacă ceva din pagina aceasta este neclar sau vă pare greșit, scrieți-ne la{" "}
+            <a
+              href="mailto:contact@3s.ro"
+              className="text-verde underline underline-offset-[3px]"
+            >
+              contact@3s.ro
+            </a>
+            . Corectăm în text, nu în corespondență, ca să vadă și următorul cititor
+            corectura. Serviciile sunt descrise pe{" "}
+            <Link href="/solutii" className="text-verde underline underline-offset-[3px]">
+              pagina de domenii
+            </Link>
+            .
+          </p>
+        </div>
+      </Invelis>
+    </section>
+  );
+}
+
+export default function JuridicPagina({ pagina }: { pagina: PaginaJuridica }) {
+  return (
+    <main id="continut">
+      <AntetPagina
+        adresa={pagina.cale}
+        fir={[{ text: "Pagina de start", href: "/" }, { text: pagina.titluMeta }]}
+        eticheta={pagina.eticheta}
+        titlu={pagina.h1}
+        lead={pagina.lead}
+        actiune={{ href: "/#discutie", text: "Programați o discuție de 30 de minute" }}
+        secundar={pagina.secundar}
+      />
+
+      <Cuprins sectiuni={pagina.sectiuni} />
+
+      {pagina.sectiuni.map((s, i) => (
+        <SectiuneJuridica
+          key={s.id}
+          sectiune={s}
+          numar={i + 1}
+          fundal={FUNDAL_ALTERNANT[i % FUNDAL_ALTERNANT.length]}
+        />
+      ))}
+
+      <Incheiere pagina={pagina} />
+    </main>
+  );
+}
