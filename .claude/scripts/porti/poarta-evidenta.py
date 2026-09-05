@@ -24,9 +24,16 @@ Poarta face trei lucruri:
   1. verifica structura registrului (campuri obligatorii, stari cunoscute);
   2. cere SURSA pentru orice intrare cu stare `confirmat` - o confirmare fara sursa
      e o parere, nu o dovada;
-  3. genereaza `docs/afirmatii-de-confirmat.md`, lista inchisa pe care o pune cineva
-     in fata clientului. Daca fisierul generat difera de cel din arbore, poarta pica:
-     altfel lista imbatraneste tacut si nimeni nu observa.
+  3. genereaza `docs/afirmatii/<nume>.md`, cate o lista per fisier de registru - listele
+     inchise pe care le pune cineva in fata clientului. Daca fisierul generat difera de
+     cel din arbore, poarta pica: altfel lista imbatraneste tacut si nimeni nu observa.
+     O lista ramasa fara registru se STERGE, din acelasi motiv.
+
+     Cate una per registru, nu una singura: fisierul unic era ultimul punct in care patru
+     felii paralele se ciocneau la fiecare lot. Poarta cere ca lista sa fie in acelasi
+     commit, deci fiecare agent o regenera si o comitea - corect, si totusi conflict de
+     fiecare data. O iesire partajata reintroduce exact cuplarea pe care intrarea, deja
+     sparta pe fisiere, o desfacuse.
 
 CONTROALE la fiecare rulare:
   - martor pozitiv: o intrare fabricata cu stare `confirmat` si sursa goala TREBUIE
@@ -47,7 +54,8 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 RADACINA = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 REGISTRU = os.path.join(RADACINA, 'src', 'content', 'afirmatii')
-LISTA = os.path.join(RADACINA, 'docs', 'afirmatii-de-confirmat.md')
+LISTA = os.path.join(RADACINA, 'docs', 'afirmatii-de-confirmat.md')  # forma veche, se sterge
+DOSAR_LISTE = os.path.join(RADACINA, 'docs', 'afirmatii')
 STARI = {'confirmat', 'neconfirmat', 'retras'}
 OBLIGATORII = ('id', 'text', 'unde', 'stare')
 
@@ -76,12 +84,12 @@ def probleme(intrari):
     return gasite
 
 
-def genereaza_lista(intrari):
+def genereaza_lista(intrari, sursa='src/content/afirmatii/'):
     neconfirmate = [i for i in intrari if i.get('stare') == 'neconfirmat']
     randuri = []
     randuri.append('# Afirmatii de confirmat')
     randuri.append('')
-    randuri.append('> Generat automat din `src/content/afirmatii.json`. NU se editeaza de mana:')
+    randuri.append('> Generat automat din `' + sursa + '`. NU se editeaza de mana:')
     randuri.append('> se schimba registrul, iar poarta regenereaza fisierul si pica daca difera.')
     randuri.append('')
     randuri.append('Lista de mai jos e ce trebuie sa bifeze cineva care stie afacerea, inainte de publicare.')
@@ -132,6 +140,7 @@ def main():
         return 3
 
     intrari = []
+    per_fisier = []
     for c in cai:
         rel = os.path.relpath(c, RADACINA)
         try:
@@ -146,18 +155,47 @@ def main():
             if isinstance(intrare, dict):
                 intrare.setdefault('fisier_registru', rel)
         intrari.extend(bucata)
+        per_fisier.append((os.path.splitext(os.path.basename(c))[0], rel, bucata))
 
     gasite = probleme(intrari)
     for g in gasite:
         print(g)
 
-    asteptat = genereaza_lista(intrari)
-    actual = io.open(LISTA, encoding='utf-8').read() if os.path.isfile(LISTA) else ''
-    if actual != asteptat:
-        os.makedirs(os.path.dirname(LISTA), exist_ok=True)
-        io.open(LISTA, 'w', encoding='utf-8', newline='\n').write(asteptat)
-        print('LISTA REGENERATA: ' + os.path.relpath(LISTA, RADACINA) + ' - adaug-o in acelasi commit')
-        gasite.append('lista de confirmat era invechita')
+    # O lista GENERATA per fisier de registru, nu una singura.
+    #
+    # De ce s-a schimbat: fisierul unic era ultimul punct in care patru felii care lucreaza
+    # in paralel se ciocneau la fiecare lot. Nu din vina lor - poarta cere ca lista sa fie
+    # in acelasi commit, deci fiecare agent o regenera si o comitea, corect. Registrul era
+    # deja spart pe fisiere; iesirea nu era, si o iesire partajata reintroduce exact cuplarea
+    # pe care intrarea o desfacuse. Acum multimile sunt disjuncte pe tot lantul.
+    os.makedirs(DOSAR_LISTE, exist_ok=True)
+    scrise = set()
+    for nume, rel, bucata in per_fisier:
+        cale_iesire = os.path.join(DOSAR_LISTE, nume + '.md')
+        scrise.add(os.path.basename(cale_iesire))
+        asteptat = genereaza_lista(bucata, rel.replace(os.sep, '/'))
+        actual = io.open(cale_iesire, encoding='utf-8').read() if os.path.isfile(cale_iesire) else ''
+        if actual != asteptat:
+            io.open(cale_iesire, 'w', encoding='utf-8', newline='\n').write(asteptat)
+            print('LISTA REGENERATA: ' + os.path.relpath(cale_iesire, RADACINA)
+                  + ' - adaug-o in acelasi commit')
+            gasite.append('lista pentru ' + nume + ' era invechita')
+
+    # Un fisier de iesire ramas dupa ce registrul lui a disparut e o lista care imbatraneste
+    # tacut, si cineva o va citi crezand ca e la zi.
+    for orfan in sorted(os.path.basename(p) for p in glob.glob(os.path.join(DOSAR_LISTE, '*.md'))):
+        if orfan not in scrise:
+            os.remove(os.path.join(DOSAR_LISTE, orfan))
+            print('LISTA STEARSA: ' + orfan + ' - registrul din care venea nu mai exista')
+            gasite.append('lista orfana ' + orfan)
+
+    # Fisierul unic vechi nu se mai genereaza. Cat timp ramane pe disc, e o a doua lista
+    # care nu se mai actualizeaza - exact defectul impotriva caruia exista poarta asta.
+    if os.path.isfile(LISTA):
+        os.remove(LISTA)
+        print('LISTA VECHE STEARSA: ' + os.path.relpath(LISTA, RADACINA)
+              + ' - a fost inlocuita de cate un fisier per registru')
+        gasite.append('lista unica veche mai era pe disc')
 
     neconfirmate = sum(1 for i in intrari if i.get('stare') == 'neconfirmat')
     print('CONTROALE: martor pozitiv OK, martor negativ OK')
