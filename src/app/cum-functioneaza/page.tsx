@@ -16,6 +16,18 @@ import { FOTOGRAFII } from "@/content/fotografii";
 // pune oricine preda o arhiva: ce se intampla cu ea, in ce ordine, si ce hartie imi
 // ramane dupa fiecare pas.
 //
+// CE S-A REASEZAT IN DIRECTIA NOUA, si ce NU s-a pierdut. Ecranul de deschidere primea
+// inainte tot programul paginii: 60 de cuvinte, sase randuri de text sub un titlu de trei
+// randuri. Acum poarta o singura linie, iar restul frazei - „ce primiti in ziua in care va
+// opriti" si „unde un pas depinde de un aviz care nu e al nostru, scriem asta pe fata" -
+// s-a mutat in linia sectiunii I si in etapa a sasea, unde omul e deja hotarat sa citeasca.
+// Nicio afirmatie nu a fost scoasa, deci registrul din `src/content/afirmatii/mecanism.json`
+// ramane neatins.
+//
+// Cele sase etape sunt acum sase ecrane scurte, fiecare cu stampila „Ramane scris" sub el:
+// documentul care ramane dupa etapa e jumatate din argument, iar in forma veche statea
+// intr-un rand de 15 px, sub o linie punctata.
+//
 // Continutul sta in `src/content/mecanism.ts`; aici e numai forma paginii.
 //
 // Canonical auto-referential: fara el, pagina ar mosteni canonical-ul layout-ului si ar
@@ -25,6 +37,8 @@ export const metadata: Metadata = {
   description: C.descriereMeta,
   alternates: { canonical: "/cum-functioneaza" },
 };
+
+const LEGATURA = "text-cerneala-accent underline underline-offset-[3px]";
 
 export default function CumFunctioneaza() {
   return (
@@ -36,17 +50,16 @@ export default function CumFunctioneaza() {
         eticheta={C.eticheta}
         titlu={C.h1}
         lead={C.lead}
-        actiune={{ href: "/#discutie", text: "Programați o discuție de 30 de minute" }}
+        actiune={{ href: "/#discutie", text: "Discuție de 30 de minute" }}
         secundar={{ href: "/arhivare-fizica", text: "Vedeți partea fizică" }}
       />
 
       <SectiuneRegistru
         id="etape"
-        ton="fisier"
         cota="I"
         eticheta="Etapele"
         titlu="Șase etape, fiecare cu un document semnat."
-        lead="Nu vă cerem încredere între etape. Fiecare se închide cu o hârtie care spune ce s-a mutat, ce s-a numărat și cine răspunde de fondul dumneavoastră de acum înainte."
+        lead="Nu vă cerem încredere între etape. Fiecare se închide cu o hârtie care spune ce s-a mutat, ce s-a numărat și cine răspunde de fondul dumneavoastră. Unde un pas depinde de un aviz care nu este al nostru, scriem asta pe față."
       >
         <ol className="m-0 grid list-none gap-0 p-0">
           {C.etape.map((e, i) => (
@@ -60,13 +73,10 @@ export default function CumFunctioneaza() {
           ))}
         </ol>
 
-        <p className="mt-8 max-w-[64ch] text-corp text-tus-2">
+        <p className="mt-10 max-w-[62ch] text-[17px] leading-[1.6] text-cerneala-2">
           Prima etapă și a doua se fac cu rafturi, cutii și mașină. Cum arată depozitul, cum
           se măsoară un fond și cum se elimină legal ce nu mai trebuie păstrat sunt scrise pe{" "}
-          <Link
-            href="/arhivare-fizica"
-            className="text-verde underline underline-offset-[3px]"
-          >
+          <Link href="/arhivare-fizica" className={LEGATURA}>
             pagina de arhivare fizică
           </Link>
           .
@@ -75,25 +85,24 @@ export default function CumFunctioneaza() {
 
       <SectiuneRegistru
         id="digitizare"
-        ton="hartie"
+        ton="inchis"
         cota="II"
         eticheta="Ce se scanează"
         titlu="Se digitizează ce se caută, în ordinea în care se caută."
         lead="Împărțirea de mai jos este punctul de plecare al discuției, nu o regulă fixă. Lista finală o hotărâți dumneavoastră, iar ea intră în contract înainte să se deschidă prima cutie."
       >
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <ListaBifa titlu="Ce intră la scanat, de obicei" elemente={C.digitizat} />
           <ListaBifa titlu="Ce rămâne pe hârtie, cel puțin la început" elemente={C.peHartie} />
         </div>
 
-        <BlocDovada fel="limite" eticheta="Ce nu propunem din start" className="mt-8">
+        <BlocDovada fel="limite" eticheta="Ce nu propunem din start" className="mt-12">
           {C.notaDigitizare}
         </BlocDovada>
       </SectiuneRegistru>
 
       <SectiuneRegistru
         id="cautare"
-        ton="inchis"
         cota="III"
         eticheta="Căutarea"
         titlu="De la întrebarea pusă în română până la pagina pe care o citiți singur."
@@ -101,14 +110,14 @@ export default function CumFunctioneaza() {
       >
         <MecanismLant verigi={C.lant} />
 
-        <div className="mt-10">
-          <ListaBifa inchis titlu="Ce nu face căutarea" elemente={C.nuFace} />
+        <div className="mt-14">
+          <ListaBifa titlu="Ce nu face căutarea" elemente={C.nuFace} />
         </div>
       </SectiuneRegistru>
 
       <SectiuneRegistru
         id="hartia"
-        ton="fisier"
+        ton="inchis"
         cota="IV"
         eticheta="Hârtia"
         titlu="Întrebările care apar când documentul iese din mâna dumneavoastră."
@@ -120,13 +129,13 @@ export default function CumFunctioneaza() {
           </MecanismRandFisa>
         ))}
 
-        <p className="mt-8 max-w-[64ch] text-corp text-tus-2">
+        <p className="mt-10 max-w-[62ch] text-[17px] leading-[1.6] text-cerneala-2">
           Termenele de păstrare, cu actul normativ din care vin, stau în{" "}
-          <Link href="/#termene" className="text-verde underline underline-offset-[3px]">
+          <Link href="/instrumente/termene-de-pastrare" className={LEGATURA}>
             verificatorul de termene
-          </Link>{" "}
-          de pe pagina de start. Ce diferă de la un domeniu la altul se citește pe{" "}
-          <Link href="/solutii" className="text-verde underline underline-offset-[3px]">
+          </Link>
+          . Ce diferă de la un domeniu la altul se citește pe{" "}
+          <Link href="/solutii" className={LEGATURA}>
             fișele de domeniu
           </Link>
           .
@@ -135,42 +144,37 @@ export default function CumFunctioneaza() {
 
       <SectiuneRegistru
         id="dovada"
-        ton="inchis"
         cota="V"
         eticheta="Dovada"
         titlu="Ce puteți verifica, și ce nu putem susține încă."
         lead="Prima listă se poate vedea înainte de semnătură. Pe a doua o scriem tot noi, primii, fiindcă o afirmație nesusținută costă mai mult decât tăcerea."
       >
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-          <ListaBifa inchis titlu="Ce vă arătăm înainte de semnătură" elemente={C.aratam} />
-          <ListaBifa inchis titlu="Ce nu putem susține încă" elemente={C.deschise} />
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <ListaBifa titlu="Ce vă arătăm înainte de semnătură" elemente={C.aratam} />
+          <ListaBifa titlu="Ce nu putem susține încă" elemente={C.deschise} />
         </div>
       </SectiuneRegistru>
 
       <SectiuneRegistru
         id="discutie"
-        ton="fisier"
+        ton="inchis"
         cota="VI"
         eticheta="Pasul următor"
         titlu={C.incheiere.titlu}
+        lead={C.incheiere.text}
       >
-        <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{C.incheiere.text}</p>
-
-        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
           <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
-            Programați o discuție de 30 de minute
+            Discuție de 30 de minute
           </Buton>
           <Buton href="/arhivare-fizica" fel="text" marime="mare">
             Vedeți partea fizică
           </Buton>
         </div>
 
-        <p className="mt-6 max-w-[60ch] text-[15.5px] text-tus-3">
+        <p className="mt-8 max-w-[60ch] text-[15.5px] leading-[1.55] text-cerneala-3">
           Scrieți-ne și direct, dacă preferați:{" "}
-          <a
-            href="mailto:contact@3s.ro"
-            className="text-verde underline underline-offset-[3px]"
-          >
+          <a href="mailto:contact@3s.ro" className={LEGATURA}>
             contact@3s.ro
           </a>
           . Nu afișăm număr de telefon: solicitările intră prin formular sau prin poștă

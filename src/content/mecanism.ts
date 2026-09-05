@@ -46,8 +46,11 @@ export const CUM_FUNCTIONEAZA = {
     "Mecanismul întreg: preluarea cu proces-verbal, inventarul pe cote, ce se digitizează și ce nu, căutarea cu pagina citată și ce primiți dacă plecați.",
   eticheta: "Mecanismul serviciului",
   h1: "Șase etape între cutia din subsol și răspunsul de pe ecran.",
+  // Linia ecranului de deschidere: sub 40 de cuvinte, regula direcției. Ce spunea fraza
+  // veche despre încheierea contractului stă în etapa a șasea, iar avertismentul despre
+  // avizele care nu sunt ale noastre stă în linia secțiunii I. Nimic nu s-a pierdut.
   lead:
-    "Pagina asta descrie serviciul în ordinea în care se întâmplă: cine ridică arhiva, ce se semnează, ce se scanează și ce nu, cum se caută, cum vine originalul înapoi pe hârtie și ce primiți în ziua în care vă opriți. Unde un pas depinde de un aviz care nu este al nostru, scriem asta pe față.",
+    "Serviciul, în ordinea în care se întâmplă: cine ridică arhiva, ce se semnează, ce se scanează și ce nu, cum se caută și cum vine originalul înapoi pe hârtie.",
 
   etape: [
     {
@@ -179,8 +182,11 @@ export const ARHIVARE_FIZICA = {
     "Depozitul de la Golești, preluarea cu proces-verbal, inventarul pe cote și selecționarea cu avizul Arhivelor Naționale. Partea care se face cu rafturi.",
   eticheta: "Serviciul de bază",
   h1: "Un program nu vă poate lua cutiile din subsol.",
+  // Sub 40 de cuvinte. Enumerarea din fraza veche - unde stau documentele, în ce condiții,
+  // cum se numără, cum se face inventarul, cum se elimină cu avizul cerut de lege - e chiar
+  // lista secțiunilor de dedesubt, deci s-a mutat în linia secțiunii I.
   lead:
-    "Arhivarea fizică este partea care se face cu mașina, cu rafturi și cu semnături. Pagina asta scrie unde stau documentele, în ce condiții, cum se numără, cum se face inventarul și cum se elimină ce nu mai trebuie păstrat, cu avizul cerut de lege. Fără partea asta, căutarea în documente rămâne un ecran peste o problemă nerezolvată.",
+    "Partea care se face cu mașina, cu rafturi și cu semnături. Fără ea, căutarea în documente rămâne un ecran peste o problemă nerezolvată.",
 
   depozit: [
     {

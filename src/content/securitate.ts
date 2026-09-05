@@ -60,8 +60,11 @@ export const SECURITATE = {
     "Depozitul și accesul în el, transportul, cotele și inventarul, cine vede ce document și pe ce bază, ieșirea din contract, eliminarea cu aviz.",
   eticheta: "Protecția fondului",
   h1: "O cutie pusă greșit pe raft este tot o pierdere de date.",
+  // Sub 40 de cuvinte, regula direcției. Ce spunea fraza veche despre cine vede ce document
+  // și despre încetarea contractului stă în liniile secțiunilor III și IV, iar împărțirea părții
+  // digitale în măsurat și nemăsurat stă în linia secțiunii V. Nimic nu s-a pierdut.
   lead:
-    "Pagina asta descrie lanțul întreg prin care trece un document la noi: depozitul și cine ajunge în el, transportul și predarea, cota după care se cere din raft, cine are voie să vadă ce și pe ce bază, ce se întâmplă la încetarea contractului și cum se elimină legal ce nu mai trebuie păstrat. Partea digitală vine la final, împărțită în ce am măsurat și ce încă nu putem susține.",
+    "Lanțul întreg prin care trece un document la noi: depozitul și cine ajunge în el, transportul și predarea, cota după care se cere din raft, ieșirea din contract. Partea digitală vine la final.",
 
   // --- I. depozitul -------------------------------------------------------
   depozit: [
@@ -234,8 +237,11 @@ export const ACCESIBILITATE = {
     "Ce se măsoară mecanic la fiecare livrare a site-ului, ce nu a fost măsurat niciodată și cum ne semnalați o problemă de accesibilitate pe care ați întâlnit-o.",
   eticheta: "Accesibilitate",
   h1: "Ce am măsurat din accesibilitatea site-ului, și ce nu.",
+  // Sub 40 de cuvinte. Fraza despre felul în care se scriu de obicei declarațiile de
+  // accesibilitate stă în linia secțiunii II, unde e chiar argumentul ei, iar cuprinsul
+  // paginii îl dau titlurile secțiunilor. Nimic nu s-a pierdut.
   lead:
-    "Declarațiile de accesibilitate se scriu de obicei ca o promisiune de conformitate. Aici este o listă de măsurători: verificările de mai jos rulează automat pe fiecare pagină publică înainte de fiecare publicare, iar dacă una se înroșește, versiunea aceea nu ajunge la dumneavoastră. Urmează ce acoperă ele, ce rămâne neacoperit și pe ce drum ne spuneți dacă ceva nu funcționează pentru dumneavoastră.",
+    "O listă de măsurători. Verificările de mai jos rulează automat pe fiecare pagină publică înainte de fiecare publicare, iar dacă una se înroșește, versiunea aceea nu ajunge la dumneavoastră.",
 
   masurat: [
     {

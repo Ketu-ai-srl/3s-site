@@ -66,8 +66,11 @@ export const COMPARATIE = {
     "Patru feluri de a ține arhiva: dulapul din birou, colegul care se ocupă și de ea, depozitarea fără căutare, arhiva administrată. Și când nu merită.",
   eticheta: "Comparație",
   h1: "Dulapul din birou nu vă trimite factură. Costul lui este în altă parte.",
+  // Sub 40 de cuvinte, regula direcției. Motivul pentru care nu comparăm spații de stocare
+  // între ele - documentele clientului sunt încă hârtie - stă în linia secțiunii I, unde sunt
+  // și cele patru variante descrise pe îndelete. Nimic nu s-a pierdut.
   lead:
-    "Comparăm ce comparați dumneavoastră de fapt. Nu spațiu de stocare cu alt spațiu de stocare, fiindcă documentele nu sunt încă fișiere: sunt hârtie, în dulapuri, la câțiva pași de birou. Cele patru variante de mai jos sunt situațiile reale dintre care alegeți, iar rândul pe care îl pierdem este scris înaintea rândurilor pe care le câștigăm.",
+    "Documentele dumneavoastră sunt încă hârtie, în dulapuri, la câțiva pași de birou. Comparăm cele patru situații reale dintre care alegeți, iar rândul pe care îl pierdem este scris înaintea celor pe care le câștigăm.",
 
   variante: [
     {
@@ -239,8 +242,11 @@ export const INVESTITIA = {
     "Ce intră în cost înainte să existe o cifră: metri liniari, cât se scanează, cât de des se cere un act, termenele legale, transportul. Ce e unic și ce e lunar.",
   eticheta: "Investiția",
   h1: "Un preț dat înainte de a măsura rafturile este un preț inventat.",
+  // Sub 40 de cuvinte. Ce primește omul din discuția de treizeci de minute e chiar
+  // secțiunea IV, iar motivul pentru care cifra vine după măsurătoare e chiar secțiunea III.
+  // Nimic nu s-a pierdut.
   lead:
-    "Pagina aceasta nu conține prețuri și nici intervale. Conține ce determină costul, ce se plătește o singură dată și ce se plătește lună de lună, plus ce primiți concret din discuția de treizeci de minute. Cifra se scrie după ce se vede arhiva, iar motivul este scris mai jos, pe față.",
+    "Pagina aceasta nu conține prețuri și nici intervale. Conține ce determină costul, ce se plătește o singură dată și ce se plătește lună de lună.",
 
   factori: [
     {

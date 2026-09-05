@@ -18,6 +18,11 @@ import { FOTOGRAFII } from "@/content/fotografii";
 // niciun om nu a facut inca auditul. Pagina spune amandoua lucrurile, in ordinea asta,
 // si nu foloseste litera unui nivel nicaieri.
 //
+// CE S-A REASEZAT. Linia ecranului de deschidere a coborat de la 68 de cuvinte la 29, iar
+// fraza despre felul in care se scriu de obicei declaratiile de accesibilitate s-a mutat
+// in linia sectiunii II, unde e chiar argumentul acelei sectiuni. Cele sapte randuri
+// nemasurate raman intregi si raman a doua sectiune a paginii, nu o nota la sfarsit.
+//
 // Continutul sta in `src/content/securitate.ts`; aici e numai forma paginii.
 //
 // Canonical auto-referential: fara el, pagina ar mosteni canonical-ul layout-ului si ar
@@ -27,6 +32,8 @@ export const metadata: Metadata = {
   description: A.descriereMeta,
   alternates: { canonical: "/accesibilitate" },
 };
+
+const LEGATURA = "text-cerneala-accent underline underline-offset-[3px]";
 
 export default function Accesibilitate() {
   return (
@@ -44,11 +51,10 @@ export default function Accesibilitate() {
 
       <SectiuneRegistru
         id="masurat"
-        ton="fisier"
         cota="I"
         eticheta="Ce se măsoară"
         titlu="Ce rulează automat, pe fiecare pagină, înainte de fiecare publicare."
-        lead="Nu sunt intenții și nu au fost făcute o singură dată, la lansare. Rulează automat înaintea fiecărei publicări, pe fiecare pagină publică a site-ului, iar dacă una dintre ele se înroșește, versiunea aceea nu ajunge la dumneavoastră."
+        lead="Nu sunt intenții și nu au fost făcute o singură dată, la lansare. Rulează automat înaintea fiecărei publicări, pe fiecare pagină publică, iar dacă una dintre ele se înroșește, versiunea aceea nu ajunge la dumneavoastră."
       >
         {A.masurat.map((f) => (
           <MecanismRandFisa key={f.titlu} titlu={f.titlu}>
@@ -63,15 +69,14 @@ export default function Accesibilitate() {
         cota="II"
         eticheta="Ce nu am măsurat"
         titlu="Zero încălcări găsite automat nu înseamnă conform."
-        lead="Aici se încheie ce putem susține. Rândurile de mai jos sunt lucrurile pe care o declarație de accesibilitate obișnuită le trece sub tăcere, fiindcă niciunul nu arată bine scris pe față."
+        lead="Declarațiile de accesibilitate se scriu de obicei ca o promisiune de conformitate. Aici se încheie ce putem susține: rândurile de mai jos sunt lucrurile pe care o asemenea declarație le trece sub tăcere, fiindcă niciunul nu arată bine scris pe față."
       >
         <ListaBifa
-          inchis
           titlu="Ce nu putem afirma despre site-ul acesta"
           elemente={A.neMasurat}
         />
 
-        <p className="mt-8 max-w-[68ch] text-corp text-pe-inchis-2">
+        <p className="mt-12 max-w-[66ch] text-[17px] leading-[1.6] text-cerneala-2">
           Distincția are o consecință practică pentru dumneavoastră: dacă instituția
           dumneavoastră are nevoie de o declarație de conformitate ca document de achiziție,
           pagina asta nu ține locul ei și nu vă lăsăm să credeți că ține. Spuneți-ne ce
@@ -81,7 +86,6 @@ export default function Accesibilitate() {
 
       <SectiuneRegistru
         id="semnalare"
-        ton="hartie"
         cota="III"
         eticheta="Semnalarea"
         titlu="Dacă ceva nu funcționează pentru dumneavoastră, spuneți-ne."
@@ -93,12 +97,9 @@ export default function Accesibilitate() {
           </MecanismRandFisa>
         ))}
 
-        <BlocDovada fel="limite" eticheta="Adresa" className="mt-8">
+        <BlocDovada fel="limite" eticheta="Adresa" className="mt-12">
           Ne scrieți la{" "}
-          <a
-            href="mailto:contact@3s.ro"
-            className="text-verde underline underline-offset-[3px]"
-          >
+          <a href="mailto:contact@3s.ro" className={LEGATURA}>
             contact@3s.ro
           </a>
           . Nu afișăm număr de telefon, iar drumurile care există și cele care încă nu există
@@ -109,14 +110,13 @@ export default function Accesibilitate() {
 
       <SectiuneRegistru
         id="incheiere"
-        ton="fisier"
+        ton="inchis"
         cota="IV"
         eticheta="Pasul următor"
         titlu={A.incheiere.titlu}
+        lead={A.incheiere.text}
       >
-        <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{A.incheiere.text}</p>
-
-        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
           <Buton href="/contact" marime="mare" sageata className="max-sm:w-full">
             Vedeți cum ne scrieți
           </Buton>
@@ -125,16 +125,13 @@ export default function Accesibilitate() {
           </Buton>
         </div>
 
-        <p className="mt-6 max-w-[62ch] text-[15.5px] text-tus-3">
+        <p className="mt-8 max-w-[62ch] text-[15.5px] leading-[1.55] text-cerneala-3">
           Același fel de împărțire, între ce am măsurat și ce nu, stă și în{" "}
-          <Link
-            href="/securitate"
-            className="text-verde underline underline-offset-[3px]"
-          >
+          <Link href="/securitate" className={LEGATURA}>
             pagina despre protecția documentelor
           </Link>{" "}
           și în{" "}
-          <Link href="/cookies" className="text-verde underline underline-offset-[3px]">
+          <Link href="/cookies" className={LEGATURA}>
             pagina despre ce stocăm în browser
           </Link>
           .
