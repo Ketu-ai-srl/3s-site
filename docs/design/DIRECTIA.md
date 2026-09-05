@@ -44,13 +44,22 @@ acolo; dacă ar scrie cerneala veche, ar fi neagră pe negru aici.
 De aceea primitivele scriu `text-cerneala`, `text-cerneala-2`, `text-cerneala-3`,
 `text-cerneala-accent` și `border-linie-suprafata`, iar suprafața de deasupra spune ce
 înseamnă. Clasa de fundal e cea care decide: `bg-noapte` și treptele lui dau cerneală
-deschisă, `bg-hartie`, `bg-hartie-2` și `bg-suprafata` dau cerneală închisă. Suprafața duce
+deschisă, `bg-hartie`, `bg-hartie-2` și `bg-arama-moale` dau cerneală închisă. Suprafața duce
 cu ea și culoarea moștenită, nu doar variabilele, deci un titlu fără nicio clasă de culoare
 se așază corect singur.
 
 Paleta veche e legată la aceleași variabile, ca alias. Paginile nerescrise încă rămân lizibile
 pe negru fără să fie atinse, iar o bandă deschisă pe care o pune o pagină rămâne lizibilă cum
 era. Nu scrieți cod nou cu ea.
+
+`bg-suprafata` NU mai e o suprafață deschisă: jetonul `--color-suprafata` a trecut de la
+#ffffff pe noapte, fiindcă era gaura prin care direcția veche supraviețuia tăcut - patru
+fișiere îl scriau și primeau un document alb pe un site de noapte, iar mecanismul de cerneală
+îl ținea peste 4,5:1, deci nicio poartă de contrast nu se înroșea. **Un mecanism de contrast
+măsoară contrastul, nu coerența.** Coerența se măsoară pe suprafață: procentul de pixeli
+deschiși din pagină. /termeni avea 80% la 1280 px, /confidentialitate 83%, /cookies 74%,
+restul site-ului 0%. Astăzi nicio pagină nu trece de 3%, iar acel rest sunt literele însele și
+cele trei pastile de stare din verificatorul de termene.
 
 ## Tipografie
 
@@ -60,10 +69,26 @@ cote, citări și etichete.
 
 Scara titlurilor e una singură pe tot site-ul, și e o scară, nu o mărime:
 
-- `text-titlu-1` = `clamp(2.5rem, 6.5vw, 6rem)`, înălțime de rând 0,92. Doar `h1`: ecranul de
-  deschidere al paginii. Măsurat la 1280 px: 83,2 px.
-- `text-titlu-2` = `clamp(2rem, 4.2vw, 3.5rem)`, înălțime de rând 0,95. `h2`: ecranele
-  următoare și titlurile de secțiune. Măsurat la 1280 px: 53,8 px.
+- `text-titlu-1` = `clamp(2.5rem, 6.5vw, 6rem)`. Doar `h1`: ecranul de deschidere al
+  paginii. Măsurat la 1280 px: 83,2 px.
+- `text-titlu-2` = `clamp(2rem, 4.2vw, 3.5rem)`. `h2`: ecranele următoare și titlurile de
+  secțiune. Măsurat la 1280 px: 53,8 px.
+- antetul-bandă = `clamp(2.25rem, 5vw, 4.25rem)`, 64 px la 1280. Treapta paginilor care sunt
+  documente sau unelte, ca titlul lor să rămână peste titlurile de secțiune fără să ocupe
+  ecranul întreg.
+
+**Înălțimea de rând este 1,1 la toate trei**, și la titlurile fără clasă de scară. E o cifră
+măsurată, nu o preferință. Pe fontul real, la 83,2 px: virgula lui Ș coboară 15 px sub linia
+de bază (0,180 em), iar cea mai înaltă capitală românească, Â/Î, urcă 74 px (0,889 em). Pasul
+de rând trebuie deci să fie de cel puțin 1,070 em, plus o rezervă de 0,03 em ca marcajele să
+se vadă separate.
+
+Direcția a pornit de la 0,92, și 0,92 nu încape: rămâneau 2,54 px până la o capitală obișnuită
+și MINUS 12,46 px când urma Â/Î, adică suprapunere. Se citea ca accent pe litera greșită -
+„ȘASE" peste „SUBSOL" dădea „ȘUBSOL", „AȘTEAPTĂ" peste „REGISTRUL" dădea „REGÍSTRUL".
+Numărate pe cele 22 de pagini, la 1280 și la 390 px: 175 de perechi Ș/Ț peste o capitală aveau
+sub 2 px de spațiu. Pagina de start scăpa din întâmplarea formulării, fiindcă titlul ei nu are
+ș/ț înainte de ultimul rând.
 
 Un `h1` pe pagină, fără sărituri de nivel. Subsolul are `h2`.
 
@@ -80,12 +105,29 @@ paragraf cu majuscule sparge poarta S-17 pe unele pagini și nu pe altele. Nota 
 
 Fiecare pagină se deschide cu un ecran plin: `Ecran` cu nivel `h1`, o etichetă mono, titlul
 uriaș, O linie sub 40 de cuvinte, UN buton. Conținutul trebuie să încapă, cu buton cu tot,
-într-un ecran de 800 px - butonul nu are voie să cadă sub margine.
+într-un ecran de 800 px - butonul nu are voie să cadă sub margine. Se măsoară, nu se presupune:
+poziția marginii de jos a butonului, pe fiecare pagină, la 1280x800 și la 390x844.
+
+**Excepția: documentele și uneltele.** /termeni, /confidentialitate, /cookies și
+/instrumente/termene-de-pastrare deschid cu `Ecran forma="banda"` - un antet de 478 px la
+1280, cu titlul în stânga și linia plus butonul în dreapta. Acolo omul a venit după o clauză
+sau după un termen, iar un afiș de film de 800 px îl ține departe de răspuns. Pe pagina care
+ESTE o unealtă, acțiunea principală a antetului duce la unealtă, nu la o întâlnire, iar prima
+secțiune e `dens`: măsurat, primul rând din tabelul de termene a urcat de la 1800 px (2,25
+ecrane) la 773 px (0,97 ecrane) la 1280.
 
 Sub el vin secțiunile, pe fundal de noapte, cu `py-24 md:py-36` între ele, titluri condensate
 cu majuscule și text sub 60 de cuvinte pe bloc.
 
-Listele tipografice stau pe O coloană, fără săgeată pe fiecare rând. Săgeata e a butonului.
+Listele tipografice: un rând = o legătură, cu numele condensat cu majuscule și o săgeată de
+aramă la capăt. Pe pagina de start stau pe trei coloane, fiindcă rândul poartă doar numele;
+când poartă și o descriere, ca pe /solutii, lista trece pe o coloană și rândul ține toată
+lățimea. Fără grilă de cartonașe pentru aceleași date - același conținut nu are voie să apară
+în două limbaje vizuale la un clic distanță.
+
+UN buton plin pe secțiune, și în blocul de închidere, nu doar în antet. Al doilea drum se
+scrie ca legătură de text subliniată (`Buton fel="text"`, sau `secundar` la `Ecran`). Două
+chenare alăturate nu spun care e pasul următor.
 
 ## Fotografii
 
@@ -98,8 +140,25 @@ Sunt ILUSTRATIVE, de pe Pexels, cu licența în `public/img/LICENTA.md`. Textul 
 „fotografie ilustrativă". Nu se afirmă nicăieri că ar fi depozitul nostru și nu se descarcă
 altele.
 
+**Fiecare pagină are una.** Registrul e `src/content/fotografii.ts` - un singur loc care ține
+numele fișierului, textul alternativ și ancora decupajului; pagina alege cheia, nu scrie
+descrierea. Același cadru ajunge pe două-trei pagini, deci două descrieri scrise de mână ar
+diverge la prima editare. Cheile se aleg ca paginile VECINE să nu deschidă la fel: cele șase
+intrări din bara de sus au șase cadre diferite, iar cele șapte fișe de domeniu au șapte.
+
 Voalul de sub text e LOCAL, nu pe tot ecranul: negru sub coloana de text, jos și în stânga,
-plus o dungă subțire pe primii 140 px, sub bara fixă. Restul fotografiei rămâne fotografie.
+plus o dungă subțire pe primii 140 px, sub bara fixă. Greul stă pe stratul din STÂNGA, unde e
+coloana de text; cele două treimi din dreapta rămân fotografie. Sub 768 px voalul e mai gros,
+fiindcă acolo textul ține toată lățimea și nu mai există jumătate de fotografie de apărat.
+Antetul-bandă are voalul lui, mai uniform, fiindcă amândouă coloanele lui poartă text.
+
+Contrastul textului peste fotografie NU e măsurat de `axe`. Se măsoară pe captură, cu textul
+ascuns și cu pixelii citiți sub dreptunghiurile strânse pe litere. Pragul: media peste 4,5:1
+pentru text mic - eticheta de 11 px și firul de navigare sunt cele care cad primele. Măsurat
+pe toate cele 22 de pagini, la 1280 și la 390: cea mai mică medie este 5,18:1. **O fotografie
+nouă, o mutare de decupaj sau o schimbare de înălțime a titlului cer remăsurarea.** A treia nu
+e evidentă și a fost prinsă chiar aici: titlurile mai înalte urcă blocul de text, iar blocul e
+lipit de marginea de jos, deci eticheta iese din zona groasă a voalului.
 
 ## Mișcare
 
@@ -147,7 +206,9 @@ export default function Pagina() {
 ```
 
 `titlu` primește și noduri, nu doar șiruri, deci ruperea de rând se scrie acolo unde o vreți.
-`imagine` e opțional: fără el, antetul stă pe `noapte-2`. `Ecran` mai primește `dovada`, o
+`imagine` vine din registrul de fotografii (`FOTOGRAFII.rafturi`); fără el, antetul stă pe
+`noapte-2`, iar asta e o excepție care se argumentează, nu implicitul. `forma="banda"` e
+pentru documente și unelte. `Ecran` mai primește `dovada`, o
 linie de 14 px sub buton, pentru atribuiri de felul „ADRIA Servicii Arhivare, Golești -
 autorizată, din 2019"; azi nu o folosește nicio pagină.
 

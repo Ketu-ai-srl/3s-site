@@ -104,3 +104,124 @@ describe('fundatia directiei noi', () => {
     }
   })
 })
+
+/**
+ * Cele trei clase de regresie pe care le-a gasit criticul, mecanizate. Toate trei aveau
+ * aceeasi proprietate neplacuta: NICIO poarta existenta nu le vedea. Poarta de contrast
+ * masoara contrastul, iar cele trei pagini albe treceau contrastul; poarta axe nu numara
+ * fotografii; nimic nu masoara inaltimea de rand contra diacriticelor. Se prind aici, la
+ * sursa, in sub o secunda.
+ */
+describe('regresiile de directie prinse pe 2026-09-06', () => {
+  it('suprafata nu mai e alba, si cerneala ei s-a mutat odata cu ea', () => {
+    const css = readFileSync(join(RADACINA, 'src', 'app', 'globals.css'), 'utf8')
+
+    // Jetonul: orice altceva decat noaptea ar aduce inapoi documentul alb pe site-ul negru.
+    expect(css, '--color-suprafata nu mai e legat de noapte').toMatch(
+      /--color-suprafata:\s*var\(--color-noapte\)\s*;/,
+    )
+
+    // Si cerneala LUI. Cele doua trebuie sa se miste impreuna: suprafata de noapte cu
+    // cerneala deschisa pe lista deschisa ar da litera inchisa pe fundal inchis.
+    const deNoapte = css.match(/:root,([\s\S]*?)\{\s*--cerneala:/)
+    expect(deNoapte, 'nu gasesc lista de suprafete de noapte din @layer base').not.toBeNull()
+    expect(deNoapte![1], '`.bg-suprafata` nu e pe lista suprafetelor de noapte').toContain(
+      '.bg-suprafata',
+    )
+    const deschise = css.match(/\.bg-hartie,([\s\S]*?)\{/)
+    expect(deschise, 'nu gasesc lista de suprafete deschise').not.toBeNull()
+    expect(deschise![1], '`.bg-suprafata` a ramas si pe lista suprafetelor deschise').not.toContain(
+      '.bg-suprafata',
+    )
+  })
+
+  it('niciun fisier din src nu mai picteaza o suprafata alba', () => {
+    // `bg-hartie-2`, `bg-arama-moale` si `bg-verde-moale` RAMAN permise: sunt cele trei
+    // pastile de stare din `src/content/termene.ts`, suprafete deschise intentionate si
+    // mici. `bg-suprafata` si `bg-hartie` nu mai au voie sa apara ca fundal de sectiune.
+    const abateri: string[] = []
+    const mers = (dir: string) => {
+      for (const nume of readdirSync(dir, { withFileTypes: true })) {
+        const cale = join(dir, nume.name)
+        if (nume.isDirectory()) mers(cale)
+        else if (/\.tsx?$/.test(nume.name)) {
+          const text = readFileSync(cale, 'utf8')
+          // Sfarsitul numelui se cere cu `(?![\w-])`, nu cu `\b`: dupa `bg-hartie` urmeaza
+          // o cratima si in `bg-hartie-veche`, care e CULOAREA DE LITERA a directiei noi si
+          // are voie sa existe. Prima varianta a probei o prinsese, pe `layout.tsx`.
+          for (const m of text.matchAll(/className=[^\n]*(bg-suprafata|bg-hartie)(?![\w-])/g)) {
+            abateri.push(cale.replace(RADACINA, '') + ': ' + m[1])
+          }
+        }
+      }
+    }
+    mers(join(RADACINA, 'src'))
+    expect(abateri, 'suprafete deschise ramase in src').toEqual([])
+  })
+
+  it('inaltimea de rand a titlurilor incape diacriticele romanesti', () => {
+    // Pragul e masurat pe fontul real (Barlow Condensed 700): virgula lui S coboara 0,180 em
+    // sub linia de baza, iar cea mai inalta capitala romaneasca urca 0,889 em. Suma e 1,069
+    // em, deci orice pas de rand sub atat produce suprapunere adevarata, nu doar inghesuiala.
+    const PRAG = 1.069
+    const css = readFileSync(join(RADACINA, 'src', 'app', 'globals.css'), 'utf8')
+    // Tipare LITERALE, nu construite dintr-un sir: un `RegExp` facut din sir cere backslash
+    // dublu, iar prima varianta a probei l-a pierdut pe drum si a cautat litera `s` in loc de
+    // spatiu. N-a intors o eroare, a intors zero potriviri.
+    const pasi: Array<[string, RegExpMatchArray | null]> = [
+      ['--text-titlu-1--line-height', css.match(/--text-titlu-1--line-height:\s*([0-9.]+)\s*;/)],
+      ['--text-titlu-2--line-height', css.match(/--text-titlu-2--line-height:\s*([0-9.]+)\s*;/)],
+    ]
+    for (const [jeton, m] of pasi) {
+      expect(m, 'nu gasesc ' + jeton).not.toBeNull()
+      expect(Number(m![1]), jeton + ' e sub pragul diacriticelor').toBeGreaterThanOrEqual(PRAG)
+    }
+    // Si regula de baza, pentru titlurile fara clasa de scara: ele au dat 46 din cele 175
+    // de coliziuni masurate.
+    const baza = css.match(/h1,\s*\n\s*h2,\s*\n\s*h3,\s*\n\s*h4\s*\{([\s\S]*?)\}/)
+    expect(baza, 'nu gasesc regula de baza h1..h4').not.toBeNull()
+    const pas = baza![1].match(/line-height:\s*([0-9.]+)\s*;/)
+    expect(pas, 'regula de baza h1..h4 nu are line-height').not.toBeNull()
+    expect(Number(pas![1]), 'line-height de baza sub pragul diacriticelor').toBeGreaterThanOrEqual(
+      PRAG,
+    )
+  })
+
+  it('fiecare folosire a lui AntetPagina primeste o fotografie', () => {
+    // Masurat inainte: `/` avea 3 fotografii in `main`, celelalte 21 de pagini aveau ZERO,
+    // desi `AntetPagina` primea deja `imagine` si le pasa mai departe, iar patru din cele
+    // sapte fotografii nu erau referite de niciun fisier din `src`.
+    const faraFoto: string[] = []
+    const mers = (dir: string) => {
+      for (const nume of readdirSync(dir, { withFileTypes: true })) {
+        const cale = join(dir, nume.name)
+        if (nume.isDirectory()) mers(cale)
+        else if (nume.name.endsWith('.tsx')) {
+          const text = readFileSync(cale, 'utf8')
+          for (const m of text.matchAll(/<AntetPagina\b([\s\S]*?)\/>/g)) {
+            if (!/\bimagine=/.test(m[1])) faraFoto.push(cale.replace(RADACINA, ''))
+          }
+        }
+      }
+    }
+    mers(join(RADACINA, 'src'))
+    expect(faraFoto, 'AntetPagina fara `imagine`').toEqual([])
+  })
+
+  it('registrul de fotografii numeste doar fisiere care exista, in ambele marimi', () => {
+    const registru = readFileSync(join(RADACINA, 'src', 'content', 'fotografii.ts'), 'utf8')
+    const nume = [...registru.matchAll(/nume:\s*"([a-z]+)"/g)].map((m) => m[1])
+    expect(nume.length, 'registrul de fotografii pare gol').toBeGreaterThan(5)
+    const existente = new Set(readdirSync(join(RADACINA, 'public', 'img')))
+    for (const n of nume) {
+      for (const marime of ['1920', '960']) {
+        expect(existente.has(n + '-' + marime + '.webp'), 'lipseste ' + n + '-' + marime).toBe(true)
+      }
+    }
+    // Si textul alternativ SPUNE ca fotografia e ilustrativa - regula de adevar a directiei,
+    // nu o preferinta de redactare.
+    const alturi = [...registru.matchAll(/alt:\s*"([^"]+)"/g)].map((m) => m[1])
+    expect(alturi.length).toBe(nume.length)
+    for (const a of alturi) expect(a, 'alt fara mentiunea ilustrativa: ' + a).toMatch(/ilustrativ/)
+  })
+})
