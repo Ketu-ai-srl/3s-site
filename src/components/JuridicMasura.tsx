@@ -29,6 +29,8 @@ export const MASURA_STRANSA = "max-w-[45ch]";
 // chenar sau linie de arama - deci latimea lor se vede, spre deosebire de a unui paragraf.
 // Lasate fara plafon, se intindeau pe toata coloana (circa 950 px la 1280) in timp ce
 // textul dinauntru statea pe 485: jumatate de caseta ramanea goala la dreapta si arata a
-// greseala de asezare. Cifra e MASURA plus cele doua paddinguri de 24 px, verificata pe
-// pagina: 57ch da 532 px, adica 484 px inauntru, cat tine si textul.
+// greseala de asezare. Cifra e MASURA plus cele doua paddinguri de 24 px, si e verificata
+// pe pagina, nu calculata: 57ch da 547 px, adica 499 px inauntru, unde textul de 485 incape.
+// Calculul ar fi dat 532: `ch` se raporteaza la fontul ELEMENTULUI, iar caseta mosteneste
+// 17 px, nu cei 16,5 ai paragrafului. Inca un motiv sa nu se scrie masura in `ch` din cap.
 export const MASURA_CASETA = "max-w-[57ch]";
