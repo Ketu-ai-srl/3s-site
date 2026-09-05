@@ -12,7 +12,7 @@ Construim site-ul public de vanzare al brandului 3S. Platforma de produs exista 
 - **Stiva:** Next.js 15 (App Router) + Tailwind v4, continut MDX versionat, pnpm 10.33.0, Node 24.
 - **Livrare:** imagine Docker construita de Coolify, server `s3.ke2.in`. Panoul `c1.ke2.in` NU e
   tinta de deploy.
-- **Medii:** `3s.ke2.in` = staging, inchis cu autentificare de baza si `X-Robots-Tag: noindex`.
+- **Medii:** `3s.ke2.in` = staging, PUBLIC (decizie owner 5 sep 2026: site de prezentare, se arata partenerilor fara frecare), dar cu `X-Robots-Tag: noindex` pana la lansare. Dupa lansarea pe domeniul real, staging-ul redirectioneaza spre productie.
   **Productia nu exista** si nu se creeaza pana cand owner-ul comunica domeniul real.
 - **Repo:** `Ketu-ai-srl/3s-site`, public. Consecinta: minutele de Actions sunt gratuite si
   nelimitate, iar regula "zero secrete in cod" devine critica.

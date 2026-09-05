@@ -15,9 +15,12 @@ UTILIZATOR="${BASIC_AUTH_USER:-}"
 PAROLA="${BASIC_AUTH_PASS:-}"
 RADACINA="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 
-if [ -z "$UTILIZATOR" ] || [ -z "$PAROLA" ]; then
-  echo "Lipsesc BASIC_AUTH_USER si BASIC_AUTH_PASS." >&2
-  exit 2
+# Autentificarea de baza a fost SCOASA la cererea owner-ului (5 sep 2026): site-ul e
+# de prezentare, deci se arata partenerilor fara frecare. Ce ramane pana la lansare e
+# antetul de neindexare, verificat mai jos. Daca variabilele exista totusi, se folosesc.
+ACRED=""
+if [ -n "$UTILIZATOR" ] && [ -n "$PAROLA" ]; then
+  ACRED="-u $UTILIZATOR:$PAROLA"
 fi
 
 esec=0
@@ -25,10 +28,10 @@ verdict() {
   if [ "$1" = "0" ]; then printf 'OK    %s\n' "$2"; else printf 'PICAT %s\n' "$2"; esec=1; fi
 }
 
-# 1. Fara acreditari trebuie sa fie inchis.
+# 1. Site-ul trebuie sa raspunda public.
 cod=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$ADRESA/")
-[ "$cod" = "401" ]
-verdict $? "mediul de proba e inchis (asteptat 401, primit $cod)"
+[ "$cod" = "200" ]
+verdict $? "site-ul raspunde public (asteptat 200, primit $cod)"
 
 # 2. Antetul de neindexare trebuie sa fie prezent.
 antet=$(curl -sI --max-time 20 "$ADRESA/" | tr -d '\r' | grep -i '^x-robots-tag:' || true)
@@ -38,7 +41,7 @@ case "$antet" in
 esac
 
 # 3. Marcajul livrat trebuie sa fie identic cu cel din arborele local.
-livrat=$(curl -s --max-time 20 -u "$UTILIZATOR:$PAROLA" "$ADRESA/stamp")
+livrat=$(curl -s --max-time 20 $ACRED "$ADRESA/stamp")
 # Calea se da RELATIV, cu cwd mutat in radacina: python-ul de Windows nu poate deschide
 # forma /c/Users/... pe care o produce bash-ul din MSYS. Capcana e documentata si costa
 # o verificare care pare picata cand de fapt nu s-a masurat nimic.
@@ -52,7 +55,7 @@ fi
 
 # 4. Pagina de start trebuie sa fie randata pe server, nu construita din JavaScript:
 #    un agent AI care nu executa JS trebuie sa poata citi raspunsul.
-pagina=$(curl -s --max-time 25 -u "$UTILIZATOR:$PAROLA" "$ADRESA/")
+pagina=$(curl -s --max-time 25 $ACRED "$ADRESA/")
 octeti=${#pagina}
 [ "$octeti" -gt 2000 ]
 verdict $? "pagina de start vine randata din server ($octeti octeti in HTML brut)"
