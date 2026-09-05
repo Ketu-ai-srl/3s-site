@@ -138,7 +138,7 @@ export const PAGINA_TERMENE = {
       "Legea Arhivelor Naționale nr. 16/1996: evidența documentelor create și primite, gruparea lor pe termene într-un nomenclator avizat, condițiile de păstrare și selecționarea numai prin comisie, cu aviz.",
       "Instrucțiunile privind activitatea de arhivă la creatorii și deținătorii de documente, aprobate prin Ordinul de zi nr. 217/1996 al Arhivelor Naționale: partea practică a aceleiași obligații.",
     ],
-    nota: "Instrumentul nu înlocuiește nomenclatorul arhivistic avizat și nu este temei pentru eliminarea vreunui document. Nu punem numere de articol acolo unde nu le-am verificat cuvânt cu cuvânt, iar confirmarea listei de către un arhivist autorizat se face înainte de publicare. Dacă găsiți un rând care contrazice actul citat, scrieți-ne: corectăm în pagină, ca să vadă și următorul cititor corectura.",
+    nota: "Instrumentul nu înlocuiește nomenclatorul arhivistic avizat și nu este temei pentru eliminarea vreunui document. Numerele de articol sunt cele culese odată cu termenele, din actele citate pe fiecare rând; nu le-am recitit la sursă în ziua în care s-a scris pagina, iar confirmarea listei de către un arhivist autorizat se face înainte de publicare. Dacă găsiți un rând care contrazice actul citat, scrieți-ne: corectăm în pagină, ca să vadă și următorul cititor corectura.",
   },
 
   incheiere: {
