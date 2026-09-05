@@ -37,7 +37,7 @@ export default function Securitate() {
     <main id="continut">
       <AntetPagina
         adresa="/securitate"
-        imagine={FOTOGRAFII.legatura}
+        imagine={FOTOGRAFII.rafturi}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Securitate" }]}
         eticheta={S.eticheta}
         titlu={S.h1}

@@ -31,7 +31,7 @@ export default function ArhivareFizica() {
     <main id="continut">
       <AntetPagina
         adresa="/arhivare-fizica"
-        imagine={FOTOGRAFII.rafturi}
+        imagine={FOTOGRAFII.cutii}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Arhivare fizică" }]}
         eticheta={A.eticheta}
         titlu={A.h1}

@@ -88,7 +88,7 @@ export default function Contact() {
     <main id="continut">
       <AntetPagina
         adresa="/contact"
-        imagine={FOTOGRAFII.cutii}
+        imagine={FOTOGRAFII.legatura}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Contact" }]}
         eticheta="Contact"
         titlu="Ne scrieți pe e-mail. Restul drumurilor nu există încă."
