@@ -2,20 +2,32 @@
 
 /* ==========================================================================
    3S - Scan Store Solve
-   Jetoanele vin din directia vizuala aleasa (institutional): registru de
-   arhiva, verde institutional, arama folosita rar, serifa la titluri si
-   sans la text. Valorile sunt cele din design, transpuse in sintaxa
-   Tailwind v4. Paleta e doar in lumina: pagina nu are mod intunecat, are
-   benzi inchise.
+   Directia vizuala (sep 2026, aprobata de owner pe pagina de start, standard
+   spacex.com): fundal de noapte, hartie veche pe text, o singura arama,
+   titluri condensate cu majuscule, fotografie pe tot ecranul, un buton pe ecran.
+   Regulile scrise, cu exemplu de cod: `docs/design/DIRECTIA.md`.
+
+   Paleta veche (hartie, verde, tus) RAMANE DEFINITA mai jos, dar nu mai e
+   implicitul: o pagina care nu spune nimic e de noapte. Componentele care o
+   mai citesc sunt cele ale feliilor de pagini, si trec pe rand.
    ========================================================================== */
 
 @theme {
   /* --- vitrina: negru de depozit, hartie veche, o singura arama ----------------
-     Directia noua (sep 2026): "exaggerated minimalism", fotografie pe tot ecranul,
-     titluri uriase cu majuscule, un buton pe ecran. Negrul nu e #000 - e #0b0b0c,
-     un fir mai cald, ca hartia sa nu para ecran. Textul e alb de hartie, nu alb pur.
-     Accentul ramane arama de eticheta de dosar: e a noastra, si nu e verdele-acid
-     pe negru pe care il produce orice unealta cand i se cere "dark". ------------- */
+     Negrul nu e #000 - e #0b0b0c, un fir mai cald, ca hartia sa nu para ecran.
+     Textul e alb de hartie, nu alb pur. Accentul ramane arama de eticheta de dosar:
+     e a noastra, si nu e verdele-acid pe negru pe care il produce orice unealta cand
+     i se cere "dark".
+
+     CONTRAST, masurat (WCAG, raportul de luminanta), ca sa nu se remasoare:
+       hartie-veche   pe noapte 17,27:1 - pe noapte-3 14,60:1
+       hartie-veche-2 pe noapte  7,92:1 - pe noapte-3  6,70:1
+       hartie-veche-3 pe noapte  5,48:1 - pe noapte-3  4,63:1   (limita pentru text mic)
+       arama-clar     pe noapte  6,76:1 - pe noapte-3  5,72:1
+       noapte pe hartie-veche (butonul plin) 17,27:1
+     Text pe noapte* se scrie NUMAI cu aceste patru culori. Peste FOTOGRAFIE cifrele
+     de mai sus nu se aplica: acolo contrastul il da voalul din `Ecran`, si se
+     masoara pe captura, nu se presupune. ---------------------------------------- */
   --color-noapte: #0b0b0c;
   --color-noapte-2: #141416;
   --color-noapte-3: #1e1e21;
@@ -25,7 +37,7 @@
   --color-hartie-veche-3: #8a877f;
   --color-linie-noapte: #2a2a2e;
 
-  /* --- culoare ---------------------------------------------------------- */
+  /* --- paleta veche (institutional, in lumina). Nu mai e implicitul. --------- */
   --color-hartie: #f1f3ef;
   --color-hartie-2: #e9ece6;
   --color-suprafata: #ffffff;
@@ -47,11 +59,7 @@
      hartie 4,75:1 (trece) - suprafata 5,30:1 (trece) - hartie-2 4,45:1 (PICA) -
      arama-moale 4,47:1 (PICA). Pragul pentru text mic e 4,5:1.
      Pentru text folositi `arama-inchis` (6,55:1 pe arama-moale). `arama` ramane pentru
-     chenare, linii si cifre mari, unde pragul e 3:1.
-     Nu am inchis tokenul ca sa treaca peste tot: pe paginile care exista azi combinatiile
-     care pica NU se randeaza (axe da 0 incalcari blocante pe toate cele 13), deci ar fi
-     insemnat sa schimb identitatea vizuala pentru un caz care nu exista. Cifrele stau aici
-     ca urmatorul care scrie text aramiu sa nu le remasoare. */
+     chenare, linii si cifre mari, unde pragul e 3:1. Pe noapte se foloseste `arama-clar`. */
   --color-arama: #a4571c;
   --color-arama-inchis: #7e4315;
   --color-arama-clar: #c98a4b;
@@ -65,7 +73,7 @@
   --color-pe-inchis-2: #a9b7ae;
   --color-pe-inchis-3: #7e8f85;
 
-  /* --- tipografie: scara designului, in pixeli, ca sa nu se piarda 0,5 px */
+  /* --- tipografie: scara in pixeli, ca sa nu se piarda 0,5 px */
   --text-eticheta: 12.5px;
   --text-eticheta--line-height: 1.45;
   --text-fisa: 13.5px;
@@ -79,24 +87,37 @@
   --text-lead: 19px;
   --text-lead--line-height: 1.55;
 
+  /* --- titlurile directiei, o singura scara pentru tot site-ul -----------------
+     h1 (eroul si intro-ul paginilor interioare) e cu o treapta peste h2 (ecranele
+     urmatoare si sectiunile): fara scara, niciun ecran nu e "primul". Masurat contra
+     referintei: eroul ei e la 80 px, restul la 48. */
+  --text-titlu-1: clamp(2.5rem, 6.5vw, 6rem);
+  --text-titlu-1--line-height: 0.92;
+  --text-titlu-2: clamp(2rem, 4.2vw, 3.5rem);
+  --text-titlu-2--line-height: 0.95;
+
   /* --- latimi ----------------------------------------------------------- */
   --container-registru: 1180px;
+  --container-vitrina: 1400px;
 }
 
 @theme inline {
-  --font-serif: var(--font-serifa), Georgia, "Times New Roman", serif;
-  /* Titlurile vitrinei: condensat industrial, cu majuscule. Barlow Condensed e ruda
-     libera a lui DIN - aceeasi familie de forme ca titlurile de pe site-urile pe care
-     owner-ul le-a dat ca standard, fara sa fie copia lor. */
-  --font-afis: var(--font-afis), "Barlow Condensed", "Arial Narrow", sans-serif;
-  --font-vitrina: var(--font-vitrina), "Barlow", system-ui, sans-serif;
-  --font-sans: var(--font-corp), system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: var(--font-masina), ui-monospace, "Cascadia Mono", Consolas, monospace;
+  /* Cele trei familii ale directiei. Variabilele `--fnt-*` le pune `next/font` pe
+     `<html>` (vezi `layout.tsx`), deci exista pe `:root` si jetoanele de aici se rezolva
+     si in regulile de baza de mai jos, nu doar in utilitare. */
+  --font-afis: var(--fnt-afis), "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-vitrina: var(--fnt-vitrina), "Barlow", system-ui, sans-serif;
+  --font-mono: var(--fnt-masina), ui-monospace, "Cascadia Mono", Consolas, monospace;
+  /* Jetoane MOSTENITE: `font-serif` si `font-sans` mai apar in componente ale feliilor de
+     pagini. Familiile lor (Source Serif 4, IBM Plex Sans) nu se mai incarca; cad pe
+     rezerva de sistem pana cand componentele trec pe `font-afis` / `font-vitrina`. */
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-sans: var(--fnt-vitrina), "Barlow", system-ui, sans-serif;
 }
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   html {
@@ -108,12 +129,15 @@
     scroll-padding-top: 76px;
   }
 
+  /* Fundalul implicit e de noapte si textul implicit e hartie veche. Fontul se ia
+     DIRECT din jetonul de familie, care se rezolva pe `:root` (vezi nota din `layout.tsx`
+     despre de ce nu se rezolva cand variabila statea pe `body`). */
   body {
-    background: var(--color-hartie);
-    color: var(--color-tus);
-    font-family: var(--font-sans);
+    background: var(--color-noapte);
+    color: var(--color-hartie-veche);
+    font-family: var(--font-vitrina);
     font-size: 16.5px;
-    line-height: 1.62;
+    line-height: 1.6;
     font-feature-settings: "kern" 1;
     -webkit-font-smoothing: antialiased;
   }
@@ -128,45 +152,65 @@
   h2,
   h3,
   h4 {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    line-height: 1.16;
-    letter-spacing: -0.012em;
+    font-family: var(--font-afis);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: var(--color-arama-clar);
+    color: var(--color-noapte);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-arama);
+    outline: 2px solid var(--color-arama-clar);
     outline-offset: 3px;
-    border-radius: 1px;
   }
 }
 
-/* --- animatia de incarcare, o singura data ------------------------------ */
+/* --- miscarea: doua gesturi, amandoua pe primul ecran, amandoua oprite la
+       `prefers-reduced-motion`. Referinta are video pe erou; pana la video, fotografia
+       respira lent (Ken Burns, doar `transform`, 20 s) si textul urca esalonat, o data. */
 .urca {
   opacity: 0;
   transform: translateY(14px);
-  animation: urca 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  animation: urca 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
 }
 .urca-1 {
   animation-delay: 0.05s;
 }
 .urca-2 {
-  animation-delay: 0.14s;
+  animation-delay: 0.16s;
 }
 .urca-3 {
-  animation-delay: 0.23s;
+  animation-delay: 0.27s;
 }
 .urca-4 {
-  animation-delay: 0.32s;
+  animation-delay: 0.38s;
 }
 .urca-5 {
-  animation-delay: 0.44s;
+  animation-delay: 0.5s;
 }
 
 @keyframes urca {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+.respira {
+  transform-origin: 50% 50%;
+  animation: respira 20s cubic-bezier(0.2, 0.4, 0.4, 1) forwards;
+}
+
+@keyframes respira {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.04);
   }
 }
 
@@ -182,6 +226,9 @@
   }
   .urca {
     opacity: 1;
+    transform: none;
+  }
+  .respira {
     transform: none;
   }
 }
