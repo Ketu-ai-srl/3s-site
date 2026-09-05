@@ -1,5 +1,6 @@
 import Link from "next/link";
 import JuridicIdentificare from "./JuridicIdentificare";
+import { MASURA, MASURA_CASETA, MASURA_STRANSA } from "./JuridicMasura";
 import type { Bloc, Frag } from "@/content/juridic";
 
 // Randarea blocurilor dintr-o sectiune juridica. Un singur loc care stie cum arata un
@@ -10,9 +11,8 @@ import type { Bloc, Frag } from "@/content/juridic";
 // ancora din pagina CURENTA sare peste derularea lina din `globals.css`. Conditia pe diez
 // acopera ambele cazuri cu o singura regula, deci nu se poate aplica gresit.
 //
-// LATIMEA RANDULUI. Textul juridic sta pe `max-w-[74ch]`, nu pe toata coloana: peste
-// aproximativ optzeci de caractere ochiul pierde inceputul randului urmator, iar aici se
-// citesc fraze lungi, nu titluri.
+// LATIMEA RANDULUI sta in `JuridicMasura`, cu masuratoarea care a stabilit-o: clasa de
+// dinainte, `max-w-[74ch]`, nu dadea 74 de caractere pe rand, ci 98.
 
 function bucata(f: Frag, i: number) {
   if (typeof f === "string") {
@@ -62,13 +62,13 @@ function Caseta({
   const stilEticheta = fel === "declaratie" ? "text-cerneala-accent" : "text-cerneala-3";
 
   return (
-    <div className={`my-6 ${stil}`}>
+    <div className={`my-6 ${MASURA_CASETA} ${stil}`}>
       <span
         className={`mb-1.5 block font-mono text-eticheta font-medium tracking-[0.1em] uppercase ${stilEticheta}`}
       >
         {eticheta}
       </span>
-      <p className="max-w-[74ch] text-corp text-cerneala-2">
+      <p className={MASURA + " text-corp text-cerneala-2"}>
         <Text parti={parti} />
       </p>
     </div>
@@ -82,14 +82,14 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
         switch (b.fel) {
           case "paragraf":
             return (
-              <p key={i} className="mb-4 max-w-[74ch] text-corp text-cerneala-2 last:mb-0">
+              <p key={i} className={"mb-4 " + MASURA + " text-corp text-cerneala-2 last:mb-0"}>
                 <Text parti={b.text} />
               </p>
             );
 
           case "lista":
             return (
-              <ul key={i} className="m-0 mb-4 max-w-[74ch] list-none p-0 last:mb-0">
+              <ul key={i} className={"m-0 mb-4 " + MASURA + " list-none p-0 last:mb-0"}>
                 {b.elemente.map((e, j) => (
                   <li key={j} className="mb-3 flex gap-4 text-corp text-cerneala-2 last:mb-0">
                     {/* Cratima de arama e un element real, nu un marcator de lista: se
@@ -112,7 +112,7 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
                     className="grid gap-1.5 border-t border-linie-suprafata py-4 last:border-b lg:grid-cols-[260px_1fr] lg:gap-8"
                   >
                     <h3 className="font-afis text-[19px] tracking-[0.02em] uppercase text-cerneala">{r.titlu}</h3>
-                    <p className="max-w-[64ch] text-corp text-cerneala-2">
+                    <p className={MASURA_STRANSA + " text-corp text-cerneala-2"}>
                       <Text parti={r.text} />
                     </p>
                   </div>

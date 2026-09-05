@@ -4,6 +4,7 @@ import Buton from "./Buton";
 import Eticheta from "./Eticheta";
 import Invelis from "./Invelis";
 import JuridicBlocuri from "./JuridicBlocuri";
+import { MASURA, MASURA_CASETA } from "./JuridicMasura";
 import { FOTOGRAFII, type CheieFotografie } from "@/content/fotografii";
 import { PAGINI_JURIDICE, type PaginaJuridica, type Sectiune } from "@/content/juridic";
 
@@ -56,7 +57,15 @@ function SectiuneJuridica({
   return (
     <section id={sectiune.id} className={`border-t border-linie-suprafata ${fundal}`}>
       <Invelis>
-        <div className="grid gap-4 py-10 md:grid-cols-[148px_1fr] md:gap-8 md:py-14">
+        {/* RITMUL. `py-14 md:py-24`, adica 56 px pe telefon si 96 px pe ecran lat, deci
+            192 px de la ultimul rand al unei sectiuni la titlul urmatoarei. Nu e nici pasul
+            paginilor de prezentare (`py-24 md:py-36`, care ar da 288 px si ar transforma un
+            act de noua sectiuni in cinci ecrane numai de spatiu), nici cel de dinainte
+            (`py-10 md:py-14`, 112 px, la care sectiunile se atingeau si cifra din margine
+            ramanea singurul semn ca a inceput alta). E treapta documentelor, aceeasi
+            alegere argumentata ca antetul-banda: mai stransa decat afisul, larga cat sa se
+            vada unde se termina o clauza. */}
+        <div className="grid gap-4 py-14 md:grid-cols-[148px_1fr] md:gap-8 md:py-24">
           <div className="flex items-baseline gap-3 border-b border-linie-suprafata pb-3 md:relative md:block md:border-b-0 md:pb-0">
             <span
               aria-hidden
@@ -80,7 +89,16 @@ function SectiuneJuridica({
           </div>
 
           <div>
-            <h2 className="mb-5 max-w-[26ch] font-afis text-[25px] tracking-[-0.01em] uppercase text-cerneala md:text-[30px]">
+            {/* MARIMEA TITLULUI DE SECTIUNE. Masurat inainte: 30 px la 1280, langa un corp
+                de 16,5 px si sub un titlu de pagina de 64 px. Raportul titlu/corp iesea 1,8,
+                cand pe restul site-ului e 3,3 (`text-titlu-2`, 53,8 px). Pe ecran nu se
+                citea ca o treapta a scarii, ci ca un rand ingrosat: sectiunile pareau
+                paragrafe cu antet, iar cifra din margine ramanea singurul reper.
+                `clamp(1.65rem,3vw,2.375rem)` da 38,4 px la 1280 si 26,4 px la 390 - raport
+                2,3 fata de corp, si o distanta limpede fata de cele 64 ale titlului de
+                pagina. Nu urca la `text-titlu-2`: cu noua sectiuni, fiecare titlu ar deveni
+                un afis si documentul s-ar citi ca noua pagini lipite. */}
+            <h2 className="mb-6 max-w-[30ch] font-afis text-[clamp(1.65rem,3vw,2.375rem)] tracking-[-0.01em] uppercase text-cerneala">
               {sectiune.titlu}
             </h2>
             <JuridicBlocuri blocuri={sectiune.blocuri} />
@@ -95,7 +113,7 @@ function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
   return (
     <section className="border-t border-linie-suprafata bg-noapte-2">
       <Invelis>
-        <div className="py-10 md:py-12">
+        <div className="py-12 md:py-16">
           <h2 className="mb-5 font-mono text-eticheta font-medium tracking-[0.18em] text-cerneala-3 uppercase">
             Cuprins
           </h2>
@@ -130,9 +148,9 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
     <section className="border-t border-linie-suprafata bg-noapte">
       <Invelis>
         <div className="py-12 md:py-16">
-          <div className="mb-8 max-w-[74ch] border border-linie-suprafata bg-noapte-2 px-6 py-5">
+          <div className={"mb-8 " + MASURA_CASETA + " border border-linie-suprafata bg-noapte-2 px-6 py-5"}>
             <Eticheta className="mb-1.5 block">Despre textul acesta</Eticheta>
-            <p className="text-corp text-cerneala-2">{pagina.redactat}</p>
+            <p className={MASURA + " text-corp text-cerneala-2"}>{pagina.redactat}</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
@@ -151,7 +169,7 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
             ))}
           </div>
 
-          <p className="mt-6 max-w-[62ch] text-[15.5px] text-cerneala-3">
+          <p className={"mt-6 " + MASURA + " text-[15.5px] text-cerneala-3"}>
             Dacă ceva din pagina aceasta este neclar sau vă pare greșit, scrieți-ne la{" "}
             <a
               href="mailto:contact@3s.ro"
