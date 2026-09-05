@@ -48,7 +48,11 @@ export default function Solutii() {
           cota="I"
           eticheta="Domenii"
           titlu="Patru domenii, în ordinea în care le luăm."
-          lead="Ordinea este a noastră, nu a dumneavoastră. O scriem ca să știți dacă intrați în prima serie sau vă punem pe listă onest. Domeniile fără fișă sunt pe listă, nu în lucru."
+          // Lead-ul NU mai vorbeste despre "domenii pe lista": odata ce felia 11 a adus fisele
+          // pentru primarii, contabilitate si avocatura, multimea aceea e goala, iar banda
+          // "Pe lista" nu se mai randeaza. O propozitie care descrie o multime goala nu e
+          // gresita tehnic, dar e o promisiune despre ordine pe care pagina nu o mai arata.
+          lead="Pașii sunt aceiași peste tot. Ce diferă este ce se cere des, cine controlează și cât se păstrează. Fișele de mai jos scriu diferența, domeniu cu domeniu, și spun pe față unde încă nu avem un răspuns."
         >
           {CU_FISA.length > 0 ? (
             <>
