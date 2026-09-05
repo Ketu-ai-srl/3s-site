@@ -45,8 +45,8 @@ import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA } from "@/content/rute";
 // Documentele juridice raman semnalate de poarta juridica (AVERT L-15) pana cand exista.
 
 const TITLU_COLOANA =
-  "mb-3 font-mono text-eticheta font-medium tracking-[0.1em] uppercase text-pe-inchis-3";
-const LEGATURA = "text-pe-inchis no-underline hover:text-white hover:underline";
+  "mb-3 font-mono text-eticheta font-medium tracking-[0.1em] uppercase text-hartie-veche-3";
+const LEGATURA = "text-hartie-veche-2 no-underline hover:text-hartie-veche hover:underline";
 
 type Legatura = { href: string; text: string };
 
@@ -109,11 +109,11 @@ function Identificare() {
     return null;
   }
   return (
-    <dl className="mt-6 grid gap-x-8 gap-y-1.5 border-t border-linie-inchis pt-6 text-[14px] sm:grid-cols-2 lg:grid-cols-3">
+    <dl className="mt-6 grid gap-x-8 gap-y-1.5 border-t border-linie-noapte pt-6 text-[14px] sm:grid-cols-2 lg:grid-cols-3">
       {CAMPURI_IDENTITATE.map((camp) => (
         <div key={camp} className="flex flex-wrap gap-x-2">
-          <dt className="text-pe-inchis-3">{ETICHETE[camp]}:</dt>
-          <dd className="m-0 text-pe-inchis">{entitate[camp]}</dd>
+          <dt className="text-hartie-veche-3">{ETICHETE[camp]}:</dt>
+          <dd className="m-0 text-hartie-veche">{entitate[camp]}</dd>
         </div>
       ))}
     </dl>
@@ -122,15 +122,15 @@ function Identificare() {
 
 export default function Subsol() {
   return (
-    <footer className="bg-verde-adanc pt-16 pb-8 text-pe-inchis-2">
+    <footer className="bg-noapte pt-16 pb-8 text-hartie-veche-2 border-t border-linie-noapte">
       <Invelis>
-        <div className="grid gap-8 border-b border-linie-inchis pb-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+        <div className="grid gap-8 border-b border-linie-noapte pb-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
             <span className="mb-4 flex items-baseline gap-2.5">
-              <span className="font-serif text-[26px] leading-none font-semibold tracking-[-0.02em] text-white">
+              <span className="font-afis text-[30px] leading-none font-bold tracking-[0.02em] text-hartie-veche">
                 3S
               </span>
-              <span className="font-mono text-[11.5px] tracking-[0.14em] uppercase text-pe-inchis-3">
+              <span className="font-mono text-[11.5px] tracking-[0.14em] uppercase text-hartie-veche-3">
                 Scan · Store · Solve
               </span>
             </span>

@@ -2,51 +2,45 @@
 
 // Bara de sus, randata din `src/app/layout.tsx`, deci prezenta pe fiecare pagina.
 //
-// DE CE E COMPONENTA DE CLIENT: ca sa stie pe ce pagina e, si ca sa tina deschiderea
-// meniului de pe telefon. Ancorele paginii de start (`#mecanism`, `#termene`, ...) sunt
-// sectiuni ale rutei `/`, nu pagini. Afisate pe alta ruta ar fi legaturi care nu duc
-// nicaieri, iar rescrise ca `/#mecanism` ar aseza in meniul global randuri care nu sunt
-// pagini. Deci se arata NUMAI cand `usePathname()` intoarce `/`.
+// Directia noua (sep 2026): negru, un singur rand, majuscule condensate, subtire. Sta FIXA
+// peste imaginea din primul ecran si se inchide la culoare cand pagina se deruleaza.
 //
-// MENIUL PLIABIL, si de ce exista acum si nu inainte. Cat timp meniul avea o intrare,
-// comentariul de aici spunea ca un meniu pliabil ar fi "cod scris pentru un caz pe care
-// nu il pot masura". Cazul s-a masurat: adaugand doua pagini in bara, poarta de derapaj a
-// dat `scrollWidth` 529 peste `innerWidth` 390 **pe toate cele cinci pagini**, fiindca bara
-// sta in layout. Deci nu e o problema a paginii care creste, e o problema a intregului site,
-// si raspunsul de atunci - `inMeniu: false` - ar fi insemnat un site de zece pagini cu doua
-// intrari in meniu.
+// Ce s-a scos, si de ce: ancorele paginii de start NU mai apar in bara. Cand am urcat sase
+// pagini in bara, ancorele au ramas langa ele si bara arata "Cum functioneaza" de doua ori,
+// "Domenii" de doua ori, pe doua-trei randuri. Nicio poarta nu prindea asta - derapajul
+// masoara latimea, nu randurile, nici dublurile. Acum exista o proba care refuza ambele.
 //
-// Sub 768 px paginile trec intr-un panou care se deschide dintr-un buton; peste, raman in
-// linie. Panoul e HTML servit de la inceput, doar ascuns: cine citeste pagina cu JavaScript
-// oprit vede toate legaturile, deci poarta de HTML brut nu are de ce sa se inroseasca, iar
-// un agent care nu executa JS gaseste structura site-ului.
+// Panoul de sub 768 px e HTML servit de la inceput, doar ascuns: cine citeste pagina fara
+// JavaScript vede toate legaturile.
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Buton from "./Buton";
-import Invelis from "./Invelis";
-import { CALE_DISCUTIE, SECTIUNI_ACASA, rutePentruMeniu } from "@/content/rute";
+import { CALE_DISCUTIE, rutePentruMeniu } from "@/content/rute";
 
 const LEGATURA =
-  "border-b border-transparent py-1.5 text-[15px] text-tus-2 no-underline hover:border-arama hover:text-tus";
+  "font-afis text-[15px] font-semibold tracking-[0.12em] uppercase text-hartie-veche-2 no-underline transition-colors duration-200 hover:text-hartie-veche whitespace-nowrap";
 
 export default function Navigatie() {
   const cale = usePathname();
-  const peAcasa = cale === "/";
   const pagini = rutePentruMeniu();
-  const sectiuni = peAcasa ? SECTIUNI_ACASA.filter((s) => s.inMeniu) : [];
   const [deschis, setDeschis] = useState(false);
+  const [derulat, setDerulat] = useState(false);
   const butonRef = useRef<HTMLButtonElement>(null);
 
-  // Panoul se inchide la schimbarea rutei. Fara asta, cine apasa o legatura din panou
-  // ajunge pe pagina noua cu meniul inca deschis peste continut.
   useEffect(() => {
     setDeschis(false);
   }, [cale]);
 
-  // Escape inchide si duce focalizarea inapoi pe buton. Un panou care se inchide fara sa
-  // spuna unde a plecat focalizarea trimite urmatorul Tab la inceputul paginii.
+  // Bara devine opaca dupa primii pixeli de derulare. Peste imaginea din primul ecran e
+  // transparenta; peste text ar fi ilizibila.
+  useEffect(() => {
+    const laDerulare = () => setDerulat(window.scrollY > 24);
+    laDerulare();
+    window.addEventListener("scroll", laDerulare, { passive: true });
+    return () => window.removeEventListener("scroll", laDerulare);
+  }, []);
+
   useEffect(() => {
     if (!deschis) return;
     const laTasta = (e: KeyboardEvent) => {
@@ -59,111 +53,86 @@ export default function Navigatie() {
     return () => document.removeEventListener("keydown", laTasta);
   }, [deschis]);
 
+  // Transparenta DOAR pe pagina de start, peste fotografia din primul ecran, unde voalul
+  // e deja negru. Pe orice alta pagina bara e opaca de la primul pixel: paginile interioare
+  // sunt inca deschise la culoare, iar text alb de hartie pe fundal deschis a picat axe pe
+  // 21 de pagini dintr-o data (color-contrast, serious, x9 pe fiecare).
+  const peAcasa = cale === "/";
+  const fundal = derulat || deschis || !peAcasa ? "bg-noapte/92 backdrop-blur-[10px]" : "bg-transparent";
+
   return (
-    <header className="sticky top-0 z-40 border-b border-linie bg-hartie/90 backdrop-blur-[8px]">
-      <Invelis className="flex items-center gap-4 py-3 sm:gap-6">
-        {/* Rutele se navigheaza cu `Link`, ancorele cu `a`. Nu e chestiune de stil: `Link`
-            face trecerea fara reincarcare, iar pe o ancora din aceeasi pagina ar sari peste
-            derularea lina din `globals.css`. */}
-        <Link href="/" className="flex items-baseline gap-2.5 no-underline">
-          <span className="font-serif text-[26px] leading-none font-semibold tracking-[-0.02em] text-verde">
+    <header className={"fixed inset-x-0 top-0 z-40 transition-colors duration-300 " + fundal}>
+      <div className="mx-auto flex h-[68px] max-w-[1400px] items-center gap-6 px-6 md:px-10">
+        <Link href="/" className="flex items-baseline gap-3 no-underline">
+          <span className="font-afis text-[30px] leading-none font-bold tracking-[0.02em] text-hartie-veche">
             3S
           </span>
-          <span className="hidden font-mono text-[11.5px] tracking-[0.14em] uppercase text-tus-3 sm:inline">
+          <span className="hidden font-mono text-[11px] tracking-[0.2em] uppercase text-hartie-veche-3 sm:inline">
             Scan · Store · Solve
           </span>
         </Link>
 
-        <nav className="ml-auto flex items-center gap-6" aria-label="Meniu principal">
-          {/* Peste 768 px: paginile si sectiunile stau in linie, ca pana acum. */}
-          <div className="hidden items-center gap-6 md:flex">
+        <nav className="ml-auto flex items-center gap-7" aria-label="Meniu principal">
+          <div className="hidden items-center gap-7 md:flex">
             {pagini.map((r) => (
               <Link
                 key={r.cale}
                 href={r.cale}
                 title={r.descriere}
                 aria-current={cale === r.cale ? "page" : undefined}
-                className={LEGATURA}
+                className={LEGATURA + (cale === r.cale ? " text-hartie-veche" : "")}
               >
                 {r.scurt}
               </Link>
             ))}
-            {sectiuni.map((s) => (
-              <a key={s.ancora} href={"#" + s.ancora} className={LEGATURA}>
-                {s.scurt}
-              </a>
-            ))}
           </div>
 
-          <Buton href={CALE_DISCUTIE} marime="mic" className="shrink-0 whitespace-nowrap">
-            <span className="sm:hidden">Discuție</span>
-            <span className="hidden sm:inline">Discuție de 30 de minute</span>
-          </Buton>
+          <Link
+            href={CALE_DISCUTIE}
+            className="hidden shrink-0 border border-hartie-veche-2 px-4 py-2 font-afis text-[14px] font-semibold tracking-[0.12em] uppercase text-hartie-veche no-underline transition-colors duration-200 hover:border-arama-clar hover:text-arama-clar sm:inline-block"
+          >
+            Discuție
+          </Link>
 
-          {/* Sub 768 px: butonul care deschide panoul. `aria-expanded` si `aria-controls`
-              nu sunt decor - fara ele, un cititor de ecran anunta un buton fara sa spuna
-              ce face si daca e deschis. */}
           <button
             ref={butonRef}
             type="button"
             onClick={() => setDeschis((d) => !d)}
             aria-expanded={deschis}
             aria-controls="meniu-pliabil"
-            className="-mr-1 shrink-0 cursor-pointer border-0 bg-transparent p-1.5 text-tus-2 hover:text-tus md:hidden"
+            className="-mr-1 shrink-0 cursor-pointer border-0 bg-transparent p-1.5 text-hartie-veche md:hidden"
           >
-            <span className="sr-only">
-              {deschis ? "Închideți meniul" : "Deschideți meniul"}
-            </span>
+            <span className="sr-only">{deschis ? "Închideți meniul" : "Deschideți meniul"}</span>
             <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
               {deschis ? (
-                <path
-                  d="M5 5 L17 17 M17 5 L5 17"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="square"
-                />
+                <path d="M5 5 L17 17 M17 5 L5 17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
               ) : (
-                <path
-                  d="M3 6 H19 M3 11 H19 M3 16 H19"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="square"
-                />
+                <path d="M3 6 H19 M3 11 H19 M3 16 H19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
               )}
             </svg>
           </button>
         </nav>
-      </Invelis>
+      </div>
 
-      {/* Panoul e in HTML de la prima livrare, doar ascuns cu `hidden`, nu construit din
-          JavaScript la deschidere. Asa, o pagina citita fara JS pastreaza toate legaturile. */}
-      <div
-        id="meniu-pliabil"
-        hidden={!deschis}
-        className="border-t border-linie bg-hartie md:hidden"
-      >
-        <Invelis className="flex flex-col py-2">
+      <div id="meniu-pliabil" hidden={!deschis} className="border-t border-linie-noapte bg-noapte md:hidden">
+        <div className="mx-auto flex max-w-[1400px] flex-col px-6 py-2">
           {pagini.map((r) => (
             <Link
               key={r.cale}
               href={r.cale}
               aria-current={cale === r.cale ? "page" : undefined}
-              className="border-b border-linie py-3 text-[16px] text-tus-2 no-underline last:border-b-0 hover:text-tus"
+              className="border-b border-linie-noapte py-3.5 font-afis text-[19px] font-semibold tracking-[0.1em] uppercase text-hartie-veche no-underline last:border-b-0"
             >
               {r.scurt}
             </Link>
           ))}
-          {sectiuni.map((s) => (
-            <a
-              key={s.ancora}
-              href={"#" + s.ancora}
-              onClick={() => setDeschis(false)}
-              className="border-b border-linie py-3 text-[16px] text-tus-2 no-underline last:border-b-0 hover:text-tus"
-            >
-              {s.scurt}
-            </a>
-          ))}
-        </Invelis>
+          <Link
+            href={CALE_DISCUTIE}
+            className="py-3.5 font-afis text-[19px] font-semibold tracking-[0.1em] uppercase text-arama-clar no-underline"
+          >
+            Discuție de 30 de minute
+          </Link>
+        </div>
       </div>
     </header>
   );

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
+import { Barlow, Barlow_Condensed, IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
-import BaraAnunt from "@/components/BaraAnunt";
 import DateStructurate from "@/components/DateStructurate";
 import Navigatie from "@/components/Navigatie";
 import Subsol from "@/components/Subsol";
@@ -19,6 +18,22 @@ const serifa = Source_Serif_4({
 
 const corp = IBM_Plex_Sans({
   variable: "--font-corp",
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+// Fonturile vitrinei. `latin-ext` din acelasi motiv ca la celelalte: fara el, s si t cu
+// virgula cad pe fontul de rezerva in mijlocul cuvantului.
+const afis = Barlow_Condensed({
+  variable: "--font-afis",
+  subsets: ["latin", "latin-ext"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+
+const vitrina = Barlow({
+  variable: "--font-vitrina",
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600"],
   display: "swap",
@@ -82,7 +97,7 @@ export default function RootLayout({
   return (
     <html lang="ro">
       <body
-        className={`${serifa.variable} ${corp.variable} ${masina.variable} antialiased`}
+        className={`${serifa.variable} ${corp.variable} ${masina.variable} ${afis.variable} ${vitrina.variable} antialiased`}
       >
         <DateStructurate />
         <a
@@ -91,7 +106,6 @@ export default function RootLayout({
         >
           Săriți la conținut
         </a>
-        <BaraAnunt />
         <Navigatie />
         {/* `tabIndex={-1}` nu e decorativ: fara el, "Sariti la continut" schimba doar hash-ul,
             iar focalizarea ramane pe BODY - masurat: dupa Enter, document.activeElement
