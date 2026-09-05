@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import AntetPagina from "@/components/AntetPagina";
 import BandaTitlu from "@/components/BandaTitlu";
-import BaraAnunt from "@/components/BaraAnunt";
-import BaraNavigare from "@/components/BaraNavigare";
 import BlocDovada from "@/components/BlocDovada";
 import Buton from "@/components/Buton";
 import CardSegment from "@/components/CardSegment";
 import FisaDomeniu from "@/components/FisaDomeniu";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
-import SubsolPagina from "@/components/SubsolPagina";
 import { HUB, INDIFERENT_DE_DOMENIU, SEGMENTE } from "@/content/segmente";
 
 // Hub-ul de domenii. Nu contine continut scris de mana despre vreun segment: lista se
@@ -32,15 +29,7 @@ const PE_LISTA = SEGMENTE.filter((s) => s.pagina === null);
 export default function Solutii() {
   return (
     <>
-      <a
-        className="absolute top-[-100px] left-4 z-[99] bg-verde px-4 py-3 font-mono text-fisa text-white no-underline focus:top-3"
-        href="#continut"
-      >
-        Săriți la conținut
-      </a>
 
-      <BaraAnunt />
-      <BaraNavigare />
 
       <main id="continut">
         <AntetPagina
@@ -147,7 +136,6 @@ export default function Solutii() {
         </SectiuneRegistru>
       </main>
 
-      <SubsolPagina />
     </>
   );
 }

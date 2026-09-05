@@ -54,7 +54,7 @@ function LegaturaSubsol({ href, children }: { href: string; children: React.Reac
 function Coloana({ titlu, legaturi }: { titlu: string; legaturi: Legatura[] }) {
   return (
     <div>
-      <h4 className={TITLU_COLOANA}>{titlu}</h4>
+      <h2 className={TITLU_COLOANA}>{titlu}</h2>
       <ul className="m-0 list-none p-0">
         {legaturi.map((l) => (
           <li key={l.href + l.text} className="mb-2.5 text-[15.5px]">
@@ -121,7 +121,7 @@ export default function Subsol() {
           <Coloana titlu="Pe pagina de start" legaturi={PE_ACASA} />
 
           <div>
-            <h4 className={TITLU_COLOANA}>Scrieți-ne</h4>
+            <h2 className={TITLU_COLOANA}>Scrieți-ne</h2>
             <p className="m-0 mb-2.5 text-[15.5px]">
               <a href="mailto:contact@3s.ro" className={LEGATURA}>
                 contact@3s.ro

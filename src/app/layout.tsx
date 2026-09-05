@@ -34,13 +34,13 @@ const masina = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(ADRESA_BAZA),
   title: {
-    default: "3S - Scan Store Solve | Arhiva care raspunde",
+    default: "3S - Scan Store Solve | Arhiva care răspunde",
     template: "%s | 3S - Scan Store Solve",
   },
   // Descrierea sta sub 160 de caractere: peste prag, motoarele o taie si ultima
   // propozitie se pierde. Poarta S-01 masoara si opreste lotul.
   description:
-    "Arhivare fizica, digitalizare si cautare in documente pentru primarii, notari si firme. Intrebati in romana, raspunsul vine cu pagina din care provine.",
+    "Arhivare fizică, digitalizare și căutare în documente pentru primării, notari și firme. Întrebați în română, răspunsul vine cu pagina din care provine.",
   //
   // AICI NU SE DECLARA CANONICAL. Nu e o omisiune, e regula.
   //

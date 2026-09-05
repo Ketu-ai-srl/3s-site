@@ -65,12 +65,60 @@ TIPAR_TEXT_JSX = re.compile(r'>([^<>{}]{3,})<')
 #
 # Extragerea are de acum martorii ei in `controale()`. Martorii vechi probau doar
 # `analizeaza()`, adica pasul de DUPA extragere - tocmai pasul care nu era stricat.
-TIPARE_SIRURI = (
-    re.compile(r'"((?:[^"\\\n]|\\.)*)"'),
-    re.compile(r"'((?:[^'\\\n]|\\.)*)'"),
-    re.compile(r'`((?:[^`\\]|\\.)*)`', re.S),
-)
+#
+# A DOUA reparatie, in aceeasi zi: tiparele nu stiau ce e COMENTARIU. Un identificator
+# citat cu accente grave intr-o nota - `pagina: PRIMARII`, scris ca sa explice cum se
+# adauga un segment - devenea "text romanesc fara diacritice", fiindca sirul sablon se
+# potriveste oriunde, si in proza. E acelasi tipar ca peste tot: o explicatie care
+# CITEAZA constructia pe litere devine o instanta a ei. Deci extragerea nu mai e o
+# colectie de tipare, ci un scaner care stie in ce stare e: cod, sir, comentariu.
 LUNGIME_MINIMA_SIR = 12
+BSLASH = chr(92)
+
+
+def siruri_din_cod(continut):
+    """Continutul sirurilor dintr-un fisier TypeScript, fara ce e in comentarii.
+
+    Un scaner, nu tipare: numai asa se poate deosebi `//` dintr-o adresa web de `//`
+    care incepe o nota, si numai asa un sir citat intr-un comentariu nu ajunge sa fie
+    masurat ca text de citit. Nu e un parser de TypeScript si nu trebuie sa fie -
+    trebuie doar sa nu confunde cele trei stari.
+    """
+    siruri = []
+    i, n = 0, len(continut)
+    while i < n:
+        c = continut[i]
+        if c == '/' and i + 1 < n and continut[i + 1] == '/':
+            j = continut.find('\n', i)
+            i = n if j < 0 else j + 1
+            continue
+        if c == '/' and i + 1 < n and continut[i + 1] == '*':
+            j = continut.find('*/', i + 2)
+            i = n if j < 0 else j + 2
+            continue
+        if c in ('"', "'", '`'):
+            inceput = i + 1
+            i += 1
+            while i < n:
+                if continut[i] == BSLASH:
+                    i += 2
+                    continue
+                if continut[i] == c:
+                    break
+                # Un sir cu ghilimele simple sau duble nu trece de capatul randului:
+                # daca vad linie noua inainte de inchidere, nu era un sir, era altceva
+                # (o apostrofa in proza, un operator). Ma opresc si reiau de acolo.
+                if continut[i] == '\n' and c != '`':
+                    break
+                i += 1
+            if i < n and continut[i] == c:
+                siruri.append(continut[inceput:i])
+                i += 1
+            else:
+                i = inceput
+            continue
+        i += 1
+    return siruri
 
 
 def pare_cod(bucata):
@@ -97,8 +145,7 @@ def text_vizibil(cale, continut):
     """
     if cale.endswith(('.tsx', '.ts')):
         bucati = TIPAR_TEXT_JSX.findall(continut) if cale.endswith('.tsx') else []
-        for tipar in TIPARE_SIRURI:
-            bucati += [s for s in tipar.findall(continut) if len(s) >= LUNGIME_MINIMA_SIR]
+        bucati += [s for s in siruri_din_cod(continut) if len(s) >= LUNGIME_MINIMA_SIR]
         return '\n'.join(b for b in bucati if not pare_cod(b))
     return continut
 
@@ -166,6 +213,11 @@ def controale():
         '  titlu: "3S - arhiva care raspunde repede",',
         "  nota: 'Va pastram documentele in conditii de siguranta.',",
         '  sablon: ' + g + 'Termenul de pastrare a fost stabilit prin lege.' + g + ',',
+        # nota care CITEAZA un identificator: nu e text de citit, e explicatie de cod
+        '  // se scrie ' + g + 'pagina: PRIMARII' + g + ' in lista de segmente',
+        # adresa web cu doua bare INTR-UN SIR: nu incepe un comentariu
+        '  adresa: "https://exemplu.test/pagina-de-proba",',
+        '  dupa: "Documentele se pastreaza in depozit.",',
         '};',
     ])
     extras = text_vizibil('proba.ts', sursa)
@@ -175,6 +227,12 @@ def controale():
                     'poarta ar iesi 0 fiindca nu citeste, nu fiindca e curat')
     if not analizeaza(extras):
         return 'martorul de extragere: textul extras contine greseli, dar analiza nu le-a gasit'
+    if 'PRIMARII' in extras:
+        return ('martorul de comentariu: un identificator citat intr-o nota a fost extras ca text - '
+                'poarta ar cere sa se strice o explicatie corecta')
+    if 'Documentele se pastreaza' not in extras:
+        return ('martorul de adresa web: scanerul a luat cele doua bare dintr-o adresa drept inceput '
+                'de comentariu si a inghitit restul fisierului')
 
     # Si controlul opus: un fisier care contine NUMAI cod nu trebuie sa produca text.
     doar_cod = 'import { useState } from "react";\nconst x = a.b_ + 1;\n'

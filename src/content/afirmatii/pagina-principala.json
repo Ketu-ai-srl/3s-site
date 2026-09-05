@@ -70,5 +70,14 @@
     "sursa": "nu exista certificat emis; afirmatie negativa, verificabila prin absenta",
     "confirmat_de": "Ketu, 2026-09-05",
     "data": "2026-09-05"
+  },
+  {
+    "id": "adresa-contact",
+    "text": "Adresa contact@3s.ro este a noastra si cutia postala exista",
+    "unde": "src/app/page.tsx, src/components/Subsol.tsx, config/entitate.ro.json",
+    "stare": "neconfirmat",
+    "sursa": "",
+    "confirmat_de": "",
+    "data": ""
   }
 ]

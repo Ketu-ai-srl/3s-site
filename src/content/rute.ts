@@ -44,6 +44,24 @@ export const RUTE: Ruta[] = [
     inMeniu: false,
     inHarta: true,
   },
+  {
+    cale: "/solutii",
+    scurt: "Domenii",
+    descriere:
+      "Ce facem pentru fiecare domeniu: notari, primării, contabilitate, avocatură, construcții, logistică.",
+    inMeniu: true,
+    inHarta: true,
+  },
+  {
+    cale: "/solutii/notari",
+    scurt: "Birouri notariale",
+    descriere:
+      "Preluare cu proces-verbal și inventar, digitizare și căutare care citează pagina.",
+    // Pagina de segment nu urca in bara de sus: intrarea in domenii se face prin hub,
+    // iar o bara care creste cu fiecare segment nou devine ilizibila la al treilea.
+    inMeniu: false,
+    inHarta: true,
+  },
 ];
 
 export type SectiuneAcasa = {

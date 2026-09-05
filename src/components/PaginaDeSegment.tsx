@@ -1,14 +1,11 @@
 import Link from "next/link";
 import AntetPagina from "./AntetPagina";
-import BaraAnunt from "./BaraAnunt";
-import BaraNavigare from "./BaraNavigare";
 import BlocDovada from "./BlocDovada";
 import Buton from "./Buton";
 import CardSegment from "./CardSegment";
 import ListaBifa from "./ListaBifa";
 import RandRaspundere from "./RandRaspundere";
 import SectiuneRegistru from "./SectiuneRegistru";
-import SubsolPagina from "./SubsolPagina";
 import { HUB, type PaginaSegment } from "@/content/segmente";
 
 // Corpul unei pagini de segment, o singura data pentru toate segmentele.
@@ -33,15 +30,7 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
 
   return (
     <>
-      <a
-        className="absolute top-[-100px] left-4 z-[99] bg-verde px-4 py-3 font-mono text-fisa text-white no-underline focus:top-3"
-        href="#continut"
-      >
-        Săriți la conținut
-      </a>
 
-      <BaraAnunt />
-      <BaraNavigare />
 
       <main id="continut">
         <AntetPagina
@@ -192,7 +181,6 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
         </SectiuneRegistru>
       </main>
 
-      <SubsolPagina />
     </>
   );
 }
