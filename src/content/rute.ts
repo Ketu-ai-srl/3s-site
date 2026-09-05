@@ -60,6 +60,31 @@ export const RUTE: Ruta[] = [
   //
   // Ordinea marcajelor = ordinea din bara de sus. Se muta doar de dispecer.
 
+  // Cele doua pagini de mai jos stau pe `inMeniu: false`, ca toate cele adaugate dupa
+  // masuratoarea de derapaj de la 390 px: bara de sus e la capacitate cu o intrare de
+  // pagina plus butonul, iar bara sta in layout, deci un rand in plus sparge fiecare
+  // pagina a site-ului deodata, nu doar pe ale feliei. Locul lor firesc e oricum
+  // subsolul, care listeaza toate rutele: o declaratie de accesibilitate si o pagina de
+  // securitate se cauta acolo sau direct din adresa, nu in navigatia principala. In
+  // harta de site intra amandoua - sunt pagini publice, cerute pe nume in dosarele de
+  // achizitie.
+  {
+    cale: "/securitate",
+    scurt: "Securitate",
+    descriere:
+      "Lanțul întreg: depozitul și accesul în el, transportul, cine vede ce document, ieșirea din contract și eliminarea cu aviz.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/accesibilitate",
+    scurt: "Accesibilitate",
+    descriere:
+      "Ce se măsoară automat la fiecare publicare, ce nu a fost măsurat niciodată și cum ne semnalați o problemă.",
+    inMeniu: false,
+    inHarta: true,
+  },
+
   // <<felie:mecanism>>
   //
   // De ce cele doua pagini de mai jos NU urca in bara de sus, cu cifre, nu cu impresii.
