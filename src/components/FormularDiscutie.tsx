@@ -56,12 +56,13 @@ export default function FormularDiscutie() {
             className="border-l-[3px] border-verde bg-verde-moale px-6 py-4 text-[16px] text-verde"
           >
             <p className="font-semibold">
-              Am primit cererea, {nume.trim().split(" ")[0]}.
+              Formularul nu trimite încă nimic, {nume.trim().split(" ")[0]}.
             </p>
             <p className="mt-2.5">
-              Vă răspundem în aceeași zi lucrătoare, cu două intervale de discuție propuse și
-              cu lista scurtă a lucrurilor pe care e bine să le aveți la îndemână: numărul
-              aproximativ de metri liniari și tipurile de documente cerute cel mai des.
+              Suntem pe mediul de probă, iar cererea rămâne în pagină: nu pleacă niciun e-mail
+              și nu se salvează nimic. Livrarea cererii se leagă la pasul următor, împreună cu
+              informarea privind prelucrarea datelor. Când va fi gata, răspunsul vine în aceeași
+              zi lucrătoare, cu două intervale de discuție propuse.
             </p>
           </div>
         </div>

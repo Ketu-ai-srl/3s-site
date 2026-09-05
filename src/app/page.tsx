@@ -1,7 +1,6 @@
 import BandaTitlu from "@/components/BandaTitlu";
 import BaraAnunt from "@/components/BaraAnunt";
 import BlocDovada from "@/components/BlocDovada";
-import Buton from "@/components/Buton";
 import CardCompact from "@/components/CardCompact";
 import CardSegment from "@/components/CardSegment";
 import Erou from "@/components/Erou";
@@ -11,14 +10,12 @@ import Navigatie from "@/components/Navigatie";
 import Pas from "@/components/Pas";
 import RandRaspundere from "@/components/RandRaspundere";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
-import SigiliuVerificat from "@/components/SigiliuVerificat";
 import Subsol from "@/components/Subsol";
 import VerificatorTermene from "@/components/VerificatorTermene";
 
-// Data verificării conținutului. Se schimbă aici, într-un singur loc, și ajunge
-// și pe sigiliu, și în subsol.
+// Data la care au fost preluate termenele din actele normative. Se schimba aici,
+// intr-un singur loc.
 const VERIFICAT = "5 septembrie 2026";
-const VERIFICAT_SCURT = "05.09.2026";
 
 const PASI = [
   {
@@ -149,11 +146,12 @@ export default function Acasa() {
           lead="Alegeți tipul de document și primiți termenul, momentul din care curge și articolul de lege din care provine. Unde nu putem susține o cifră, rândul rămâne gol și scriem de ce."
         >
           <div className="mb-8 flex flex-wrap items-center gap-4">
-            <SigiliuVerificat data={VERIFICAT} dataScurta={VERIFICAT_SCURT} />
-            <p className="max-w-[34ch] text-nota text-tus-2">
-              <b className="font-semibold text-tus">Verificat la {VERIFICAT}</b> de arhivistul
-              care avizează nomenclatoarele noastre. Când o lege se modifică, se schimbă data
-              de aici, nu doar textul.
+            <p className="max-w-[54ch] text-nota text-tus-2">
+              <b className="font-semibold text-tus">Termenele sunt preluate din actele normative
+              citate pe fiecare rând</b>, la {VERIFICAT}, ca să le puteți verifica singur la sursă.
+              Confirmarea lor de către un arhivist autorizat se face înainte de publicare; până
+              atunci sunt un punct de plecare, nu un aviz. Când o lege se modifică, se schimbă
+              data de aici, nu doar textul.
             </p>
           </div>
 
@@ -280,10 +278,6 @@ export default function Acasa() {
                 . Nu afișăm număr de telefon: solicitările intră prin formular sau email, ca să
                 rămână o urmă scrisă a cererii dumneavoastră și a răspunsului nostru.
               </p>
-
-              <Buton href="#continut" fel="contur" className="mt-6">
-                Reluați pagina de la început
-              </Buton>
             </div>
 
             <FormularDiscutie />

@@ -69,6 +69,10 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Navigatia e lipita sus, deci o ancora ar ateriza SUB ea. Rezerva de aici
+       e inaltimea barei plus o rasuflare, ca titlul sectiunii sa ramana citibil
+       cand se sare la el din meniu. */
+    scroll-padding-top: 76px;
   }
 
   body {
