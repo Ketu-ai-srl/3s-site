@@ -65,6 +65,37 @@ export const RUTE: Ruta[] = [
   // <<felie:segmente>>
 
   // <<felie:despre-contact>>
+  //
+  // DE CE AMANDOUA CU `inMeniu: false`, desi sunt pagini de sine statatoare. Nu e o
+  // preferinta editoriala, e o masuratoare. Cu ele doua puse in bara de sus, poarta de
+  // derapaj de la 390 px s-a inrosit pe TOATE cele cinci pagini deodata, cu aceeasi
+  // cifra: scrollWidth 487 px la innerWidth 390 (devicePixelRatio 1), iar elementul care
+  // depaseste e `nav.ml-auto` din `Navigatie.tsx`, impreuna cu butonul de discutie.
+  // Bara de sus e la capacitate cu O SINGURA intrare de pagina plus butonul: chiar si una
+  // singura ar fi lasat-o peste 390 px (487 minus latimea unui element si a unei
+  // distante, tot peste prag).
+  //
+  // Comentariul din `Navigatie.tsx` prevede exact situatia asta si spune ce urmeaza:
+  // cand lista creste, se pune acolo un meniu pliabil. Fisierul ala nu e al feliei de
+  // fata, deci intrarile stau pe `false` pana il atinge felia care are voie. Pana atunci
+  // paginile nu sunt orfane: subsolul listeaza TOATE rutele din `RUTE`, pe fiecare
+  // pagina, iar cele doua se leaga si intre ele, si din antetul fiecareia.
+  {
+    cale: "/despre",
+    scurt: "Despre",
+    descriere:
+      "Cine este 3S, ce vine de la ADRIA, firma-mamă, și ce nu putem susține încă.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/contact",
+    scurt: "Contact",
+    descriere:
+      "Pe ce drum ajunge un mesaj la noi și care drumuri nu există încă.",
+    inMeniu: false,
+    inHarta: true,
+  },
 
   // <<felie:juridic>>
 
