@@ -8,9 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "porti": "python .claude/scripts/porti/poarta-tipografie.py",
+    "porti": "python .claude/scripts/porti/poarta-tipografie.py && python .claude/scripts/porti/poarta-limba.py && python .claude/scripts/porti/poarta-afirmatii.py",
     "test": "vitest run",
-    "verifica": "pnpm lint && pnpm typecheck && pnpm porti && pnpm build && pnpm test"
+    "verifica": "pnpm lint && pnpm typecheck && pnpm porti && pnpm build && pnpm test",
+    "staging": "bash .claude/scripts/porti/verifica-staging.sh"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
