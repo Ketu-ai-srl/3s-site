@@ -42,7 +42,21 @@ export type PaginaSegment = {
   descriereMeta: string;
   eticheta: string;
   h1: string;
+  /**
+   * Linia de sub titlu, pe ecranul de deschidere. Sub 40 de cuvinte, regula directiei:
+   * un ecran spune un singur lucru. Ce nu incape aici NU se taie, trece in `continuare`.
+   */
   lead: string;
+  /**
+   * Restul deschiderii, mutat SUB ecran, ca linie de deschidere a primei sectiuni.
+   *
+   * De ce exista campul. Cele sapte lead-uri aveau intre 38 si 73 de cuvinte, adica de
+   * pana la doua ori peste pragul directiei, si impingeau butonul spre marginea de jos a
+   * ecranului. Taierea ar fi pierdut text scris atribuit - inclusiv propozitia care spune
+   * ce SCRIE pagina si unde nu avem raspuns, adica exact semnalul de onestitate. Asa
+   * ecranul respira si nu se pierde niciun rand.
+   */
+  continuare: string;
   durere: Fapt[];
   schimbare: Fapt[];
   /** Ce poate verifica cineva inainte sa ne creada pe cuvant. */
@@ -76,7 +90,9 @@ export const NOTARI: PaginaSegment = {
   eticheta: "Domenii · Birouri notariale",
   h1: "Un act din 2009, o cerere de azi, și rafturile dintre ele.",
   lead:
-    "Arhiva unui birou notarial nu are un moment în care se golește. Crește în fiecare zi lucrătoare, se păstrează ani lungi și se caută după nume, dată și număr de înregistrare. Pagina asta scrie ce preluăm noi, ce rămâne la biroul dumneavoastră și unde încă nu avem un răspuns pe care să îl putem susține.",
+    "Arhiva unui birou notarial nu are un moment în care se golește. Crește în fiecare zi lucrătoare, se păstrează ani lungi și se caută după nume, dată și număr de înregistrare.",
+  continuare:
+    "Pagina asta scrie ce preluăm noi, ce rămâne la biroul dumneavoastră și unde încă nu avem un răspuns pe care să îl putem susține.",
 
   durere: [
     {
@@ -135,7 +151,7 @@ export const NOTARI: PaginaSegment = {
   ],
 
   notaTermene:
-    "Nu scriem aici un termen în ani pentru actele notariale, fiindcă nu îl putem cita pe articol. Este același rând gol pe care îl lăsăm și la dosarele cabinetelor de avocatură, în verificatorul de termene de pe pagina de start: preferăm golul în locul unei cifre pe care nu am putea să o susținem în fața unui control. Termenul care vă obligă este cel din nomenclatorul arhivistic propriu al biroului, avizat de Arhivele Naționale. Dacă lucrați într-un birou notarial și cunoașteți articolul, scrieți-ne și îl publicăm cu trimiterea la act.",
+    "Nu scriem aici un termen în ani pentru actele notariale, fiindcă nu îl putem cita pe articol. Este același rând gol pe care îl lăsăm și la dosarele cabinetelor de avocatură, în verificatorul de termene de păstrare: preferăm golul în locul unei cifre pe care nu am putea să o susținem în fața unui control. Termenul care vă obligă este cel din nomenclatorul arhivistic propriu al biroului, avizat de Arhivele Naționale. Dacă lucrați într-un birou notarial și cunoașteți articolul, scrieți-ne și îl publicăm cu trimiterea la act.",
 
   intrebari: [
     {
@@ -182,9 +198,11 @@ export const PRIMARII: PaginaSegment = {
   descriereMeta:
     "Ce facem pentru o primărie: inventar pe nomenclatorul instituției, categorii permanente marcate ca atare și căutare care citează pagina. Actele, numite.",
   eticheta: "Domenii · Primării și instituții publice",
-  h1: "Omul așteaptă la ghișeu, iar registrul e cu două etaje mai jos.",
+  h1: "Omul așteaptă la ghișeu, iar registrul e cu două etaje mai\u00a0jos.",
   lead:
-    "Arhiva unei primării nu e făcută de cine o administrează azi. S-a strâns peste mandate, are categorii care nu se elimină niciodată și un nomenclator care se avizează la Arhivele Naționale. Pagina asta scrie ce preluăm noi, ce rămâne obligația instituției și unde încă nu avem un răspuns pe care să îl putem susține.",
+    "Arhiva unei primării nu e făcută de cine o administrează azi. S-a strâns peste mandate, are categorii care nu se elimină niciodată și un nomenclator care se avizează la Arhivele Naționale.",
+  continuare:
+    "Pagina asta scrie ce preluăm noi, ce rămâne obligația instituției și unde încă nu avem un răspuns pe care să îl putem susține.",
 
   durere: [
     {
@@ -248,7 +266,7 @@ export const PRIMARII: PaginaSegment = {
   ],
 
   notaTermene:
-    "Termenele de mai sus le putem cita pe articol și stau, fiecare cu actul lui, în verificatorul de pe pagina de start. Ce nu scriem este numărul de ani pentru fiecare categorie din nomenclatorul dumneavoastră: acela nu vine dintr-o lege generală, ci din nomenclatorul propriu al instituției, avizat de Arhivele Naționale. Dacă nomenclatorul dumneavoastră spune altceva decât o listă tipărită de un furnizor, nomenclatorul câștigă, iar noi ne aliniem la el.",
+    "Termenele de mai sus le putem cita pe articol și stau, fiecare cu actul lui, în verificatorul de termene de păstrare. Ce nu scriem este numărul de ani pentru fiecare categorie din nomenclatorul dumneavoastră: acela nu vine dintr-o lege generală, ci din nomenclatorul propriu al instituției, avizat de Arhivele Naționale. Dacă nomenclatorul dumneavoastră spune altceva decât o listă tipărită de un furnizor, nomenclatorul câștigă, iar noi ne aliniem la el.",
 
   intrebari: [
     {
@@ -284,9 +302,11 @@ export const CONTABILITATE: PaginaSegment = {
   descriereMeta:
     "Ce facem pentru un birou de contabilitate: fond separat pe firmă și pe an, statele de salarii ținute deoparte de la preluare, căutare cu sursa citată.",
   eticheta: "Domenii · Birouri de contabilitate",
-  h1: "Cinci ani pentru facturi, cincizeci pentru statele de salarii, același dulap.",
+  h1: "Cinci ani pentru facturi, cincizeci pentru statele de salarii, același\u00a0dulap.",
   lead:
-    "Un birou de contabilitate păstrează hârtia altora, pe termene care diferă de zece ori între ele și care ies din aceeași imprimantă, în aceeași lună. Pagina asta scrie ce preluăm, cum se separă fondul fiecărei firme și unde încă nu avem un răspuns pe care să îl putem susține.",
+    "Un birou de contabilitate păstrează hârtia altora, pe termene care diferă de zece ori între ele și care ies din aceeași imprimantă, în aceeași lună.",
+  continuare:
+    "Pagina asta scrie ce preluăm, cum se separă fondul fiecărei firme și unde încă nu avem un răspuns pe care să îl putem susține.",
 
   durere: [
     {
@@ -388,7 +408,9 @@ export const AVOCATURA: PaginaSegment = {
   eticheta: "Domenii · Case de avocatură",
   h1: "Termenul e miercuri, iar înscrisul e în al șaptelea biblioraft.",
   lead:
-    "Un dosar de instanță se măsoară în bibliorafturi, iar termenele care contează se măsoară în zile. Pagina asta scrie ce preluăm, cum se dă accesul pe dosar și de ce lăsăm gol, dinadins, rândul cu termenul de păstrare.",
+    "Un dosar de instanță se măsoară în bibliorafturi, iar termenele care contează se măsoară în zile.",
+  continuare:
+    "Pagina asta scrie ce preluăm, cum se dă accesul pe dosar și de ce lăsăm gol, dinadins, rândul cu termenul de păstrare.",
 
   durere: [
     {
@@ -448,7 +470,7 @@ export const AVOCATURA: PaginaSegment = {
   ],
 
   notaTermene:
-    "Rândul cu termenul de păstrare a dosarelor de cabinet este gol în verificatorul de pe pagina de start, și rămâne gol. Nu am găsit o normă generală unică, aplicabilă tuturor dosarelor, pe care să o putem cita cu articol; termenul se construiește din statutul profesiei, din contractul de asistență juridică și din nomenclatorul propriu al cabinetului. Preferăm golul în locul unei cifre pe care nu am putea să o susținem în fața unui control. Îl completăm cu trimiterea la act în ziua în care îl avem, iar dacă lucrați într-un cabinet și cunoașteți temeiul, scrieți-ne și îl publicăm cu trimiterea lui.",
+    "Rândul cu termenul de păstrare a dosarelor de cabinet este gol în verificatorul de termene de păstrare, și rămâne gol. Nu am găsit o normă generală unică, aplicabilă tuturor dosarelor, pe care să o putem cita cu articol; termenul se construiește din statutul profesiei, din contractul de asistență juridică și din nomenclatorul propriu al cabinetului. Preferăm golul în locul unei cifre pe care nu am putea să o susținem în fața unui control. Îl completăm cu trimiterea la act în ziua în care îl avem, iar dacă lucrați într-un cabinet și cunoașteți temeiul, scrieți-ne și îl publicăm cu trimiterea lui.",
 
   intrebari: [
     {
@@ -497,9 +519,11 @@ export const CONSTRUCTII: PaginaSegment = {
   descriereMeta:
     "Ce facem pentru un constructor: dosarul de șantier inventariat pe obiectiv, cartea tehnică predată și un exemplar digital care rămâne firmei.",
   eticheta: "Domenii · Firme de construcții și dezvoltatori",
-  h1: "Fisura a apărut luna trecută. Betonul s-a turnat acum șapte ani.",
+  h1: "Fisura a apărut luna trecută. Betonul s-a turnat acum șapte\u00a0ani.",
   lead:
-    "Arhiva unei firme de construcții nu crește lună de lună, ci în valuri: un șantier produce metri de dosare cât ține execuția, apoi tace. Ce rămâne după el se predă proprietarului și, în același timp, vă rămâne dumneavoastră, fiindcă răspunderea nu se închide odată cu recepția. Pagina asta scrie ce preluăm, ce rămâne obligația firmei și unde încă nu avem un răspuns pe care să îl putem susține.",
+    "Arhiva unei firme de construcții nu crește lună de lună, ci în valuri: un șantier produce metri de dosare cât ține execuția, apoi tace.",
+  continuare:
+    "Ce rămâne după el se predă proprietarului și, în același timp, vă rămâne dumneavoastră, fiindcă răspunderea nu se închide odată cu recepția. Pagina asta scrie ce preluăm, ce rămâne obligația firmei și unde încă nu avem un răspuns pe care să îl putem susține.",
 
   durere: [
     {
@@ -564,7 +588,7 @@ export const CONSTRUCTII: PaginaSegment = {
   ],
 
   notaTermene:
-    "O singură durată din dosarul unui șantier o putem cita pe articol: cartea tehnică a construcției se păstrează pe toată durata existenței construcției, potrivit HG nr. 273/1994, iar rândul stă cu actul lui în verificatorul de pe pagina de start. Pentru celelalte piese - jurnalul de șantier, buletinele de încercări, dosarele subantreprenorilor - nu punem un număr de ani pe pagină. Termenul lor se compune din contract, din durata răspunderii pentru vicii și din nomenclatorul arhivistic propriu al firmei, iar noi nu adunăm cifrele acelea în locul dumneavoastră. Dacă lucrați într-o firmă de construcții și aveți articolul, scrieți-ne și îl publicăm cu trimiterea la act.",
+    "O singură durată din dosarul unui șantier o putem cita pe articol: cartea tehnică a construcției se păstrează pe toată durata existenței construcției, potrivit HG nr. 273/1994, iar rândul stă cu actul lui în verificatorul de termene de păstrare. Pentru celelalte piese - jurnalul de șantier, buletinele de încercări, dosarele subantreprenorilor - nu punem un număr de ani pe pagină. Termenul lor se compune din contract, din durata răspunderii pentru vicii și din nomenclatorul arhivistic propriu al firmei, iar noi nu adunăm cifrele acelea în locul dumneavoastră. Dacă lucrați într-o firmă de construcții și aveți articolul, scrieți-ne și îl publicăm cu trimiterea la act.",
 
   intrebari: [
     {
@@ -602,7 +626,9 @@ export const LOGISTICA: PaginaSegment = {
   eticheta: "Domenii · Transport și logistică",
   h1: "Exemplarul care contează are o mențiune scrisă de mână la descărcare.",
   lead:
-    "Hârtia unui transportator se produce pe drum, se semnează la rampă și se întoarce în geanta șoferului, cu întârziere. Volumul e mare, formatul e mărunt și repetitiv, iar documentul care decide o reclamație de marfă este tocmai cel pe care cineva a scris trei rânduri cu pixul. Pagina asta scrie ce preluăm, cum se regăsește o cursă și unde încă nu avem un răspuns pe care să îl putem susține.",
+    "Hârtia unui transportator se produce pe drum, se semnează la rampă și se întoarce în geanta șoferului, cu întârziere.",
+  continuare:
+    "Volumul e mare, formatul e mărunt și repetitiv, iar documentul care decide o reclamație de marfă este tocmai cel pe care cineva a scris trei rânduri cu pixul. Pagina asta scrie ce preluăm, cum se regăsește o cursă și unde încă nu avem un răspuns pe care să îl putem susține.",
 
   durere: [
     {
@@ -667,7 +693,7 @@ export const LOGISTICA: PaginaSegment = {
   ],
 
   notaTermene:
-    "Cele trei termene de mai sus le putem cita pe articol și stau, fiecare cu actul lui, în verificatorul de pe pagina de start. Rândul rămâne gol pentru documentele din afara contabilității: datele din tahograf, foile de parcurs și evidența timpilor de conducere și odihnă au propriul regim, pe care nu îl putem cita încă cu articol. Mai este o graniță pe care nu o trecem: dacă un anume document justifică sau nu o înregistrare contabilă este răspunsul contabilului dumneavoastră. Noi păstrăm ce ne dați, pe termenul pe care îl scrieți în nomenclatorul propriu, și îl marcăm ca atare din ziua preluării.",
+    "Cele trei termene de mai sus le putem cita pe articol și stau, fiecare cu actul lui, în verificatorul de termene de păstrare. Rândul rămâne gol pentru documentele din afara contabilității: datele din tahograf, foile de parcurs și evidența timpilor de conducere și odihnă au propriul regim, pe care nu îl putem cita încă cu articol. Mai este o graniță pe care nu o trecem: dacă un anume document justifică sau nu o înregistrare contabilă este răspunsul contabilului dumneavoastră. Noi păstrăm ce ne dați, pe termenul pe care îl scrieți în nomenclatorul propriu, și îl marcăm ca atare din ziua preluării.",
 
   intrebari: [
     {
@@ -703,9 +729,11 @@ export const IMOBILIARE: PaginaSegment = {
   descriereMeta:
     "Ce facem pentru o agenție imobiliară sau un administrator de imobile: dosare regăsite după adresă, acces nominal cu jurnal peste datele personale.",
   eticheta: "Domenii · Agenții imobiliare și administrare de imobile",
-  h1: "Cine mai are dosarul apartamentului vândut acum cinci ani?",
+  h1: "Cine mai are dosarul apartamentului vândut acum cinci\u00a0ani?",
   lead:
-    "Un dosar de tranzacție se închide odată cu semnătura la notar, dar nu dispare. Rămâne cu actele de proprietate, cu documentația cadastrală și cu datele unor oameni care nu vă mai sunt clienți. Se caută după adresă, se cere la ani distanță și trebuie predat sau șters exact cum spune legea. Pagina asta scrie ce preluăm, ce rămâne obligația agenției și unde încă nu avem un răspuns pe care să îl putem susține.",
+    "Un dosar de tranzacție se închide odată cu semnătura la notar, dar nu dispare.",
+  continuare:
+    "Rămâne cu actele de proprietate, cu documentația cadastrală și cu datele unor oameni care nu vă mai sunt clienți. Se caută după adresă, se cere la ani distanță și trebuie predat sau șters exact cum spune legea. Pagina asta scrie ce preluăm, ce rămâne obligația agenției și unde încă nu avem un răspuns pe care să îl putem susține.",
 
   durere: [
     {
@@ -770,7 +798,7 @@ export const IMOBILIARE: PaginaSegment = {
   ],
 
   notaTermene:
-    "Un singur termen din dosarul unei tranzacții îl putem cita pe articol: cei cinci ani ai documentelor justificative, din Legea contabilității, cu rândul lui în verificatorul de pe pagina de start. Restul dosarului - actele de proprietate, documentația cadastrală, copiile de acte de identitate - nu are un termen general pe care să îl putem cita, deci rândul rămâne gol, dinadins. El se compune din contractul de intermediere, din obligațiile fiscale și, pentru datele personale, din temeiul în baza căruia le păstrați. Când temeiul se stinge, datele se șterg, indiferent câți ani ar mai fi rămas dintr-un termen scris pe undeva. Dacă lucrați într-o agenție și cunoașteți articolul, scrieți-ne și îl publicăm cu trimiterea la act.",
+    "Un singur termen din dosarul unei tranzacții îl putem cita pe articol: cei cinci ani ai documentelor justificative, din Legea contabilității, cu rândul lui în verificatorul de termene de păstrare. Restul dosarului - actele de proprietate, documentația cadastrală, copiile de acte de identitate - nu are un termen general pe care să îl putem cita, deci rândul rămâne gol, dinadins. El se compune din contractul de intermediere, din obligațiile fiscale și, pentru datele personale, din temeiul în baza căruia le păstrați. Când temeiul se stinge, datele se șterg, indiferent câți ani ar mai fi rămas dintr-un termen scris pe undeva. Dacă lucrați într-o agenție și cunoașteți articolul, scrieți-ne și îl publicăm cu trimiterea la act.",
 
   intrebari: [
     {
@@ -859,9 +887,18 @@ export const HUB = {
   descriereMeta:
     "Arhivare fizică, digitizare și căutare cu sursa citată, pe domenii: notariat, primării, contabilitate, avocatură, construcții, transport, imobiliare.",
   eticheta: "Domenii deservite",
-  h1: "Fiecare domeniu întreabă altceva de la aceeași arhivă.",
+  // Ruperea de rand e scrisa AICI, in date, nu duplicata in pagina: pagina o randeaza
+  // taind sirul la newline. Fara ea, titlul se rupea la marginea de 24ch si lasa
+  // "ARHIVA." singura pe randul trei, la 83 px inaltime.
+  h1: "Fiecare domeniu\nîntreabă altceva\nde la aceeași arhivă.",
+  // Linia de pe ecranul de deschidere, sub 40 de cuvinte. A treia propozitie a plecat in
+  // `listaLead`, ca linie a sectiunii cu lista - nu s-a taiat: acolo e chiar la locul ei,
+  // deasupra listei despre care vorbeste.
   lead:
-    "Pașii sunt aceiași peste tot: ridicăm, inventariem, digitizăm, răspundem. Ce diferă este ce se cere des, cine controlează și cât se păstrează. Paginile de mai jos scriu diferența, domeniu cu domeniu, și spun pe față unde nu avem încă un răspuns.",
+    "Pașii sunt aceiași peste tot: ridicăm, inventariem, digitizăm, răspundem. Ce diferă este ce se cere des, cine controlează și cât se păstrează.",
+  /** Linia de deasupra listei de domenii. */
+  listaLead:
+    "Paginile de mai jos scriu diferența, domeniu cu domeniu, și spun pe față unde nu avem încă un răspuns.",
 };
 
 /** Ce nu depinde de domeniu. Se scrie o singura data si apare pe hub. */

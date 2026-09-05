@@ -30,9 +30,12 @@ type Props = {
   children: React.ReactNode;
 };
 
-const RAND = "grid gap-x-10 gap-y-2 py-6 md:grid-cols-[minmax(0,7fr)_minmax(0,9fr)_auto]";
+// Marimea numelui e cea de pe ecranul "Domenii" al paginii de start, cu o treapta in plus:
+// acolo lista e una dintre sase sectiuni si numele poarta un singur cuvant, aici lista ESTE
+// pagina. Masurat la 1280 px, pagina de start da 30,7 px pe rand; hub-ul da 33,3.
+const RAND = "grid gap-x-10 gap-y-2 py-7 md:grid-cols-[minmax(0,7fr)_minmax(0,9fr)_auto]";
 const NUME =
-  "font-afis text-[clamp(1.35rem,2.2vw,1.95rem)] font-semibold tracking-[0.04em] uppercase";
+  "font-afis text-[clamp(1.5rem,2.6vw,2.25rem)] font-semibold tracking-[0.04em] uppercase";
 const REZUMAT = "text-[16px] leading-[1.55] text-cerneala-2";
 
 export default function FisaDomeniu({ titlu, href, children }: Props) {
