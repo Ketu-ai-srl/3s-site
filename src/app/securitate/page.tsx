@@ -9,6 +9,7 @@ import MecanismRandFisa from "@/components/MecanismRandFisa";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import SecuritateIntrebare from "@/components/SecuritateIntrebare";
 import { SECURITATE as S } from "@/content/securitate";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Pagina de securitate. Ordinea sectiunilor e argumentul ei, deci nu se rearanjeaza fara
 // motiv: depozit, drum, acces, iesire - adica tot lantul pe hartie - si abia la sfarsit
@@ -36,6 +37,7 @@ export default function Securitate() {
     <main id="continut">
       <AntetPagina
         adresa="/securitate"
+        imagine={FOTOGRAFII.legatura}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Securitate" }]}
         eticheta={S.eticheta}
         titlu={S.h1}
@@ -197,15 +199,14 @@ export default function Securitate() {
       >
         <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{S.incheiere.text}</p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
             Programați o discuție de 30 de minute
           </Buton>
           <Buton
             href="/cum-functioneaza"
-            fel="contur"
+            fel="text"
             marime="mare"
-            className="max-sm:w-full"
           >
             Vedeți mecanismul cap la cap
           </Buton>

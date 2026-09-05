@@ -7,6 +7,7 @@ import ContactDrumuri, { type Drum } from "@/components/ContactDrumuri";
 import ListaBifa from "@/components/ListaBifa";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { campLipsa, entitate } from "@/content/entitate";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // PAGINA DE CONTACT, FĂRĂ FORMULAR. Decizia și motivul ei, scrise aici fiindcă e prima
 // întrebare pe care o pune oricine deschide fișierul.
@@ -87,6 +88,7 @@ export default function Contact() {
     <main id="continut">
       <AntetPagina
         adresa="/contact"
+        imagine={FOTOGRAFII.cutii}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Contact" }]}
         eticheta="Contact"
         titlu="Ne scrieți pe e-mail. Restul drumurilor nu există încă."
@@ -180,13 +182,13 @@ export default function Contact() {
           la arhiva dumneavoastră așa cum arată ea azi, nu la o prezentare a noastră.
         </p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           {ARE_EMAIL ? (
             <Buton href={CATRE} marime="mare" sageata className="max-sm:w-full">
               Scrieți-ne la {entitate.email}
             </Buton>
           ) : null}
-          <Buton href="/despre" fel="contur" marime="mare" className="max-sm:w-full">
+          <Buton href="/despre" fel="text" marime="mare">
             Cine suntem
           </Buton>
         </div>

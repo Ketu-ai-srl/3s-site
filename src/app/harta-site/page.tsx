@@ -4,6 +4,7 @@ import AntetPagina from "@/components/AntetPagina";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { PAGINI_JURIDICE } from "@/content/juridic";
 import { RUTE, SECTIUNI_ACASA, type Ruta } from "@/content/rute";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Harta site-ului pentru om. `sitemap.xml` exista de mult si e pentru masini; pagina asta
 // e pentru cineva care vrea sa vada dintr-o privire ce scrie pe site si sa aleaga.
@@ -71,6 +72,7 @@ export default function HartaSite() {
     <main id="continut">
       <AntetPagina
         adresa="/harta-site"
+        imagine={FOTOGRAFII.cutii}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Harta site-ului" }]}
         eticheta="Cuprins"
         titlu="Tot ce scrie pe site, într-o singură listă"

@@ -37,10 +37,24 @@
   --color-hartie-veche-3: #8a877f;
   --color-linie-noapte: #2a2a2e;
 
-  /* --- paleta veche (institutional, in lumina). Nu mai e implicitul. --------- */
+  /* --- paleta veche (institutional, in lumina). Nu mai e implicitul. ---------
+     `suprafata` a fost #ffffff pana pe 2026-09-06 si era gaura prin care directia
+     veche supravietuia tacut: patru fisiere scriau `bg-suprafata` si primeau un
+     document ALB pe un site de noapte, iar mecanismul de cerneala il tinea peste
+     4,5:1, deci nicio poarta de contrast nu se inrosea. Masurat inainte de mutare:
+     /termeni 80% suprafata deschisa la 1280 px si 84% la 390, /confidentialitate
+     83% / 86%, /cookies 74% / 79%, restul de 19 pagini 0%. De acum e noaptea
+     insasi, deci `bg-suprafata` scris din greseala nu mai poate produce o pagina
+     alba - da fundalul paginii. Cerneala lui s-a mutat, in `@layer base`, de pe
+     lista deschisa pe cea de noapte; cele doua trebuie sa se miste IMPREUNA,
+     altfel iese litera deschisa pe suprafata deschisa.
+     `hartie` si `hartie-2` RAMAN deschise: `bg-hartie-2`, `bg-arama-moale` si
+     `bg-verde-moale` sunt cele trei pastile de stare din `src/content/termene.ts`,
+     suprafete deschise INTENTIONATE si inca randate. De aceea blocul de cerneala
+     deschisa de mai jos ramane; nu e un rest din tranzitie. */
   --color-hartie: #f1f3ef;
   --color-hartie-2: #e9ece6;
-  --color-suprafata: #ffffff;
+  --color-suprafata: var(--color-noapte);
 
   /* Intunecat pe 2026-09-05 de la #737e77: masurat 3,78:1 pe hartie, sub pragul
      de 4,5:1 din WCAG 1.4.3, si poarta de accesibilitate a oprit lotul.
@@ -73,11 +87,32 @@
   /* --- titlurile directiei, o singura scara pentru tot site-ul -----------------
      h1 (eroul si intro-ul paginilor interioare) e cu o treapta peste h2 (ecranele
      urmatoare si sectiunile): fara scara, niciun ecran nu e "primul". Masurat contra
-     referintei: eroul ei e la 80 px, restul la 48. */
+     referintei: eroul ei e la 80 px, restul la 48.
+
+     INALTIMEA DE RAND: 1,1 - un raport, nu o marime, deci tine la orice treapta a
+     lui `clamp`. Vine dintr-o masuratoare pe fontul real (canvas TextMetrics, Barlow
+     Condensed 700, la 83,2 px): virgula lui Ș coboara 15 px sub linia de baza (0,180
+     em), a lui Ț 14 px, iar cea mai inalta capitala romaneasca, Â/Î, urca 74 px (0,889
+     em); Ă urca 71. Pasul de rand trebuie deci sa fie de cel putin 0,180 + 0,889 =
+     1,070 em, plus o rezerva de 0,03 em ca marcajele sa se si VADA separate:
+     1,10.
+
+     De ce nu 0,92, cat scria directia. La 0,92 pasul era 76,5 px si ramaneau 2,54 px
+     intre virgula lui Ș si o capitala obisnuita de dedesubt - dar MINUS 12,46 px cand
+     dedesubt urma Â/Î, adica suprapunere adevarata. Efectul se citea ca accent pus pe
+     litera gresita: „ȘASE" peste „SUBSOL" dadea „ȘUBSOL" pe /cum-functioneaza, iar
+     „AȘTEAPTĂ" peste „REGISTRUL" dadea „REGÍSTRUL" pe /solutii/primarii. Numarat cu un
+     detector de coliziuni pe toate cele 22 de pagini, la 1280 si la 390 px, doar pe
+     perechile Ș/Ț peste o capitala din titluri cu majuscule: 175 de perechi sub 2 px
+     de spatiu, pe 28 de combinatii pagina-latime. Impartite pe scara: 18 pe
+     `text-titlu-1`, 111 pe `text-titlu-2`, 46 pe titluri fara scara (regula de baza
+     `h1..h4`). De aceea urca TOATE trei, nu doar prima: cifra pe h1 era pragul de jos.
+     0,92 nu se vedea pe singura pagina aprobata fiindca titlul ei nu are ș/ț inainte de
+     ultimul rand. */
   --text-titlu-1: clamp(2.5rem, 6.5vw, 6rem);
-  --text-titlu-1--line-height: 0.92;
+  --text-titlu-1--line-height: 1.1;
   --text-titlu-2: clamp(2rem, 4.2vw, 3.5rem);
-  --text-titlu-2--line-height: 0.95;
+  --text-titlu-2--line-height: 1.1;
 
   /* --- latimi ----------------------------------------------------------- */
   --container-registru: 1180px;
@@ -180,6 +215,7 @@
   .bg-noapte,
   .bg-noapte-2,
   .bg-noapte-3,
+  .bg-suprafata,
   .bg-verde-adanc {
     --cerneala: var(--color-hartie-veche);
     --cerneala-2: var(--color-hartie-veche-2);
@@ -189,9 +225,12 @@
     color: var(--cerneala);
   }
 
+  /* Suprafetele deschise care mai exista, si toate sunt MICI si intentionate: cele trei
+     pastile de stare din `src/content/termene.ts` (`bg-verde-moale`, `bg-arama-moale`,
+     `bg-hartie-2`), plus rudele lor. `bg-suprafata` NU mai e aici - a trecut pe lista de
+     noapte, odata cu jetonul. */
   .bg-hartie,
   .bg-hartie-2,
-  .bg-suprafata,
   .bg-arama-moale,
   .bg-verde-moale {
     /* Cifre brute, obligatoriu: `--color-tus` si celelalte sunt de acum ALIASURI pe
@@ -233,13 +272,17 @@
     }
   }
 
+  /* Aceeasi inaltime de rand ca la scara de titluri, si din acelasi motiv masurat:
+     titlurile fara clasa de scara (h3-urile fiselor, h2-urile paginilor juridice) au dat
+     46 din cele 175 de coliziuni Ș/Ț peste capitala. Nota lunga, cu cifrele, e la
+     `--text-titlu-1--line-height`. */
   h1,
   h2,
   h3,
   h4 {
     font-family: var(--font-afis);
     font-weight: 700;
-    line-height: 0.95;
+    line-height: 1.1;
     letter-spacing: -0.01em;
   }
 
@@ -321,23 +364,99 @@
 /* --- voalul de sub textul unui ecran cu fotografie (vezi Ecran.tsx) -------------------
    Trei straturi, toate din negrul paginii: jos (unde sta coloana de text), stanga (unde
    incepe ea) si o dunga subtire sus, sub bara fixa. In coltul din stanga-jos straturile se
-   aduna spre 0,95; in dreapta-sus fotografia e neatinsa. */
+   aduna spre 0,95; in dreapta-sus fotografia e neatinsa.
+
+   RAMPA S-A RIDICAT pe 2026-09-06, si nu de capul ei. Doua schimbari au urcat coloana de
+   text in zona mai putin voalata: inaltimea de rand a titlurilor a crescut de la 0,92 la
+   1,1 (deci un titlu de doua randuri e cu 30 px mai inalt, iar blocul, fiind lipit de
+   marginea de jos, incepe cu 30 px mai sus), si paginile interioare au primit fotografie,
+   aducand deasupra etichetei si firul de navigare, care sta si mai sus. Masurat pe captura,
+   pe dreptunghiuri stranse pe text: cu rampa veche eticheta de arama cadea la 3,40-4,09
+   medie pe /arhivare-fizica, /solutii/constructii, /solutii/imobiliare si
+   /solutii/contabilitate, iar firul la 3,87 pe /solutii/contabilitate - sub pragul de 4,5:1
+   pentru text mic. Pe pagina de start, unde inainte dadea 6,84, coborase la 5,27.
+   Ce s-a schimbat: pe stratul de jos 0,50 la jumatatea inaltimii a devenit 0,78, iar
+   stingerea s-a mutat de la 74% la 88%; pe stratul din stanga, 0,14 la jumatatea latimii a
+   devenit 0,50, cu stingerea tot la 78%. Greul a fost pus pe stratul din STANGA, nu pe cel
+   de jos, si asta e alegerea care conteaza: coloana de text tine treimea din stanga, deci
+   acolo se plateste opacitatea, iar cele doua treimi din dreapta - unde nu sta nimic scris -
+   raman fotografie. Ridicand in schimb stratul de jos, s-ar fi stins fotografia pe toata
+   latimea ca sa se apere un rand de 11 px. */
 .voal {
   background:
     linear-gradient(
       to top,
       rgba(11, 11, 12, 0.94) 0%,
-      rgba(11, 11, 12, 0.82) 26%,
-      rgba(11, 11, 12, 0.5) 48%,
-      rgba(11, 11, 12, 0.18) 62%,
-      rgba(11, 11, 12, 0) 74%
+      rgba(11, 11, 12, 0.88) 30%,
+      rgba(11, 11, 12, 0.78) 50%,
+      rgba(11, 11, 12, 0.45) 66%,
+      rgba(11, 11, 12, 0.12) 78%,
+      rgba(11, 11, 12, 0) 88%
     ),
     linear-gradient(
       to right,
-      rgba(11, 11, 12, 0.78) 0%,
-      rgba(11, 11, 12, 0.5) 30%,
-      rgba(11, 11, 12, 0.14) 50%,
-      rgba(11, 11, 12, 0) 62%
+      rgba(11, 11, 12, 0.86) 0%,
+      rgba(11, 11, 12, 0.76) 30%,
+      rgba(11, 11, 12, 0.5) 50%,
+      rgba(11, 11, 12, 0.15) 66%,
+      rgba(11, 11, 12, 0) 78%
     ),
     linear-gradient(to bottom, rgba(11, 11, 12, 0.85) 0, rgba(11, 11, 12, 0) 140px);
+}
+
+/* Voalul benzii de antet (paginile care sunt documente sau unelte, `Ecran forma="banda"`).
+   Alt calcul decat la ecranul plin, dintr-un motiv de asezare: banda are DOUA coloane si
+   amandoua poarta text - titlul in stanga, linia si butonul in dreapta - deci nu exista
+   jumatate de fotografie libera pe care sa o lasi descoperita. Voalul acopera toata
+   latimea si fotografia ramane textura, nu tablou. Pragul de la care pornesc valorile:
+   `hartie-veche-2` (litera cea mai stinsa de aici) peste pixelul cel mai luminos posibil
+   cere aproximativ 0,85 opacitate ca sa treaca 4,5:1; sub asta linia se pierde pe muchiile
+   luminate. Verificarea reala se face pe captura, ca la ecranul plin. */
+.voal-banda {
+  background:
+    linear-gradient(
+      to top,
+      rgba(11, 11, 12, 0.93) 0%,
+      rgba(11, 11, 12, 0.88) 60%,
+      rgba(11, 11, 12, 0.84) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(11, 11, 12, 0.5) 0%,
+      rgba(11, 11, 12, 0.28) 55%,
+      rgba(11, 11, 12, 0.1) 100%
+    );
+}
+
+/* Sub 768 px voalul se ingroasa, si nu din gust. Masurat pe captura reala (culoarea
+   textului contra pixelilor de sub literele lui, pe dreptunghiuri stranse pe text, nu pe
+   cutia elementului): pe pagina de start eticheta de arama de 11 px statea la 4,03:1 medie
+   si 1,25:1 in cel mai prost pixel la 390 px - sub pragul de 4,5:1 pentru text mic - in
+   timp ce la 1280 px aceeasi eticheta dadea 6,84 medie si 6,59 minim, adica trecea. Titlul,
+   linia si butonul treceau la ambele latimi. Ce se vedea cu ochiul: ultimele cuvinte ale
+   etichetei treceau peste muchia luminata a cutiei si peste numarul scris de mana.
+   Cauza e ca degradeul spre dreapta apara o coloana de text care, pe telefon, tine toata
+   latimea: la 390 px eticheta ajunge la 88% din latime, unde stratul acela e deja zero.
+   Pe un ecran ingust nu exista „jumatatea dreapta a fotografiei" de aparat, deci acolo
+   voalul acopera toata latimea. Desktopul ramane exact cum a fost aprobat. */
+@media (max-width: 767px) {
+  .voal {
+    background:
+      linear-gradient(
+        to top,
+        rgba(11, 11, 12, 0.95) 0%,
+        rgba(11, 11, 12, 0.92) 45%,
+        rgba(11, 11, 12, 0.85) 66%,
+        rgba(11, 11, 12, 0.55) 79%,
+        rgba(11, 11, 12, 0.18) 90%,
+        rgba(11, 11, 12, 0) 100%
+      ),
+      linear-gradient(
+        to right,
+        rgba(11, 11, 12, 0.72) 0%,
+        rgba(11, 11, 12, 0.6) 50%,
+        rgba(11, 11, 12, 0.5) 100%
+      ),
+      linear-gradient(to bottom, rgba(11, 11, 12, 0.85) 0, rgba(11, 11, 12, 0) 140px);
+  }
 }

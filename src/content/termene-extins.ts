@@ -70,7 +70,7 @@ export const PAGINA_TERMENE = {
   lead: "Opt categorii de documente, fiecare cu termenul, cu momentul din care începe să curgă și cu actul normativ din care provine. Acoperim România. Unde nu putem arăta articolul, rândul rămâne gol și scriem de ce.",
 
   acoperire: {
-    titlu: "România, atât. Scriem asta primul, nu la subsol.",
+    titlu: "România, atât. O scriem pe pagină, nu la subsol.",
     lead: "Un tabel care acoperă optsprezece jurisdicții arată convingător până în ziua în care cineva îl folosește ca să apere o eliminare. Am ales lista mai scurtă, pe care o putem duce la sursă rând cu rând.",
     acoperit: [
       "Documente create sau deținute de organizații din România, sub lege română.",

@@ -8,6 +8,7 @@ import MecanismRandFisa from "@/components/MecanismRandFisa";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import TermeneCuprins from "@/components/TermeneCuprins";
 import TermeneFisa from "@/components/TermeneFisa";
+import { FOTOGRAFII } from "@/content/fotografii";
 import { PAGINA_TERMENE as P, TERMENE_ROMANIA } from "@/content/termene-extins";
 
 // Verificatorul de termene, ca document de sine statator.
@@ -34,38 +35,30 @@ export const metadata: Metadata = {
 export default function TermeneDePastrare() {
   return (
     <main id="continut">
+      {/* ANTETUL E O BANDA, NU UN ECRAN PLIN, si actiunea principala e tabelul, nu o
+          intalnire. Pagina asta ESTE unealta. Masurat inainte: antet de vitrina de 800 px
+          al carui buton principal era „Programati o discutie", urmat de o sectiune de 1126
+          px despre acoperire, iar primul rand din tabel aparea pe la 1800 px - dupa 2,25
+          ecrane la 1280 px. Cine vrea sa afle cati ani se pastreaza statele de salarii
+          derula doua ecrane si jumatate, iar primul lucru care i se cerea era o intalnire.
+          Discutia n-a disparut: sta in blocul de incheiere, unde era deja. */}
       <AntetPagina
         adresa="/instrumente/termene-de-pastrare"
+        forma="banda"
+        imagine={FOTOGRAFII.sertare}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Termene de păstrare" }]}
         eticheta={P.eticheta}
         titlu={P.h1}
         lead={P.lead}
-        actiune={{ href: "/#discutie", text: "Programați o discuție de 30 de minute" }}
+        actiune={{ href: "#pe-scurt", text: "Vedeți toate cele opt termene" }}
         secundar={{ href: "/arhivare-fizica", text: "Vedeți cum se păstrează" }}
       />
 
       <SectiuneRegistru
-        id="acoperire"
-        ton="fisier"
-        cota="I"
-        eticheta="Acoperirea"
-        titlu={P.acoperire.titlu}
-        lead={P.acoperire.lead}
-      >
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-          <ListaBifa titlu="Ce este acoperit" elemente={P.acoperire.acoperit} />
-          <ListaBifa titlu="Ce nu este acoperit" elemente={P.acoperire.neacoperit} />
-        </div>
-
-        <BlocDovada fel="declaratie" eticheta="Ce este pagina aceasta" className="mt-8">
-          {P.acoperire.nota}
-        </BlocDovada>
-      </SectiuneRegistru>
-
-      <SectiuneRegistru
         id="pe-scurt"
-        ton="hartie"
-        cota="II"
+        ton="fisier"
+        dens
+        cota="I"
         eticheta="Pe scurt"
         titlu={P.cuprins.titlu}
         lead={P.cuprins.lead}
@@ -78,6 +71,24 @@ export default function TermeneDePastrare() {
           fara={P.cuprins.fara}
           faraTemei={P.cuprins.faraTemei}
         />
+      </SectiuneRegistru>
+
+      <SectiuneRegistru
+        id="acoperire"
+        ton="hartie"
+        cota="II"
+        eticheta="Acoperirea"
+        titlu={P.acoperire.titlu}
+        lead={P.acoperire.lead}
+      >
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+          <ListaBifa titlu="Ce este acoperit" elemente={P.acoperire.acoperit} />
+          <ListaBifa titlu="Ce nu este acoperit" elemente={P.acoperire.neacoperit} />
+        </div>
+
+        <BlocDovada fel="declaratie" eticheta="Ce este pagina aceasta" className="mt-8">
+          {P.acoperire.nota}
+        </BlocDovada>
       </SectiuneRegistru>
 
       <SectiuneRegistru
@@ -184,11 +195,11 @@ export default function TermeneDePastrare() {
       >
         <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{P.incheiere.text}</p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
             Programați o discuție de 30 de minute
           </Buton>
-          <Buton href="/solutii" fel="contur" marime="mare" className="max-sm:w-full">
+          <Buton href="/solutii" fel="text" marime="mare">
             Vedeți fișele de domeniu
           </Buton>
         </div>

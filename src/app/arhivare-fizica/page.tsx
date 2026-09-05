@@ -9,6 +9,7 @@ import MecanismEtapa from "@/components/MecanismEtapa";
 import MecanismRandFisa from "@/components/MecanismRandFisa";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { ARHIVARE_FIZICA as A } from "@/content/mecanism";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Pagina partii fizice: depozit, preluare, inventar, selectionare.
 //
@@ -30,6 +31,7 @@ export default function ArhivareFizica() {
     <main id="continut">
       <AntetPagina
         adresa="/arhivare-fizica"
+        imagine={FOTOGRAFII.rafturi}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Arhivare fizică" }]}
         eticheta={A.eticheta}
         titlu={A.h1}
@@ -160,11 +162,11 @@ export default function ArhivareFizica() {
       >
         <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{A.incheiere.text}</p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
             Programați o discuție de 30 de minute
           </Buton>
-          <Buton href="/cum-functioneaza" fel="contur" marime="mare" className="max-sm:w-full">
+          <Buton href="/cum-functioneaza" fel="text" marime="mare">
             Vedeți mecanismul complet
           </Buton>
         </div>

@@ -4,6 +4,7 @@ import Buton from "./Buton";
 import Eticheta from "./Eticheta";
 import Invelis from "./Invelis";
 import JuridicBlocuri from "./JuridicBlocuri";
+import { FOTOGRAFII, type CheieFotografie } from "@/content/fotografii";
 import { PAGINI_JURIDICE, type PaginaJuridica, type Sectiune } from "@/content/juridic";
 
 // Forma unei pagini juridice, o singura data pentru toate trei.
@@ -25,7 +26,23 @@ import { PAGINI_JURIDICE, type PaginaJuridica, type Sectiune } from "@/content/j
 // piesa care transforma pagina din perete de text in document navigabil, iar fiecare intrare
 // duce la o ancora scrisa citibil (`#temeiul`, nu `#s-3`), ca sa poata fi trimisa prin mesaj.
 
-const FUNDAL_ALTERNANT = ["bg-suprafata", "bg-hartie"];
+// Alternanta benzilor, pe noapte. Pana pe 2026-09-06 era ["bg-suprafata", "bg-hartie"],
+// adica alb si aproape-alb: masurat, /termeni avea 80% suprafata deschisa la 1280 px si 84%
+// la 390, /confidentialitate 83% / 86%, /cookies 74% / 79%, in timp ce celelalte 19 pagini
+// aveau 0%. Nu era doar fundalul: pe pagina traiau 5 fundaluri si 7 culori de litera, contra
+// 2 si 4 pe paginile trecute in directia noua. Mecanismul de cerneala e chiar motivul pentru
+// care nimeni nu le-a semnalat - fiind corect intoarsa pe suprafata deschisa, litera trecea
+// de 4,5:1 si nicio poarta de contrast nu se inrosea. O poarta de contrast masoara
+// contrastul, nu coerenta; coerenta se masoara pe suprafata.
+const FUNDAL_ALTERNANT = ["bg-noapte", "bg-noapte-2"];
+
+// Fotografia de antet, per pagina: cele trei pagini juridice se leaga intre ele in blocul de
+// incheiere, deci trebuie sa deschida cu trei cadre diferite.
+const FOTO_JURIDIC: Record<string, CheieFotografie> = {
+  "/termeni": "legatura",
+  "/confidentialitate": "dosare",
+  "/cookies": "rafturi",
+};
 
 function SectiuneJuridica({
   sectiune,
@@ -37,31 +54,33 @@ function SectiuneJuridica({
   fundal: string;
 }) {
   return (
-    <section id={sectiune.id} className={`border-t border-linie ${fundal}`}>
+    <section id={sectiune.id} className={`border-t border-linie-suprafata ${fundal}`}>
       <Invelis>
         <div className="grid gap-4 py-10 md:grid-cols-[148px_1fr] md:gap-8 md:py-14">
-          <div className="flex items-baseline gap-3 border-b border-linie pb-3 md:relative md:block md:border-b-0 md:pb-0">
+          <div className="flex items-baseline gap-3 border-b border-linie-suprafata pb-3 md:relative md:block md:border-b-0 md:pb-0">
             <span
               aria-hidden
-              className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie md:block"
+              className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie-suprafata md:block"
             />
             {/* Marcajul de sectiune, ascuns de la cititoarele de ecran: intelesul e purtat
                 de titlul h2, iar o cifra citita inaintea lui nu adauga nimic. Cuvantul
                 "Secțiunea" apare doar sub 768 px, unde cifra singura, fara coloana de
                 margine care sa o explice, ar parea un rest de formatare. Pe ecran lat
                 ramane doar cifra, ca la cotele romane din restul site-ului. */}
+            {/* Cifra e in MONO, ca toate cotele site-ului, nu in serifa: serifa era ultima
+                urma a paletei vechi pe pagina asta si nu mai apare nicaieri altundeva. */}
             <span aria-hidden className="flex items-baseline gap-2 md:block">
-              <span className="font-mono text-eticheta font-medium tracking-[0.1em] text-tus-2 uppercase md:hidden">
+              <span className="font-mono text-eticheta font-medium tracking-[0.1em] text-cerneala-3 uppercase md:hidden">
                 Secțiunea
               </span>
-              <span className="font-serif text-2xl leading-none font-normal text-arama md:text-[34px]">
+              <span className="font-mono text-[15px] leading-none font-medium tracking-[0.18em] text-cerneala-accent md:text-[17px]">
                 {numar}
               </span>
             </span>
           </div>
 
           <div>
-            <h2 className="mb-5 max-w-[26ch] text-[23px] text-tus md:text-[27px]">
+            <h2 className="mb-5 max-w-[26ch] font-afis text-[25px] tracking-[-0.01em] uppercase text-cerneala md:text-[30px]">
               {sectiune.titlu}
             </h2>
             <JuridicBlocuri blocuri={sectiune.blocuri} />
@@ -74,10 +93,10 @@ function SectiuneJuridica({
 
 function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
   return (
-    <section className="border-t border-linie-inchis bg-verde-adanc">
+    <section className="border-t border-linie-suprafata bg-noapte-2">
       <Invelis>
         <div className="py-10 md:py-12">
-          <h2 className="mb-5 font-mono text-eticheta font-medium tracking-[0.1em] text-pe-inchis-2 uppercase">
+          <h2 className="mb-5 font-mono text-eticheta font-medium tracking-[0.18em] text-cerneala-3 uppercase">
             Cuprins
           </h2>
           <ol className="m-0 grid list-none gap-x-10 gap-y-2.5 p-0 md:grid-cols-2">
@@ -85,13 +104,13 @@ function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
               <li key={s.id} className="flex items-baseline gap-3 text-[15.5px]">
                 <span
                   aria-hidden
-                  className="w-5 shrink-0 font-mono text-fisa text-arama-clar"
+                  className="w-5 shrink-0 font-mono text-fisa text-cerneala-accent"
                 >
                   {i + 1}
                 </span>
                 <a
                   href={"#" + s.id}
-                  className="text-pe-inchis no-underline hover:text-white hover:underline"
+                  className="text-cerneala-2 no-underline hover:text-cerneala hover:underline"
                 >
                   {s.titlu}
                 </a>
@@ -108,15 +127,15 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
   const celelalte = PAGINI_JURIDICE.filter((p) => p.cale !== pagina.cale);
 
   return (
-    <section className="border-t border-linie bg-suprafata">
+    <section className="border-t border-linie-suprafata bg-noapte">
       <Invelis>
         <div className="py-12 md:py-16">
-          <div className="mb-8 max-w-[74ch] border border-linie-fn bg-hartie px-6 py-5">
+          <div className="mb-8 max-w-[74ch] border border-linie-suprafata bg-noapte-2 px-6 py-5">
             <Eticheta className="mb-1.5 block">Despre textul acesta</Eticheta>
-            <p className="text-corp text-tus-2">{pagina.redactat}</p>
+            <p className="text-corp text-cerneala-2">{pagina.redactat}</p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
             <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
               Programați o discuție de 30 de minute
             </Buton>
@@ -124,26 +143,25 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
               <Buton
                 key={p.cale}
                 href={p.cale}
-                fel="contur"
+                fel="text"
                 marime="mare"
-                className="max-sm:w-full"
               >
                 {p.titluMeta}
               </Buton>
             ))}
           </div>
 
-          <p className="mt-6 max-w-[62ch] text-[15.5px] text-tus-3">
+          <p className="mt-6 max-w-[62ch] text-[15.5px] text-cerneala-3">
             Dacă ceva din pagina aceasta este neclar sau vă pare greșit, scrieți-ne la{" "}
             <a
               href="mailto:contact@3s.ro"
-              className="text-verde underline underline-offset-[3px]"
+              className="text-cerneala-accent underline underline-offset-[3px]"
             >
               contact@3s.ro
             </a>
             . Corectăm în text, nu în corespondență, ca să vadă și următorul cititor
             corectura. Serviciile sunt descrise pe{" "}
-            <Link href="/solutii" className="text-verde underline underline-offset-[3px]">
+            <Link href="/solutii" className="text-cerneala-accent underline underline-offset-[3px]">
               pagina de domenii
             </Link>
             .
@@ -159,6 +177,8 @@ export default function JuridicPagina({ pagina }: { pagina: PaginaJuridica }) {
     <main id="continut">
       <AntetPagina
         adresa={pagina.cale}
+        forma="banda"
+        imagine={FOTOGRAFII[FOTO_JURIDIC[pagina.cale] ?? "legatura"]}
         fir={[{ text: "Pagina de start", href: "/" }, { text: pagina.titluMeta }]}
         eticheta={pagina.eticheta}
         titlu={pagina.h1}

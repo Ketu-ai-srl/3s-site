@@ -4,9 +4,14 @@ import Eticheta from "@/components/Eticheta";
 import Invelis from "@/components/Invelis";
 import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA } from "@/content/rute";
 
-// Pagina de 404, in acelasi limbaj vizual ca restul site-ului: fisa institutionala, cota
-// pe coloana de margine, serifa la titlu. Bara de anunt, meniul si subsolul vin din layout,
-// deci omul care nimereste aici are aceleasi drumuri ca pe orice alta pagina.
+// Pagina de 404, in limbajul directiei: fundal de noapte, cota mono pe coloana de margine,
+// titlul in fontul de afis, cu majuscule. Pana pe 2026-09-06 era ultima suprafata alba a
+// site-ului, cu numeralul in serifa si titlul in fontul de text - adica pagina care ii apare
+// omului cand ceva merge prost era chiar cea care nu semana cu site-ul. Meniul si subsolul
+// vin din layout, deci omul care nimereste aici are aceleasi drumuri ca pe orice alta pagina.
+//
+// Nu se deschide cu ecran plin si nu poarta fotografie: nu e o pagina de vitrina, e un
+// indicator. Cine ajunge aici cauta un drum, nu un afis.
 //
 // Lista de mai jos se compune din manifestul de rute, nu de mana: o pagina de 404 care
 // trimite spre adrese inexistente e chiar defectul pe care il explica.
@@ -16,17 +21,17 @@ import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA } from "@/content/rute";
 
 export default function PaginaNegasita() {
   return (
-    <main className="border-t border-linie bg-suprafata">
+    <main className="border-t border-linie-suprafata bg-noapte">
       <Invelis>
         <div className="grid gap-4 py-16 md:grid-cols-[148px_1fr] md:gap-8 md:py-24">
-          <div className="flex items-baseline gap-3 border-b border-linie pb-3 md:relative md:block md:border-b-0 md:pb-0">
+          <div className="flex items-baseline gap-3 border-b border-linie-suprafata pb-3 md:relative md:block md:border-b-0 md:pb-0">
             <span
               aria-hidden
-              className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie md:block"
+              className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie-suprafata md:block"
             />
             <span
               aria-hidden
-              className="font-serif text-2xl leading-none font-normal text-arama md:mb-2.5 md:block md:text-[34px]"
+              className="font-mono text-[15px] leading-none font-medium tracking-[0.18em] text-cerneala-accent md:mb-3 md:block md:text-[17px]"
             >
               404
             </span>
@@ -34,10 +39,10 @@ export default function PaginaNegasita() {
           </div>
 
           <div>
-            <h1 className="mb-4 max-w-[19ch] text-[27px] md:text-[33px] lg:text-[38px]">
+            <h1 className="mb-5 max-w-[20ch] font-afis text-titlu-2 font-bold tracking-[-0.01em] uppercase text-cerneala">
               Adresa asta nu duce la nicio pagină.
             </h1>
-            <p className="mb-8 max-w-[60ch] text-lead text-tus-2">
+            <p className="mb-8 max-w-[60ch] text-lead text-cerneala-2">
               Fie adresa a fost scrisă altfel, fie pagina pe care o căutați nu există pe acest
               site. Mai jos sunt paginile care există acum.
             </p>
@@ -50,11 +55,11 @@ export default function PaginaNegasita() {
                     <li key={ruta.cale} className="mb-4 text-[15.5px]">
                       <Link
                         href={ruta.cale}
-                        className="text-verde underline underline-offset-[3px]"
+                        className="text-cerneala-accent underline underline-offset-[3px]"
                       >
                         {ruta.scurt}
                       </Link>
-                      <span className="mt-0.5 block max-w-[38ch] text-nota text-tus-3">
+                      <span className="mt-0.5 block max-w-[38ch] text-nota text-cerneala-3">
                         {ruta.descriere}
                       </span>
                     </li>
@@ -69,7 +74,7 @@ export default function PaginaNegasita() {
                     <li key={sectiune.ancora} className="mb-2.5 text-[15.5px]">
                       <a
                         href={"/#" + sectiune.ancora}
-                        className="text-verde underline underline-offset-[3px]"
+                        className="text-cerneala-accent underline underline-offset-[3px]"
                       >
                         {sectiune.scurt}
                       </a>
@@ -79,11 +84,11 @@ export default function PaginaNegasita() {
               </div>
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-3">
+            <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
               <Buton href="/" marime="mare" sageata className="max-sm:w-full">
                 Înapoi la pagina de start
               </Buton>
-              <Buton href={CALE_DISCUTIE} fel="contur" marime="mare" className="max-sm:w-full">
+              <Buton href={CALE_DISCUTIE} fel="text" marime="mare">
                 Discuție de 30 de minute
               </Buton>
             </div>

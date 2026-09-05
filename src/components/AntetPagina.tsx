@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Ecran from "./Ecran";
+import type { Fotografie } from "@/content/fotografii";
 
 // Antetul unei pagini interioare: acelasi ecran plin ca pe pagina de start (`Ecran`, nivel
 // `h1`), cu firul de navigare deasupra etichetei, singurul h1 al paginii, o linie, UN buton
@@ -14,8 +15,19 @@ import Ecran from "./Ecran";
 // surse pentru acelasi fir. Tipurile folosite - BreadcrumbList, ListItem - sunt in
 // vocabularul pe care poarta S-09 il accepta.
 //
+// FOTOGRAFIA nu mai e optionala in practica, desi campul e opional in tipuri: pana pe
+// 2026-09-06 o dadea numai pagina de start, iar cele 21 de pagini interioare se deschideau
+// cu 800 px de negru plat - masurat, 91-92% fundal uniform in primul ecran la 1280 px, fata
+// de 18% pe pagina de start. Fotografia se alege din registrul `src/content/fotografii.ts`,
+// cheie cu cheie, ca textul alternativ sa aiba o singura sursa.
+//
+// FORMA. `ecran` e ecranul plin al vitrinei. `banda` e antetul scurt al paginilor care sunt
+// DOCUMENTE sau UNELTE (/termeni, /confidentialitate, /cookies, /instrumente): acolo omul a
+// venit dupa o clauza sau dupa un termen, si un afis de film de 800 px il tine departe de
+// raspuns. Ecranul plin ramane un gest al vitrinei, nu implicitul tuturor.
+//
 // Semnatura veche (fir, eticheta, titlu, lead, actiune, secundar, adresa) e pastrata
-// intreaga; `imagine` e singurul camp nou si e optional.
+// intreaga; `imagine` si `forma` sunt campurile noi si sunt optionale.
 
 export type Veriga = {
   text: string;
@@ -32,8 +44,10 @@ type Props = {
   secundar?: { href: string; text: string };
   /** Adresa canonica a paginii, ca ultima veriga din datele structurate sa aiba adresa. */
   adresa: string;
-  /** Fotografie ilustrativa din `public/img/` (nume fara sufixul de marime). */
-  imagine?: { nume: string; alt: string; pozitie?: string };
+  /** Fotografie ilustrativa, luata din registrul `src/content/fotografii.ts`. */
+  imagine?: Fotografie;
+  /** `banda` scurteaza antetul: paginile care sunt documente sau unelte. */
+  forma?: "ecran" | "banda";
 };
 
 const GAZDA = "https://3s.ke2.in";
@@ -47,6 +61,7 @@ export default function AntetPagina({
   secundar,
   adresa,
   imagine,
+  forma = "ecran",
 }: Props) {
   const firStructurat = {
     "@context": "https://schema.org",
@@ -91,6 +106,7 @@ export default function AntetPagina({
     <>
       <Ecran
         nivel="h1"
+        forma={forma}
         ton={imagine ? "foto" : "plin"}
         imagine={imagine}
         inainte={firNavigare}

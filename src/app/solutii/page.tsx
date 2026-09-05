@@ -7,6 +7,7 @@ import CardSegment from "@/components/CardSegment";
 import FisaDomeniu from "@/components/FisaDomeniu";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { HUB, INDIFERENT_DE_DOMENIU, SEGMENTE } from "@/content/segmente";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Hub-ul de domenii. Nu contine continut scris de mana despre vreun segment: lista se
 // genereaza din SEGMENTE, deci un domeniu nou apare aici in clipa in care primeste o
@@ -34,6 +35,7 @@ export default function Solutii() {
       <main id="continut">
         <AntetPagina
           adresa="/solutii"
+          imagine={FOTOGRAFII.dulapuri}
           fir={[{ text: "Pagina de start", href: "/" }, { text: HUB.titluMeta }]}
           eticheta={HUB.eticheta}
           titlu={HUB.h1}
@@ -60,26 +62,26 @@ export default function Solutii() {
           {CU_FISA.length > 0 ? (
             <>
               <BandaTitlu eticheta="Scrise" titlu="Domeniile care au fișa lor" />
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="m-0 list-none border-t border-linie-suprafata p-0">
                 {CU_FISA.map((s) => (
                   <FisaDomeniu key={s.slug} titlu={s.nume} href={"/solutii/" + s.slug}>
                     {s.rezumat}
                   </FisaDomeniu>
                 ))}
-              </div>
+              </ul>
             </>
           ) : null}
 
           {PE_LISTA.length > 0 ? (
             <>
               <BandaTitlu eticheta="Pe listă" titlu="Urmează, în ordinea de mai jos" />
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="m-0 list-none border-t border-linie-suprafata p-0">
                 {PE_LISTA.map((s) => (
                   <FisaDomeniu key={s.slug} titlu={s.nume}>
                     {s.rezumat}
                   </FisaDomeniu>
                 ))}
-              </div>
+              </ul>
             </>
           ) : null}
         </SectiuneRegistru>
@@ -120,11 +122,11 @@ export default function Solutii() {
             cu un calendar de preluare scris, nu cu o ofertă trimisă a doua zi pe email.
           </p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
             <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
               Programați o discuție de 30 de minute
             </Buton>
-            <Buton href="/#termene" fel="contur" marime="mare" className="max-sm:w-full">
+            <Buton href="/#termene" fel="text" marime="mare">
               Verificați un termen legal
             </Buton>
           </div>

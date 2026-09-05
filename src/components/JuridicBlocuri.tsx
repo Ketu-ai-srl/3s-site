@@ -18,7 +18,7 @@ function bucata(f: Frag, i: number) {
   if (typeof f === "string") {
     return <span key={i}>{f}</span>;
   }
-  const stil = "text-verde underline underline-offset-[3px] hover:text-verde-apasat";
+  const stil = "text-cerneala-accent underline underline-offset-[3px] hover:text-cerneala";
   if (f.href.includes("#")) {
     return (
       <a key={i} href={f.href} className={stil}>
@@ -49,17 +49,17 @@ function Caseta({
   // Aceleasi doua feluri ca in `BlocDovada`: `declaratie` spune ce am ales si de ce,
   // `limite` spune ce nu putem sustine. Nu se refoloseste componenta aceea fiindca ea
   // randeaza un singur `<p>` si aici casetele poarta legaturi si fraze lungi.
+  // Aceleasi doua suprafete ca in `BlocDovada`, ca cele doua casete de onestitate ale
+  // site-ului sa nu arate diferit: `declaratie` pe noapte-3 cu linia de arama in stanga,
+  // `limite` pe noapte-2 cu chenar. Pana pe 2026-09-06 erau bej (#f4eadf) si aproape-alb,
+  // ultimele doua suprafete deschise de pe paginile juridice.
   const stil =
     fel === "declaratie"
-      ? "border-l-[3px] border-arama bg-arama-moale px-6 py-5"
-      : "border border-linie-fn bg-hartie px-6 py-5";
-  // Eticheta casetei de declaratie e pe `arama-inchis`, nu pe `arama`. Nu e preferinta:
-  // masurat cu axe-core pe pagina construita, `--color-arama` (#a4571c) pe fundalul
-  // `--color-arama-moale` (#f4eadf) da 4,48:1, adica sub pragul de 4,5:1 din WCAG 1.4.3, si
-  // poarta de accesibilitate a oprit lotul pe exact cele doua noduri. `--color-arama-inchis`
-  // (#7e4315) pe acelasi fundal da 6,55:1. Perechea nu mai fusese randata nicaieri pe site,
-  // fiindca `BlocDovada` primeste `eticheta` doar in varianta pe fundal de hartie.
-  const stilEticheta = fel === "declaratie" ? "text-arama-inchis" : "text-tus-2";
+      ? "border-l-2 border-cerneala-accent bg-noapte-3 px-6 py-5"
+      : "border border-linie-suprafata bg-noapte-2 px-6 py-5";
+  // Eticheta: arama pe noapte-3 da 5,72:1, deci trece si ca text mic. Nota veche descria
+  // perechea de pe fundalul bej (4,48:1, sub prag), care nu mai exista pe pagina.
+  const stilEticheta = fel === "declaratie" ? "text-cerneala-accent" : "text-cerneala-3";
 
   return (
     <div className={`my-6 ${stil}`}>
@@ -68,7 +68,7 @@ function Caseta({
       >
         {eticheta}
       </span>
-      <p className="max-w-[74ch] text-corp text-tus-2">
+      <p className="max-w-[74ch] text-corp text-cerneala-2">
         <Text parti={parti} />
       </p>
     </div>
@@ -82,7 +82,7 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
         switch (b.fel) {
           case "paragraf":
             return (
-              <p key={i} className="mb-4 max-w-[74ch] text-corp text-tus-2 last:mb-0">
+              <p key={i} className="mb-4 max-w-[74ch] text-corp text-cerneala-2 last:mb-0">
                 <Text parti={b.text} />
               </p>
             );
@@ -91,10 +91,10 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
             return (
               <ul key={i} className="m-0 mb-4 max-w-[74ch] list-none p-0 last:mb-0">
                 {b.elemente.map((e, j) => (
-                  <li key={j} className="mb-3 flex gap-4 text-corp text-tus-2 last:mb-0">
+                  <li key={j} className="mb-3 flex gap-4 text-corp text-cerneala-2 last:mb-0">
                     {/* Cratima de arama e un element real, nu un marcator de lista: se
                         aliniaza pe prima linie oricat de lung ar fi randul. */}
-                    <span aria-hidden className="mt-[11px] h-px w-[9px] shrink-0 bg-arama" />
+                    <span aria-hidden className="mt-[11px] h-px w-[9px] shrink-0 bg-cerneala-accent" />
                     <span>
                       <Text parti={e} />
                     </span>
@@ -109,10 +109,10 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
                 {b.randuri.map((r) => (
                   <div
                     key={r.titlu}
-                    className="grid gap-1.5 border-t border-linie py-4 last:border-b lg:grid-cols-[260px_1fr] lg:gap-8"
+                    className="grid gap-1.5 border-t border-linie-suprafata py-4 last:border-b lg:grid-cols-[260px_1fr] lg:gap-8"
                   >
-                    <h3 className="text-[17.5px] text-tus">{r.titlu}</h3>
-                    <p className="max-w-[64ch] text-corp text-tus-2">
+                    <h3 className="font-afis text-[19px] tracking-[0.02em] uppercase text-cerneala">{r.titlu}</h3>
+                    <p className="max-w-[64ch] text-corp text-cerneala-2">
                       <Text parti={r.text} />
                     </p>
                   </div>

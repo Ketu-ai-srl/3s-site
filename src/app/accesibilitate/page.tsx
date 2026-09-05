@@ -7,6 +7,7 @@ import ListaBifa from "@/components/ListaBifa";
 import MecanismRandFisa from "@/components/MecanismRandFisa";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { ACCESIBILITATE as A } from "@/content/securitate";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Declaratia de accesibilitate, scrisa ca lista de masuratori si nu ca declaratie de
 // conformitate.
@@ -32,6 +33,7 @@ export default function Accesibilitate() {
     <main id="continut">
       <AntetPagina
         adresa="/accesibilitate"
+        imagine={FOTOGRAFII.dosare}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Accesibilitate" }]}
         eticheta={A.eticheta}
         titlu={A.h1}
@@ -114,11 +116,11 @@ export default function Accesibilitate() {
       >
         <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{A.incheiere.text}</p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/contact" marime="mare" sageata className="max-sm:w-full">
             Vedeți cum ne scrieți
           </Buton>
-          <Buton href="/securitate" fel="contur" marime="mare" className="max-sm:w-full">
+          <Buton href="/securitate" fel="text" marime="mare">
             Vedeți pagina de securitate
           </Buton>
         </div>
