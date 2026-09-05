@@ -23,6 +23,13 @@ raportat de agentul care a scris codul:
   contractul API GitHub. Se masoara la primul lot promovat pe viu.
 - **Criticul adversarial al fabricii nu a rulat**: agentul a murit cu eroare de API. Deci nimeni
   n-a atacat proiectarea din afara; ce sustine calitatea sunt probele de mai sus, nu o revizuire.
+- **Staging-ul NU e aparat de CI.** Masurat pe 5 sep 2026: secretul `COOLIFY_DEPLOY_URL` nu e setat,
+  deci pasul de deploy din CI nu face nimic (`COOLIFY_DEPLOY_URL nu e setat inca`), iar publicarea o
+  face Coolify singur, din propriul lui carlig de GitHub, la fiecare push pe `main`. Consecinta exacta:
+  **un commit cu CI rosu ajunge oricum pe `3s.ke2.in`.** Azi riscul e mic fiindca pe `main` impinge
+  numai dispecerul, si numai dupa o poarta locala verde - dar mecanismul nu il garanteaza, disciplina
+  il garanteaza, si asta nu e acelasi lucru. Reparatia cere doua scrieri pe sisteme externe (oprirea
+  publicarii automate in Coolify si un secret de depozit), deci **asteapta decizia owner-ului**.
 - Pragul de lungime a caii, 275, e imprumutat de la alt proiect si nemasurat pe stiva asta.
   De aceea e avertisment, nu refuz.
 
