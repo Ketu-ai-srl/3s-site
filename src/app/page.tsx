@@ -1,17 +1,22 @@
+import type { Metadata } from "next";
 import BandaTitlu from "@/components/BandaTitlu";
-import BaraAnunt from "@/components/BaraAnunt";
 import BlocDovada from "@/components/BlocDovada";
 import CardCompact from "@/components/CardCompact";
 import CardSegment from "@/components/CardSegment";
 import Erou from "@/components/Erou";
 import FormularDiscutie from "@/components/FormularDiscutie";
 import ListaBifa from "@/components/ListaBifa";
-import Navigatie from "@/components/Navigatie";
 import Pas from "@/components/Pas";
 import RandRaspundere from "@/components/RandRaspundere";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
-import Subsol from "@/components/Subsol";
 import VerificatorTermene from "@/components/VerificatorTermene";
+
+// Canonical-ul se declara pe pagina, nu in layout: pe un site cu mai multe pagini, unul
+// singur scris in layout ar face toate paginile sa arate spre aceeasi adresa. Calea e
+// relativa si se rezolva absolut prin `metadataBase` din `src/app/layout.tsx`.
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 // Data la care au fost preluate termenele din actele normative. Se schimba aici,
 // intr-un singur loc.
@@ -39,16 +44,6 @@ const PASI = [
 export default function Acasa() {
   return (
     <>
-      <a
-        className="absolute top-[-100px] left-4 z-[99] bg-verde px-4 py-3 font-mono text-fisa text-white no-underline focus:top-3"
-        href="#continut"
-      >
-        Săriți la conținut
-      </a>
-
-      <BaraAnunt />
-      <Navigatie />
-
       <main id="continut">
         <Erou />
 
@@ -284,8 +279,6 @@ export default function Acasa() {
           </div>
         </SectiuneRegistru>
       </main>
-
-      <Subsol dataVerificare={VERIFICAT} />
     </>
   );
 }
