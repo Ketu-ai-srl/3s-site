@@ -479,6 +479,328 @@ export const AVOCATURA: PaginaSegment = {
   },
 };
 
+// Al treilea lot: constructii, logistica, imobiliare. Aceeasi regula ca la loturile
+// dinainte - cifra intra pe pagina NUMAI daca actul si articolul se pot cita, iar unde
+// se poate cifrele sunt chiar cele din `termene.ts`, cu acelasi articol.
+//
+// Ce deosebeste cele trei, ca sa nu iasa acelasi text cu alte substantive. La o firma de
+// CONSTRUCTII documentul se naste pe santier si trebuie si PREDAT proprietarului, si
+// pastrat de executant, fiindca raspunderea nu se inchide la receptie. La un TRANSPORTATOR
+// hartia circula cu marfa si se intoarce tarziu, in exemplare multiple din care unul singur
+// poarta mentiunea scrisa la descarcare; volumul e mare si marunt, iar cererea vine cu o
+// data si un client, nu cu numarul de inregistrare. La o agentie IMOBILIARA dosarul
+// supravietuieste relatiei si poarta datele unor oameni care nu mai sunt clienti, deci
+// intrebarea grea devine cine are voie sa il deschida si pana cand.
+
+export const CONSTRUCTII: PaginaSegment = {
+  titluMeta: "Arhivă pentru firme de construcții",
+  descriereMeta:
+    "Ce facem pentru un constructor: dosarul de șantier inventariat pe obiectiv, cartea tehnică predată și un exemplar digital care rămâne firmei.",
+  eticheta: "Domenii · Firme de construcții și dezvoltatori",
+  h1: "Fisura a apărut luna trecută. Betonul s-a turnat acum șapte ani.",
+  lead:
+    "Arhiva unei firme de construcții nu crește lună de lună, ci în valuri: un șantier produce metri de dosare cât ține execuția, apoi tace. Ce rămâne după el se predă proprietarului și, în același timp, vă rămâne dumneavoastră, fiindcă răspunderea nu se închide odată cu recepția. Pagina asta scrie ce preluăm, ce rămâne obligația firmei și unde încă nu avem un răspuns pe care să îl putem susține.",
+
+  durere: [
+    {
+      titlu: "Arhiva se naște în container, nu în birou",
+      text: "Procesele-verbale de lucrări ascunse, cele de fază determinantă, buletinele de încercări și certificatele materialelor se semnează pe șantier, pe o masă pliantă, în exemplare care pleacă la firme diferite. Când organizarea de șantier se demontează, dosarul intră într-un portbagaj și ajunge unde apucă.",
+    },
+    {
+      titlu: "Cartea tehnică se predă, răspunderea rămâne",
+      text: "Cartea tehnică pleacă la proprietar, cum cere regulamentul de recepție. Firma care a executat rămâne însă cea căreia i se cer explicații peste ani, deci are nevoie de propriul exemplar, complet și găsibil, nu de amintirea că l-a predat cuiva.",
+    },
+    {
+      titlu: "Dovada e o semnătură de sub tencuială",
+      text: "La o infiltrație sau la o fisură, întrebarea nu ajunge la cine a construit, ci la ce s-a executat acolo, în ce zi și cine a semnat înainte să se acopere. Răspunsul stă într-un proces-verbal semnat de mai multe părți, iar una dintre ele este adesea un subantreprenor care între timp nu mai există.",
+    },
+  ],
+
+  schimbare: [
+    {
+      titlu: "Un fond pe obiectiv, nu pe an",
+      text: "Fiecare șantier primește fondul lui, cu cotă proprie, de la autorizația de construire până la procesul-verbal de recepție finală. Se caută într-un obiectiv, nu în arhiva firmei la grămadă, iar dosarele a două proiecte nu se amestecă fiindcă s-au executat în aceeași lună.",
+    },
+    {
+      titlu: "Predarea și copia, în aceeași operațiune",
+      text: "Cartea tehnică se predă proprietarului, iar firma rămâne cu exemplarul digital complet și indexat. Cine o întocmește și cine o semnează rămân cei pe care îi obligă regulamentul de recepție: noi ducem inventarul, scanarea și predarea, nu răspunderea tehnică.",
+    },
+    {
+      titlu: "Întrebarea, în locul teancului",
+      text: "Se întreabă în română: ce proces-verbal acoperă hidroizolația de la corpul B și în ce zi s-a semnat. Răspunsul vine cu documentul și pagina din care a fost scos, deci ajunge la avocat sau la expert ca citat, nu ca relatare. Când sursa lipsește, nu se afișează nimic.",
+    },
+  ],
+
+  aratam: [
+    "Depozitul din Golești, județul Argeș, și felul în care dosarul unui obiectiv stă întreg, într-un singur loc",
+    "Inventarul unui șantier încheiat, de la autorizația de construire la procesul-verbal de recepție, pe un proiect ales de dumneavoastră",
+    "Un răspuns dat pe documente-model, cu documentul și pagina citate, ca să vedeți ce înseamnă „cu sursă”",
+    "Predarea cărții tehnice către proprietar, cu proces-verbal, plus exemplarul digital care vă rămâne dumneavoastră",
+  ],
+
+  deschise: [
+    "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
+    "Nu avem o firmă de construcții pe care să o dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu întocmim cartea tehnică și nu ne substituim dirigintelui de șantier sau responsabilului tehnic cu execuția: ducem hârtia, evidența și predarea, nu răspunderea tehnică",
+    "Nu scriem în ani durata răspunderii pentru vicii și nici perioada de garanție: sunt termene care se citesc din contract și din actul normativ, nu de pe pagina unui furnizor de arhivă",
+    "Nu dăm preț pe planșe fără să le vedem: peste formatul A3 se schimbă și scanerul, și felul în care stau pe raft, iar o estimare făcută înainte de măsurare nu ar ține",
+    "Nu scriem un timp de răspuns în secunde, fiindcă nu l-am măsurat pe un fond real de șantier",
+  ],
+
+  temeiuri: [
+    {
+      act: "HG nr. 273/1994, Regulamentul de recepție a lucrărilor de construcții",
+      ce: "Cartea tehnică a construcției se păstrează pe toată durata existenței construcției și îl urmează pe proprietar la fiecare schimbare de proprietar. Tot de aici vin recepția la terminarea lucrărilor și recepția finală, adică exact procesele-verbale care se cer la un control sau într-un litigiu, la ani distanță.",
+    },
+    {
+      act: "Legea nr. 10/1995 privind calitatea în construcții",
+      ce: "Actul care așază sistemul calității în construcții și obligațiile participanților la actul de construire. Întinderea răspunderii și termenele concrete se citesc din el și din regulamentele lui de aplicare. Îl numim ca să îl puteți deschide dumneavoastră, nu ca să construim cifre din el.",
+    },
+    {
+      act: "Legea Arhivelor Naționale nr. 16/1996",
+      ce: "Evidența documentelor create și primite, gruparea lor pe termene într-un nomenclator arhivistic avizat, condițiile de păstrare și selecționarea numai prin comisie. Obligă firma care creează documentele, deci și o societate de construcții care nu s-a gândit niciodată la sine ca la un creator de fond arhivistic.",
+    },
+  ],
+
+  notaTermene:
+    "O singură durată din dosarul unui șantier o putem cita pe articol: cartea tehnică a construcției se păstrează pe toată durata existenței construcției, potrivit HG nr. 273/1994, iar rândul stă cu actul lui în verificatorul de pe pagina de start. Pentru celelalte piese - jurnalul de șantier, buletinele de încercări, dosarele subantreprenorilor - nu punem un număr de ani pe pagină. Termenul lor se compune din contract, din durata răspunderii pentru vicii și din nomenclatorul arhivistic propriu al firmei, iar noi nu adunăm cifrele acelea în locul dumneavoastră. Dacă lucrați într-o firmă de construcții și aveți articolul, scrieți-ne și îl publicăm cu trimiterea la act.",
+
+  intrebari: [
+    {
+      intrebare: "Cartea tehnică o întocmiți dumneavoastră?",
+      raspuns:
+        "Nu. Întocmirea și semnarea rămân la cei pe care îi obligă regulamentul de recepție. Noi adunăm, inventariem, scanăm și predăm ce ne dați, cu proces-verbal, și vă lăsăm un exemplar digital complet. Dacă din dosar lipsește o piesă, o scriem în inventar ca lipsă; nu o completăm noi.",
+    },
+    {
+      intrebare: "Ce se întâmplă cu dosarul unui subantreprenor care a dispărut",
+      raspuns:
+        "Rămâne ce ați primit de la el, atât. Îl inventariem ca atare, cu lipsurile scrise pe față, fiindcă un inventar care trece peste o lipsă vă lasă să o descoperiți exact în ziua în care aveți nevoie de document. Nu reconstituim documente și nu semnăm în locul nimănui.",
+    },
+    {
+      intrebare: "Planurile și planșele mari intră în același fond",
+      raspuns:
+        "Le preluăm, dar le vedem întâi. Peste formatul A3 se schimbă și scanerul, și modul în care stau pe raft, deci le măsurăm înainte de orice estimare. Ce nu putem scana la o calitate la care se citește o cotă rămâne pe hârtie, inventariat, iar asta o spunem înainte, nu după.",
+    },
+    {
+      intrebare: "Ce se întâmplă cu documentele în timpul procesării",
+      raspuns:
+        "Niciun document al dumneavoastră nu ajunge în antrenarea vreunui model. Furnizorul care face procesarea, regiunea în care rulează și cât timp se păstrează interogările se scriu în contract, cu anexa de prelucrare a datelor semnată odată cu el, nu se descriu verbal la prima discuție.",
+    },
+  ],
+
+  incheiere: {
+    titlu: "Începem cu obiectivul care v-a adus ultima întrebare.",
+    text: "O discuție de treizeci de minute, în care ne uităm la arhiva firmei așa cum arată ea azi: câte șantiere închise, unde au ajuns dosarele lor și ce s-a predat deja proprietarilor. Plecați cu o estimare a volumului, cu ordinea în care s-ar prelua, obiectiv cu obiectiv, și cu lista pieselor lipsă din primul dosar pe care îl deschidem împreună.",
+  },
+};
+
+export const LOGISTICA: PaginaSegment = {
+  titluMeta: "Arhivă pentru transport și logistică",
+  descriereMeta:
+    "Ce facem pentru un transportator: scrisori de trăsură și avize regăsite după cursă, client și lună, pe fonduri separate pe exercițiu financiar.",
+  eticheta: "Domenii · Transport și logistică",
+  h1: "Exemplarul care contează are o mențiune scrisă de mână la descărcare.",
+  lead:
+    "Hârtia unui transportator se produce pe drum, se semnează la rampă și se întoarce în geanta șoferului, cu întârziere. Volumul e mare, formatul e mărunt și repetitiv, iar documentul care decide o reclamație de marfă este tocmai cel pe care cineva a scris trei rânduri cu pixul. Pagina asta scrie ce preluăm, cum se regăsește o cursă și unde încă nu avem un răspuns pe care să îl putem susține.",
+
+  durere: [
+    {
+      titlu: "Documentul circulă înainte să devină arhivă",
+      text: "Scrisoarea de trăsură pleacă odată cu marfa, se semnează și se ștampilează la destinație și se întoarce peste zile sau săptămâni, în exemplare care nu ajung toate în același loc. Până când o caută cineva, a trecut prin trei mâini și prin două mașini.",
+    },
+    {
+      titlu: "Volumul e mărunt și uniform",
+      text: "Teancuri de foi aproape identice: aceeași casetă tipărită, alt număr, altă dată. Într-o arhivă în care nimic nu se distinge la privit, răsfoirea nu duce nicăieri. Se caută pe un index, sau nu se caută deloc.",
+    },
+    {
+      titlu: "Cererea vine cu o dată, nu cu un dosar",
+      text: "Reclamația spune „transportul de pe 14 martie, către depozitul de la Deva”. Controlul spune un an și un cod de client. Nici una nu spune numărul sub care ați înregistrat dumneavoastră documentul, iar teancul e ordonat exact după numărul acela.",
+    },
+  ],
+
+  schimbare: [
+    {
+      titlu: "Cursa devine cheia de căutare",
+      text: "Se întreabă cum se vorbește în depozit: ce a plecat pe 14 martie către clientul acela și cine a semnat la descărcare. Răspunsul vine cu documentul și pagina din care a fost scos, deci ajunge la asigurator sau la client ca citat, nu ca relatare.",
+    },
+    {
+      titlu: "Un exercițiu financiar, un fond",
+      text: "Documentele se grupează pe an financiar și pe client din ziua preluării. Când un control cere un singur an, se scoate un singur fond; restul arhivei rămâne închis, fiindcă nu s-a deschis ca să se ajungă la el.",
+    },
+    {
+      titlu: "Hârtia măruntă pleacă din birou",
+      text: "Cutiile cu scrisori de trăsură și avize ocupă spațiu plătit ca birou. La Golești stau inventariate, cu cotă, iar ce se cere des e deja scanat: originalul face drumul înapoi doar când chiar trebuie predat pe hârtie.",
+    },
+  ],
+
+  aratam: [
+    "Depozitul din Golești, județul Argeș, și cum arată un raft de documente de transport, cotate pe an și pe client",
+    "Indexul după care se regăsește o cursă - dată, client, localitate de descărcare, număr de document - pe un teanc de probă adus de dumneavoastră",
+    "Un răspuns dat pe documente-model, cu documentul și pagina citate, ca să vedeți ce înseamnă „cu sursă”",
+    "Cum arată scanat un exemplar mototolit, ștampilat peste text și completat de mână, și ce rămâne necitibil din el",
+  ],
+
+  deschise: [
+    "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
+    "Nu avem o firmă de transport pe care să o dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu promitem că citim orice scris de mână: o mențiune făcută cu pixul pe un exemplar la indigo poate rămâne necitibilă, iar atunci o marcăm ca atare în loc să o ghicim",
+    "Nu scriem termenul de păstrare pentru datele din tahograf și pentru evidența timpilor de conducere și odihnă: au alt regim decât documentele contabile, iar articolul nu îl putem cita încă",
+    "Nu ne pronunțăm dacă un anume document justifică sau nu o înregistrare contabilă: acela e răspunsul contabilului dumneavoastră, nu al arhivarului",
+    "Nu scriem un timp de răspuns în secunde, fiindcă nu l-am măsurat pe un fond real de firmă de transport",
+  ],
+
+  temeiuri: [
+    {
+      act: "Legea contabilității nr. 82/1991, art. 25 alin. (1)",
+      ce: "Registrele de contabilitate și documentele justificative se păstrează cinci ani de la data încheierii exercițiului financiar în cursul căruia au fost întocmite, termen redus de la zece ani prin Legea nr. 36/2023. Scrisoarea de trăsură, avizul de însoțire a mărfii și celelalte documente de transport intră aici atunci când stau la baza unei înregistrări contabile.",
+    },
+    {
+      act: "Legea contabilității nr. 82/1991, art. 25 alin. (2)",
+      ce: "Statele de salarii se păstrează cincizeci de ani de la data întocmirii, ca excepție expresă de la termenul documentelor financiare. Într-o firmă cu mulți șoferi acesta este fondul care supraviețuiește tuturor celorlalte, cerut peste decenii de un fost angajat care își dovedește vechimea.",
+    },
+    {
+      act: "Legea Arhivelor Naționale nr. 16/1996",
+      ce: "Evidența documentelor create și primite, gruparea lor pe termene într-un nomenclator arhivistic avizat și selecționarea numai prin comisie. Nomenclatorul este locul în care se decide ce se întâmplă cu documentele de transport după ce termenul contabil s-a împlinit, iar decizia rămâne a firmei, nu a depozitarului.",
+    },
+  ],
+
+  notaTermene:
+    "Cele trei termene de mai sus le putem cita pe articol și stau, fiecare cu actul lui, în verificatorul de pe pagina de start. Rândul rămâne gol pentru documentele din afara contabilității: datele din tahograf, foile de parcurs și evidența timpilor de conducere și odihnă au propriul regim, pe care nu îl putem cita încă cu articol. Mai este o graniță pe care nu o trecem: dacă un anume document justifică sau nu o înregistrare contabilă este răspunsul contabilului dumneavoastră. Noi păstrăm ce ne dați, pe termenul pe care îl scrieți în nomenclatorul propriu, și îl marcăm ca atare din ziua preluării.",
+
+  intrebari: [
+    {
+      intrebare: "Cum se caută o cursă de acum trei ani",
+      raspuns:
+        "După ce știți: data, clientul, localitatea de descărcare, numărul mașinii. Nu după numărul de înregistrare al documentului, fiindcă acela e singurul lucru pe care nu îl are nimeni la îndemână când sună un client. Răspunsul vine cu documentul și pagina, ca să îl trimiteți mai departe fără să îl mai căutați o dată.",
+    },
+    {
+      intrebare: "Ce faceți cu exemplarele multiple ale aceluiași document",
+      raspuns:
+        "Le inventariem ca exemplare ale aceluiași document, nu ca documente diferite, și marcăm care poartă semnătura și mențiunea de la descărcare. Acela decide o reclamație de marfă, iar dacă lipsește din ce ne dați, scriem în inventar că lipsește.",
+    },
+    {
+      intrebare: "Preluați și cutiile care nu au fost niciodată ordonate",
+      raspuns:
+        "Da, dar nu ne prefacem că sunt ordonate. Se inventariază așa cum vin, se cotează, iar ce nu se poate identifica se marchează ca atare. Un inventar care trece peste o cutie neclară vă lasă să descoperiți lipsa în ziua controlului, adică în ziua cea mai proastă cu putință.",
+    },
+    {
+      intrebare: "Cine vede documentele și ce se întâmplă cu datele din ele",
+      raspuns:
+        "Documentele de transport poartă nume și semnături de șoferi și de gestionari, deci prelucrarea lor se scrie în anexa semnată odată cu contractul: cine procesează, în ce regiune și cât se păstrează interogările. Nu intră în antrenarea niciunui model, iar accesul se dă nominal și rămâne în jurnal, inclusiv pentru personalul nostru.",
+    },
+  ],
+
+  incheiere: {
+    titlu: "Aduceți teancul de anul trecut și căutăm în el împreună.",
+    text: "O discuție de treizeci de minute, pornind de la ce a rămas în urma curselor de anul trecut: câte cutii, ce vă cere lumea cel mai des - reclamație, control, client - și după ce anume căutați când sună cineva. Plecați cu o estimare a volumului și cu indexul propus, adică lista câmpurilor după care veți putea întreba.",
+  },
+};
+
+export const IMOBILIARE: PaginaSegment = {
+  titluMeta: "Arhivă pentru agenții imobiliare",
+  descriereMeta:
+    "Ce facem pentru o agenție imobiliară sau un administrator de imobile: dosare regăsite după adresă, acces nominal cu jurnal peste datele personale.",
+  eticheta: "Domenii · Agenții imobiliare și administrare de imobile",
+  h1: "Cine mai are dosarul apartamentului vândut acum cinci ani?",
+  lead:
+    "Un dosar de tranzacție se închide odată cu semnătura la notar, dar nu dispare. Rămâne cu actele de proprietate, cu documentația cadastrală și cu datele unor oameni care nu vă mai sunt clienți. Se caută după adresă, se cere la ani distanță și trebuie predat sau șters exact cum spune legea. Pagina asta scrie ce preluăm, ce rămâne obligația agenției și unde încă nu avem un răspuns pe care să îl putem susține.",
+
+  durere: [
+    {
+      titlu: "Se caută după adresă, se clasează după număr",
+      text: "Cererea vine în forma în care o ține minte omul: blocul acela de pe strada aceea, apartamentul de la etajul trei, vânzătorul cu numele acela. Dosarul e clasat după numărul de intrare sau după agentul care l-a lucrat, iar cele două se întâlnesc doar dacă cineva le ține minte pe amândouă.",
+    },
+    {
+      titlu: "Păstrați datele unor oameni care nu vă sunt clienți",
+      text: "Într-un dosar de tranzacție stau copii de acte de identitate, extrase de carte funciară și documentații cadastrale ale ambelor părți, uneori și ale unor terți - moștenitori, foști proprietari. Obligația de a le ține în siguranță și de a răspunde la o cerere de acces sau de ștergere este a agenției, indiferent cine a adus hârtia.",
+    },
+    {
+      titlu: "Predarea se face pe bază de bunăvoință",
+      text: "Când pleacă agentul care a lucrat dosarul sau când o asociație schimbă administratorul, se predă ce își aduce cineva aminte să predea. O evidență ținută la zi face din predare o semnătură pe un inventar care există deja; fără ea, cel care rămâne află lipsurile pe rând, la fiecare telefon primit după aceea.",
+    },
+  ],
+
+  schimbare: [
+    {
+      titlu: "Adresa devine cheie, nu notă în dosar",
+      text: "Se întreabă așa cum se vorbește la telefon: ce s-a semnat pentru apartamentul de pe strada aceea, în ce an și cine a fost vânzătorul. Răspunsul vine cu documentul și pagina din care a fost scos, deci se verifică pe loc, înainte de a fi spus unui client sau unui notar.",
+    },
+    {
+      titlu: "Datele stau unde se poate arăta că stau",
+      text: "Fondul se preia cu proces-verbal, iar accesul se dă nominal, pe persoană și pe dosar. Fiecare căutare și fiecare deschidere de document rămâne în jurnal, inclusiv pentru personalul nostru. La o reclamație sau la o cerere venită de la o persoană vizată aveți ce pune pe masă, nu doar o asigurare verbală.",
+    },
+    {
+      titlu: "Inventarul există înainte să fie nevoie de el",
+      text: "Evidența pe dosar și pe imobil se ține la zi tot timpul. Când pleacă un agent sau când se schimbă administratorul unei asociații, predarea se face din ce există deja, cu proces-verbal, plus copiile digitale în format deschis.",
+    },
+  ],
+
+  aratam: [
+    "Depozitul din Golești, județul Argeș, cu condițiile de păstrare și cu lista celor care au acces fizic la raft",
+    "Inventarul unui dosar de tranzacție încheiat, ales de dumneavoastră, cu adresa imobilului ca și cheie de căutare",
+    "Un răspuns dat pe documente-model, cu documentul și pagina citate, ca să vedeți ce înseamnă „cu sursă”",
+    "Jurnalul de acces și anexa de prelucrare a datelor, în forma în care le arătați cuiva care vă cere socoteală pentru datele lui",
+  ],
+
+  deschise: [
+    "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
+    "Nu avem o agenție imobiliară pe care să o dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu scriem un termen de păstrare pentru dosarele de tranzacție: nu am găsit o normă generală pe care să o putem cita cu articol",
+    "Nu facem evaluarea de impact și nu stabilim noi ce date aveți dreptul să păstrați: acela e răspunsul celui care răspunde de protecția datelor în agenție",
+    "Nu ștergem nimic din proprie inițiativă: la o cerere de ștergere executăm ce ne cereți în scris și vă dăm dovada, iar decizia rămâne a dumneavoastră",
+    "Nu scriem un timp de răspuns în secunde, fiindcă nu l-am măsurat pe un fond real de agenție",
+  ],
+
+  temeiuri: [
+    {
+      act: "Regulamentul (UE) 2016/679 privind protecția datelor, cu Legea nr. 190/2018",
+      ce: "Un dosar de tranzacție este plin de date ale unor oameni care nu vă mai sunt clienți. De aici vin temeiul pentru care le păstrați, durata pentru care le puteți ține, obligația de a răspunde cererilor de acces și de ștergere și contractul de prelucrare cu orice furnizor care le atinge, inclusiv cu noi. Operatorul rămâne agenția; noi suntem persoana împuternicită și nu decidem în locul dumneavoastră.",
+    },
+    {
+      act: "Legea contabilității nr. 82/1991, art. 25 alin. (1)",
+      ce: "Contractul de intermediere și facturile de comision sunt documente justificative și se păstrează cinci ani de la încheierea exercițiului financiar în cursul căruia au fost întocmite. Termenul acesta acoperă partea comercială a dosarului, nu și actele și datele personale din el, care au propriul regim.",
+    },
+    {
+      act: "Legea Arhivelor Naționale nr. 16/1996",
+      ce: "Evidența documentelor create și primite, gruparea lor pe termene într-un nomenclator arhivistic și condițiile de păstrare. Nomenclatorul este locul unde agenția își scrie propriile termene pe categorii de dosare, iar el este cel care ne obligă și pe noi, nu o listă tipărită de un furnizor.",
+    },
+  ],
+
+  notaTermene:
+    "Un singur termen din dosarul unei tranzacții îl putem cita pe articol: cei cinci ani ai documentelor justificative, din Legea contabilității, cu rândul lui în verificatorul de pe pagina de start. Restul dosarului - actele de proprietate, documentația cadastrală, copiile de acte de identitate - nu are un termen general pe care să îl putem cita, deci rândul rămâne gol, dinadins. El se compune din contractul de intermediere, din obligațiile fiscale și, pentru datele personale, din temeiul în baza căruia le păstrați. Când temeiul se stinge, datele se șterg, indiferent câți ani ar mai fi rămas dintr-un termen scris pe undeva. Dacă lucrați într-o agenție și cunoașteți articolul, scrieți-ne și îl publicăm cu trimiterea la act.",
+
+  intrebari: [
+    {
+      intrebare: "Cum se caută un dosar după adresă",
+      raspuns:
+        "Adresa imobilului intră ca și cheie de căutare la inventariere, alături de numele părților, de numărul de dosar și de an. Întrebarea se pune în română, așa cum ar spune-o cineva la telefon, iar răspunsul vine cu documentul și pagina, ca să îl verificați înainte de a-l da mai departe.",
+    },
+    {
+      intrebare: "Ce faceți la o cerere de ștergere a datelor",
+      raspuns:
+        "Decizia este a dumneavoastră, ca operator. Noi executăm ce ne cereți în scris, pe dosarele și pe documentele pe care le indicați, și vă întoarcem dovada a ceea ce s-a șters și când. Nu ștergem nimic din proprie inițiativă și nu interpretăm cererea în locul dumneavoastră.",
+    },
+    {
+      intrebare: "Preluați și arhiva unei asociații de proprietari",
+      raspuns:
+        "Da, cu aceleași reguli: preluare cu proces-verbal și inventar, cotă, jurnal de acces. Diferența practică este că numărul celor care pot cere să vadă un document e mult mai mare decât la o agenție, deci accesul se dă nominal și rămâne scris. Cine anume are dreptul să consulte se stabilește din actele asociației, nu de la depozitar.",
+    },
+    {
+      intrebare: "Documentele ajung la un model de limbaj",
+      raspuns:
+        "Nu intră în antrenarea niciunui model. Într-un dosar imobiliar stau date ale unor oameni care nu au dat niciun acord pentru așa ceva, deci prelucrarea se scrie în anexa semnată odată cu contractul: cine procesează, în ce regiune rulează și cât timp se păstrează interogările.",
+    },
+  ],
+
+  incheiere: {
+    titlu: "Pornim de la ultimul act pe care vi l-a cerut cineva după o tranzacție.",
+    text: "O discuție de treizeci de minute, în care ne uităm la arhiva agenției așa cum arată ea azi: câte dosare închise, unde stau ele acum - birou, laptop, mașină - și după ce anume le caută cineva când sună un fost client. Plecați cu o estimare a volumului, cu lista câmpurilor după care veți putea întreba și cu ce am observat despre datele personale din primul dosar pe care îl deschidem.",
+  },
+};
+
 export const SEGMENTE: Segment[] = [
   {
     slug: "notari",
@@ -508,13 +830,34 @@ export const SEGMENTE: Segment[] = [
       "Dosare voluminoase și termene procedurale scurte. Diferența dintre a citi douăzeci de bibliorafturi și a întreba direct este un termen câștigat.",
     pagina: AVOCATURA,
   },
+  {
+    slug: "constructii",
+    nume: "Firme de construcții și dezvoltatori",
+    rezumat:
+      "Dosarul de șantier se produce pe teren, în exemplare care pleacă la firme diferite, iar dovada se cere la ani după recepție, când apare o fisură sau un litigiu.",
+    pagina: CONSTRUCTII,
+  },
+  {
+    slug: "logistica",
+    nume: "Transport și logistică",
+    rezumat:
+      "Foi aproape identice, care circulă cu marfa și se întorc târziu. Cererea vine cu o dată și un client, nu cu numărul sub care le-ați înregistrat dumneavoastră.",
+    pagina: LOGISTICA,
+  },
+  {
+    slug: "imobiliare",
+    nume: "Agenții imobiliare și administrare de imobile",
+    rezumat:
+      "Dosarele se caută după adresă și poartă datele unor oameni care nu vă mai sunt clienți. Predarea lor cade exact atunci când pleacă cine le-a lucrat.",
+    pagina: IMOBILIARE,
+  },
 ];
 
 /** Titlul si descrierea hub-ului. Stau aici, langa segmente, ca sa nu se rupa de lista. */
 export const HUB = {
   titluMeta: "Soluții pe domenii",
   descriereMeta:
-    "Arhivare fizică, digitizare și căutare cu sursa citată, pe domenii: birouri notariale, primării, contabilitate, avocatură. Ce diferă la fiecare.",
+    "Arhivare fizică, digitizare și căutare cu sursa citată, pe domenii: notariat, primării, contabilitate, avocatură, construcții, transport, imobiliare.",
   eticheta: "Domenii deservite",
   h1: "Fiecare domeniu întreabă altceva de la aceeași arhivă.",
   lead:

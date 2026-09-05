@@ -90,6 +90,37 @@ export const RUTE: Ruta[] = [
     inHarta: true,
   },
 
+  // Lotul trei de segmente: constructii, logistica, imobiliare. `inMeniu: false` din acelasi
+  // motiv masurat mai sus, la lotul de mecanism: bara de sus sta in layout si depaseste 390 px
+  // cu doua intrari in plus, pe TOATE paginile deodata, nu doar pe cele noi. Intrarea in domenii
+  // se face prin hub-ul `/solutii`, care listeaza singur orice segment cu pagina proprie, si din
+  // subsol, unde lista de rute e un cuprins si are loc sa creasca. In harta de site intra toate
+  // trei: fiecare e o pagina de sine statatoare, cu titlu, descriere si canonical proprii.
+  {
+    cale: "/solutii/constructii",
+    scurt: "Firme de construcții",
+    descriere:
+      "Dosarul de șantier inventariat pe obiectiv, cartea tehnică predată și exemplarul digital care rămâne firmei.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/solutii/logistica",
+    scurt: "Transport și logistică",
+    descriere:
+      "Scrisori de trăsură și avize regăsite după cursă, client și lună, pe fonduri separate pe exercițiu financiar.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/solutii/imobiliare",
+    scurt: "Agenții imobiliare",
+    descriere:
+      "Dosare de tranzacție căutate după adresă, cu acces nominal și jurnal peste datele personale din ele.",
+    inMeniu: false,
+    inHarta: true,
+  },
+
   // <<felie:segmente>>
   // Lotul doi de segmente. Nu urca in bara de sus, din acelasi motiv scris la notari:
   // intrarea in domenii se face prin hub. In harta de site intra toate trei, fiindca
