@@ -40,11 +40,31 @@ SARITE = {'node_modules', '.next', '.git', '__pycache__'}
 
 # Fiecare tipar are un nume, ca mesajul sa spuna ce s-a prins, nu doar ca s-a prins.
 TIPARE = [
-    ('persoana intai cu vechime', re.compile(r'\b(avem|aven|avem deja)\s+(?:peste\s+)?\d+\s+(?:ani|de ani)', re.I)),
-    ('persoana intai cu experienta', re.compile(r'\b(experien\w+)\s+(?:noastr\w+)\s+de\s+(?:peste\s+)?\d+', re.I)),
-    ('autoritate nesustinuta la persoana intai', re.compile(r'\bsuntem\s+(autoriza\w+|acredita\w+|certifica\w+)', re.I)),
-    ('certificare pe care nu o detinem', re.compile(r'\b(ISO\s*27001|SOC\s*2|ISO\s*9001)\b', re.I)),
-    ('numar de clienti fara sursa', re.compile(r'\bpeste\s+\d{2,}\s+(?:de\s+)?(?:clien\w+|companii|firme|institu\w+)', re.I)),
+    ('persoana intai cu vechime',
+     re.compile(r'\b(avem|aven|avem deja)\s+(?:peste\s+)?\d+\s+(?:ani|de ani)', re.I), False),
+    ('persoana intai cu experienta',
+     re.compile(r'\b(experien\w+)\s+(?:noastr\w+)\s+de\s+(?:peste\s+)?\d+', re.I), False),
+    ('autoritate nesustinuta la persoana intai',
+     re.compile(r'\bsuntem\s+(autoriza\w+|acredita\w+|certifica\w+)', re.I), False),
+    ('certificare pe care nu o detinem',
+     re.compile(r'\b(ISO\s*27001|SOC\s*2|ISO\s*9001)\b', re.I), False),
+    ('numar de clienti fara sursa',
+     re.compile(r'\bpeste\s+\d{2,}\s+(?:de\s+)?(?:clien\w+|companii|firme|institu\w+)', re.I), False),
+    # Sigiliul de verificare proprie: "Pagina verificata la <data>", "Actualizat la <data>".
+    # Adaugat pe 5 sep 2026, dupa ce un asemenea rand a stat in subsol si, odata ce subsolul
+    # a trecut in layout, a ajuns tiparit pe pagini scrise in aceeasi zi si citite de nimeni.
+    # Nicio poarta nu l-a prins; l-am vazut intr-o captura de ecran.
+    #
+    # Ce deosebeste forma interzisa de cea permisa e VERBUL, nu data. "Verificata la <data>"
+    # nu spune cine a verificat si contra a ce, deci e o afirmatie despre propria noastra
+    # rigoare. "Termenele sunt preluate din actele citate, la <data>" spune ce s-a facut si
+    # ce nu, deci trece - si e chiar martorul negativ al tiparului asta.
+    #
+    # Ultimul camp: se aplica DOAR pe fisierele care ajung la vizitator. Intr-o nota tehnica
+    # din `docs/` aceeasi formulare e un titlu de sectiune, urmat chiar de raspuns.
+    ('sigiliu de verificare proprie, fara cine si contra a ce',
+     re.compile(r'\b(?:verificat|verificat[a\u0103]|actualizat|actualizat[a\u0103]|auditat|auditat[a\u0103])'
+                r'\s+(?:la|[i\u00ee]n|pe)\s+\d', re.I), True),
 ]
 
 
@@ -69,14 +89,23 @@ NEGARI = re.compile(r'\b(nu|f[aă]r[aă]|nici|zero)\b', re.I)
 FEREASTRA = 90
 
 
-def cauta(text):
+def cauta(text, este_site=True):
     """Intoarce lista de (nume_tipar, numar_rand, fragment).
 
     Textul se parcurge intreg, cu pozitia tradusa in numar de rand, ca sa nu pierdem
     potrivirile taiate de formatare si ca sa putem citi contextul dinaintea lor.
+
+    `este_site` spune daca fisierul ajunge la vizitator. Unele tipare au inteles NUMAI
+    acolo: un sigiliu de verificare e o problema fiindca il citeste cineva care nu poate
+    sti cine a verificat. Aceeasi formulare intr-o nota tehnica din `docs/` e un titlu de
+    sectiune, urmat chiar de raspunsul la intrebare. Fara distinctia asta, poarta cerea
+    sa fie rescrisa o pagina CORECTA - iar cand poarta acuza forma corecta, se repara
+    poarta, nu textul.
     """
     gasiri = []
-    for nume, tipar in TIPARE:
+    for nume, tipar, doar_pe_site in TIPARE:
+        if doar_pe_site and not este_site:
+            continue
         for m in tipar.finditer(text):
             inceput = max(0, m.start() - FEREASTRA)
             context_anterior = text[inceput:m.start()]
@@ -97,6 +126,18 @@ def controale():
     negativ = 'ADRIA, firma-mama, arhiveaza documente din 2019, la Golesti, judetul Arges.'
     if cauta(negativ):
         return 'martorul negativ a fost prins: tiparele sunt prea late si ar bloca forma corecta'
+
+    # Martorii sigiliului de verificare proprie. Fixtura se asambleaza la rulare, ca fisierul
+    # asta sa nu fie el insusi o instanta a tiparului pe care il descrie.
+    sigiliu = ' '.join(['Pagina', 'verificata', 'la', '5', 'septembrie', '2026'])
+    if not any('sigiliu' in n for n, _, _ in cauta(sigiliu)):
+        return 'martorul de sigiliu nu a fost prins: o data fara verb ar trece drept informatie'
+    # Forma CORECTA, care spune ce s-a facut si ce nu: nu are voie sa fie prinsa. Fara martorul
+    # asta, tiparul ar bloca exact propozitia onesta de pe pagina de start.
+    onest = ('Termenele sunt preluate din actele normative citate pe fiecare rand, la 5 septembrie '
+             '2026, ca sa le puteti verifica singur la sursa.')
+    if any('sigiliu' in n for n, _, _ in cauta(onest)):
+        return 'martorul de sigiliu, negativ: forma onesta cu data a fost prinsa - tiparul e prea lat'
     return None
 
 
@@ -119,7 +160,9 @@ def main():
         except (OSError, UnicodeDecodeError) as e:
             print('NU AM PUTUT CITI ' + cale + ': ' + str(e), file=sys.stderr)
             return 2
-        for nume, numar, fragment in cauta(text):
+        # Fisierele din `src/` ajung la vizitator; `docs/` si `.claude/` nu.
+        este_site = os.path.relpath(cale, RADACINA).replace(os.sep, '/').startswith('src/')
+        for nume, numar, fragment in cauta(text, este_site):
             rel = os.path.relpath(cale, RADACINA)
             print(rel + ':' + str(numar) + '  ' + nume + '  | ' + fragment)
             total += 1
