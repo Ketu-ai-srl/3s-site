@@ -460,7 +460,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
         {
           fel: "paragraf",
           text: [
-            "Nu transferăm date în afara Spațiului Economic European. Dacă va apărea vreodată un furnizor din afara lui, secțiunea aceasta se schimbă înainte ca furnizorul să fie pus în funcțiune și scrie ce garanții stau la baza transferului.",
+            "Nu am pus în funcțiune niciun furnizor din afara Spațiului Economic European și nu trimitem date nicăieri. Ce nu am verificat încă este unde se află fizic serverul care servește paginile; o aflăm înainte ca formularul să livreze prima cerere, iar dacă răspunsul cere garanții pentru un transfer, ele se scriu aici înainte, nu după.",
           ],
         },
       ],
@@ -590,6 +590,7 @@ export const CONFIDENTIALITATE: PaginaJuridica = {
               "datele de înmatriculare ale operatorului nu există încă, iar site-ul nu poate fi publicat în producție cât timp lipsesc;",
             ],
             ["durata de păstrare a jurnalelor tehnice ale găzduirii nu a fost inventariată;"],
+            ["nu am verificat încă unde se află fizic serverul care servește paginile;"],
             ["nu am desemnat un responsabil cu protecția datelor;"],
             ["nu deținem certificare ISO 27001 și nu invocăm niciun audit extern de securitate;"],
             [

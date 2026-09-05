@@ -100,7 +100,7 @@
   },
   {
     "id": "juridic-fara-transfer-see",
-    "text": "Nu exista transfer de date in afara Spatiului Economic European, inclusiv la furnizorul de gazduire",
+    "text": "Nu exista niciun furnizor din afara Spatiului Economic European pus in functiune si nu se trimit date nicaieri; locul fizic al serverului care serveste paginile nu a fost verificat inca",
     "unde": "src/content/juridic.ts",
     "stare": "neconfirmat",
     "sursa": "",

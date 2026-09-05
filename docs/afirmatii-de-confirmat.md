@@ -18,7 +18,7 @@ Pana atunci, afirmatiile stau pe site ca text redactional, nu ca fapt verificat.
 | 6 | 3S nu are sediu, sucursala sau reprezentant in Republica Moldova, motiv pentru care Moldova e o sectiune si nu un set separat de pagini | `src/content/juridic.ts` |
 | 7 | Serverul de gazduire pastreaza jurnale tehnice ale cererilor (adresa IP, momentul cererii, pagina ceruta, tipul de browser), iar durata lor de pastrare nu a fost inventariata inca | `src/content/juridic.ts` |
 | 8 | 3S nu a desemnat un responsabil cu protectia datelor | `src/content/juridic.ts` |
-| 9 | Nu exista transfer de date in afara Spatiului Economic European, inclusiv la furnizorul de gazduire | `src/content/juridic.ts` |
+| 9 | Nu exista niciun furnizor din afara Spatiului Economic European pus in functiune si nu se trimit date nicaieri; locul fizic al serverului care serveste paginile nu a fost verificat inca | `src/content/juridic.ts` |
 | 10 | Prin site nu se incheie contracte la distanta, nu se afiseaza preturi, nu se proceseaza plati si nu exista cont de utilizator | `src/content/juridic.ts` |
 | 11 | Textele juridice au fost redactate de echipa proiectului si nu au trecut printr-o revizuire de avocat | `src/content/juridic.ts` |
 | 12 | ADRIA, firma-mama, arhiveaza documente din 2019, la Golesti, judetul Arges | `src/components/BaraAnunt.tsx` |
