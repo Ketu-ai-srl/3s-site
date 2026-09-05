@@ -24,6 +24,14 @@ import { FOTOGRAFII } from "@/content/fotografii";
 // fiecare rand nu convinge un cumparator institutional, il alerteaza. Sta pe treapta
 // `noapte-2`, intre doua sectiuni de noapte, deci se vede ca bloc de la distanta.
 //
+// FOTOGRAFIA a trecut de la `maini` la `legatura`: /comparatie si /cum-functioneaza se
+// leaga una de alta - butonul secundar si prima sectiune duc acolo - si deschideau cu
+// ACELASI cadru, adica exact ce interzice regula „paginile vecine sa nu deschida la fel"
+// din `docs/design/DIRECTIA.md`. `legatura` e singura cheie, alaturi de `rafturi`, care nu
+// e purtata de vreo pagina spre care duce /comparatie: /investitia are `dosare`,
+// /arhivare-fizica `cutii`, /instrumente/termene-de-pastrare `sertare`, /solutii `dulapuri`.
+// Schimbarea cere remasurarea contrastului peste fotografie, si a fost facuta.
+//
 // Continutul sta in `src/content/comparatie.ts`; aici e numai forma paginii.
 export const metadata: Metadata = {
   title: C.titluMeta,
@@ -38,7 +46,7 @@ export default function Comparatie() {
     <main id="continut">
       <AntetPagina
         adresa="/comparatie"
-        imagine={FOTOGRAFII.maini}
+        imagine={FOTOGRAFII.legatura}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Comparație" }]}
         eticheta={C.eticheta}
         titlu={C.h1}
