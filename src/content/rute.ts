@@ -144,6 +144,31 @@ export const RUTE: Ruta[] = [
     inHarta: true,
   },
 
+  // <<felie:instrumente-harta>>
+  // Pagina de instrument si harta de site. Amandoua cu `inMeniu: false`: asezarea in bara
+  // de sus e decizie de dispecer, la reconcilierea lotului, si se ia dupa ce se vede cate
+  // pagini intra deodata. Pana atunci nu sunt orfane - subsolul listeaza TOATE rutele din
+  // `RUTE`, pe fiecare pagina, iar harta de site le arata pe amandoua langa restul.
+  //
+  // Ordinea: intai instrumentul, care e continut de citit, apoi harta, care e un cuprins
+  // al restului.
+  {
+    cale: "/instrumente/termene-de-pastrare",
+    scurt: "Termene de păstrare",
+    descriere:
+      "Cât se păstrează fiecare categorie de documente, cu actul normativ și articolul pe rândul lui.",
+    inMeniu: false,
+    inHarta: true,
+  },
+  {
+    cale: "/harta-site",
+    scurt: "Harta site-ului",
+    descriere:
+      "Toate paginile publice, grupate pe prezentare, domenii, instrumente și documente juridice.",
+    inMeniu: false,
+    inHarta: true,
+  },
+
   // <<felie:despre-contact>>
   //
   // DE CE AMANDOUA CU `inMeniu: false`, desi sunt pagini de sine statatoare. Nu e o
