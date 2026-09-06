@@ -239,6 +239,32 @@ def exista_in_arbore(cale):
     return os.path.exists(os.path.join(RADACINA, cale.replace('/', os.sep)))
 
 
+def controale_disc():
+    """Controale pe DISCUL REAL, pe puntea `exista_in_arbore` - nu pe detectoare cu `exista` injectat.
+
+    De ce separat de `controale()`. Martorii de acolo dau lui `surse_moarte` un `exista` INJECTAT,
+    deci detectorul e probat pana la capat, iar functia care il leaga de disc nu e atinsa deloc.
+    Masurat de un critic pe 2026-09-06: `def exista_in_arbore(cale): return True` sterge complet
+    clasa RR-03 pe arborele real - adica singura constatare a portii azi - si poarta trece din 1
+    in 0, tiparind linistit `martori RR-01/RR-02/RR-03/RR-04 OK`.
+
+    Control POZITIV: `src/content/rute.ts`. Nu e o constanta plauzibila aleasa de mana - e chiar
+    fisierul fara de care poarta iese NEMASURAT cateva randuri mai sus, deci prezenta lui e deja
+    preconditie masurata, iar controlul asta ruleaza DUPA ea.
+    Control NEGATIV: un nume generat la RULARE cu `os.urandom`. Un nume fix scris in cod devine
+    intr-o zi un fisier real si controlul se dezarmeaza singur, tacut.
+    """
+    if not exista_in_arbore('src/content/rute.ts'):
+        return ('control pozitiv pe disc: `exista_in_arbore` nu vede src/content/rute.ts, desi '
+                'poarta tocmai l-a citit - puntea catre disc raspunde NU la orice')
+    inexistent = 'src/content/nu-exista-' + os.urandom(8).hex() + '.json'
+    if exista_in_arbore(inexistent):
+        return ('control negativ pe disc: `exista_in_arbore` a raportat existent un nume generat '
+                'la rulare (' + inexistent + ') - puntea catre disc raspunde DA la orice, deci '
+                'clasa RR-03 e stearsa fara ca vreun martor sa se supere')
+    return None
+
+
 def main():
     motiv = controale()
     if motiv:
@@ -250,6 +276,11 @@ def main():
         return 3
     if not os.path.isdir(DOSAR_REGISTRU):
         print('poarta-registru-rute: lipseste src/content/afirmatii/ - NEMASURAT', file=sys.stderr)
+        return 3
+
+    motiv = controale_disc()
+    if motiv:
+        print('CONTROL PICAT: ' + motiv, file=sys.stderr)
         return 3
 
     rute = cai_din_manifest(io.open(MANIFEST, encoding='utf-8').read())
@@ -317,7 +348,8 @@ def main():
         print('OPRESTE  ' + cod + '  ' + mesaj)
 
     print('CONTROALE: ancora externa (intrarea publicata in docstring-ul lui poarta-evidenta) OK, '
-          'martori RR-01/RR-02/RR-03/RR-04 OK, martori negativi OK, extragere OK')
+          'martori RR-01/RR-02/RR-03/RR-04 OK, martori negativi OK, extragere OK, punte pe disc '
+          '(`exista_in_arbore` pozitiv pe rute.ts, negativ pe un nume generat la rulare) OK')
     print('MASURAT: ' + str(len(rute)) + ' rute in RUTE, ' + str(len(pagini)) +
           ' cu pagina pe disc, ' + str(len(cai_registru)) + ' registre cu ' + str(intrari) +
           ' afirmatii care numesc ' + str(len(surse_registru)) + ' fisiere-sursa, ' +

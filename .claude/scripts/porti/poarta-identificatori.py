@@ -35,6 +35,15 @@ paginii. Nume de registru: `os.path.basename` fara extensie, comparat cu `lower(
 nu face, iar o poarta care raporteaza ce nu se intampla e dezarmata in cateva saptamani. Aici un
 fals negativ exotic e mai ieftin decat un fals pozitiv.
 
+CUM SE PAZESTE POARTA PE EA INSASI. Detectoarele se probeaza pe fixturi in memorie, cu
+`rezolva`/`citeste` injectate. Peste ele sta un martor CAP LA CAP (`martor_cap_la_cap`) care
+scrie un arbore mic in `tempfile.mkdtemp()` si il masoara prin ACEEASI `masoara_arbore` prin
+care trece arborele real. Fara el, puntea catre disc nu e atinsa de niciun martor: `rezolva_real`
+intors la `None`, sau bucla de layout-uri din `pagini_reale` dezarmata, sterg toata clasa ID-04
+si poarta iese 0 tiparind "martori ... OK". Amandoi mutantii au supravietuit primei versiuni,
+masurat de un critic pe 2026-09-06 cu un duplicat REAL injectat pe 22 de pagini; azi amandoi mor
+pe martorul de mai jos, cu cod 3.
+
 CE NU VERIFICA (reziduuri - un zero de aici nu inseamna acoperire)
   - Id-uri DINAMICE (`id={ceva}`): patru componente le randeaza asa (`Ecran`, `SectiuneRegistru`,
     `JuridicPagina`, `TermeneFisa`). Valorile vin din `src/content/*.ts` la randare si poarta nu
@@ -74,7 +83,9 @@ import glob
 import io
 import os
 import re
+import shutil
 import sys
+import tempfile
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -263,13 +274,87 @@ def controale():
     if importuri_din_sursa('import A from "@/components/A";\nimport b from "./local";') != \
             ['@/components/A']:
         return 'martorul de extragere: importurile `@/` citite gresit'
+
+    return martor_cap_la_cap()
+
+
+def martor_cap_la_cap():
+    """Martor pe un arbore fabricat pe DISC, prin `masoara_arbore` - nu prin dubluri injectate.
+
+    Tot ce e mai sus exercita functii pure cu `rezolva`/`citeste` INJECTATE, deci nu atinge puntea
+    catre disc. Masurat de un critic pe 2026-09-06: cu puntea nemartorita, `rezolva_real` intors la
+    `None` sau bucla de layout-uri din `pagini_reale` dezarmata sterg toata clasa ID-04, iar poarta
+    tipareste "martori ... OK" plus "COLIZIUNI: 0" si iese 0 avand 22 de duplicate reale in arbore
+    (`id="continut"` pus pe `<footer>` din Subsol.tsx, care sta in layout). Singurul semn ramanea
+    cifra din randul MASURAT, pe care n-o compara nimeni.
+
+    Fixtura pune DOUA duplicate, cate unul pe fiecare drum al puntii, ca niciunul din cei doi
+    mutanti sa nu supravietuiasca:
+      - `continut` se vede DOAR daca `rezolva_real` rezolva importurile `@/` pe doua nivele;
+      - `subsol-ancora` se vede DOAR daca `pagini_reale` pune `layout.tsx` in radacinile paginii.
+    Plus o a doua pagina, cu id-uri unice sub acelasi layout, care nu are voie sa produca nimic.
+    """
+    lucru = tempfile.mkdtemp(prefix='poarta-identificatori-')
+
+    def scrie(rel, continut):
+        cale = os.path.join(lucru, rel.replace('/', os.sep))
+        dosar = os.path.dirname(cale)
+        if not os.path.isdir(dosar):
+            os.makedirs(dosar)
+        io.open(cale, 'w', encoding='utf-8', newline='\n').write(continut)
+
+    try:
+        scrie('src/content/rute.ts',
+              'export const RUTE = [\n  { cale: "/proba" },\n  { cale: "/curata" },\n'
+              '  { cale: "/proba" },\n];\n'
+              'export const SECTIUNI_ACASA = [\n  { ancora: "scan" },\n'
+              '  { ancora: "scan" },\n];\n')
+        scrie('src/app/layout.tsx', 'import S from "@/components/Subsol";\n<body id="corp">\n')
+        scrie('src/components/Subsol.tsx', '<footer id="subsol-ancora">\n')
+        scrie('src/app/proba/page.tsx',
+              'import I from "@/components/Invelis";\n<div id="continut">\n'
+              '<a id="subsol-ancora">\n')
+        scrie('src/components/Invelis.tsx',
+              'import A from "@/components/Adanc";\n<section id="dovada">\n')
+        scrie('src/components/Adanc.tsx', '<p id="continut">\n')
+        scrie('src/app/curata/page.tsx', '<div id="doar-aici">\n')
+        scrie('src/content/afirmatii/proba.json', '[]\n')
+
+        try:
+            gasiri, cifre = masoara_arbore(lucru)
+        except Preconditie as e:
+            return ('martorul cap la cap: masuratoarea a refuzat arborele fabricat (' + str(e) +
+                    '), deci martorul nu a apucat sa masoare nimic')
+        coduri = sorted(c for c, _ in gasiri)
+        if coduri != ['ID-01', 'ID-03', 'ID-04', 'ID-04']:
+            return ('martorul cap la cap: pe arborele fabricat asteptam ID-01, ID-03 si DOUA '
+                    'ID-04, si am primit ' + repr(gasiri))
+        id04 = [m for c, m in gasiri if c == 'ID-04']
+        if not any('`continut`' in m for m in id04):
+            return ('martorul cap la cap: duplicatul adus prin importul `@/` de pe nivelul doi nu '
+                    'a fost prins - puntea `rezolva_real` nu ajunge la src/components/ pe disc')
+        if not any('`subsol-ancora`' in m for m in id04):
+            return ('martorul cap la cap: duplicatul adus din layout nu a fost prins - '
+                    '`pagini_reale` nu pune layout.tsx in radacinile paginii')
+        if any('/curata/' in m for m in id04):
+            return ('martorul cap la cap, negativ: pagina cu id-uri unice sub acelasi layout a '
+                    'fost raportata duplicata')
+        asteptat = {'cai': 3, 'ancore': 2, 'pagini': 2, 'id_uri': 9, 'registre': 1}
+        if cifre != asteptat:
+            return ('martorul cap la cap: cifrele masurate pe arborele fabricat nu sunt cele '
+                    'scrise in fixtura (asteptat ' + repr(asteptat) + ', primit ' + repr(cifre) +
+                    ') - randul MASURAT numara altceva decat crede')
+    finally:
+        shutil.rmtree(lucru, ignore_errors=True)
     return None
 
 
 # --- masuratoarea pe arborele real -------------------------------------------------------------
 
-def rezolva_real(spec):
-    baza = os.path.join(RADACINA, 'src', spec[2:].replace('/', os.sep))
+def rezolva_real(spec, radacina=RADACINA):
+    """`@/x/y` -> calea pe disc a modulului, sau None. `radacina` e parametru ca martorul cap la
+    cap din `controale()` sa poata rula ACEASTA functie pe un arbore fabricat in temp."""
+    baza = os.path.join(radacina, 'src', spec[2:].replace('/', os.sep))
     for ext in EXTENSII_MODUL:
         candidat = baza + ext.replace('/', os.sep)
         if os.path.isfile(candidat):
@@ -284,47 +369,58 @@ def citeste_real(cale):
         return None
 
 
-def pagini_reale():
-    """(cale relativa a paginii, radacinile ei) pentru fiecare `page.tsx` din `src/app`."""
+def pagini_reale(dosar_app=DOSAR_APP, radacina=RADACINA):
+    """(cale relativa a paginii, radacinile ei) pentru fiecare `page.tsx` din `src/app`.
+
+    Radacinile unei pagini sunt `page.tsx` PLUS fiecare `layout.tsx` de pe drumul catre `src/app`:
+    layout-ul e randat in aceeasi pagina, deci un `id` din el se ciocneste cu unul din pagina.
+    Parametrii exista ca martorul cap la cap sa exercite chiar bucla asta pe un arbore fabricat.
+    """
     rezultat = []
-    for radacina, directoare, nume in os.walk(DOSAR_APP):
+    for rad, directoare, nume in os.walk(dosar_app):
         directoare[:] = [d for d in directoare if d not in ('node_modules', '__pycache__')]
         if 'page.tsx' not in nume:
             continue
-        pagina = os.path.join(radacina, 'page.tsx')
+        pagina = os.path.join(rad, 'page.tsx')
         radacini = [pagina]
-        drum = radacina
+        drum = rad
         while True:
             candidat = os.path.join(drum, 'layout.tsx')
             if os.path.isfile(candidat):
                 radacini.append(candidat)
-            if os.path.normpath(drum) == os.path.normpath(DOSAR_APP):
+            if os.path.normpath(drum) == os.path.normpath(dosar_app):
                 break
             drum = os.path.dirname(drum)
-        rezultat.append((os.path.relpath(pagina, RADACINA).replace(os.sep, '/'), radacini))
+        rezultat.append((os.path.relpath(pagina, radacina).replace(os.sep, '/'), radacini))
     return sorted(rezultat)
 
 
-def main():
-    motiv = controale()
-    if motiv:
-        print('CONTROL PICAT: ' + motiv, file=sys.stderr)
-        return 3
+class Preconditie(Exception):
+    """Arborele nu indeplineste conditia fara de care masuratoarea nu inseamna nimic (cod 3)."""
 
-    if not os.path.isfile(MANIFEST):
-        print('poarta-identificatori: lipseste src/content/rute.ts - NEMASURAT', file=sys.stderr)
-        return 3
-    if not os.path.isdir(DOSAR_APP):
-        print('poarta-identificatori: lipseste src/app - NEMASURAT', file=sys.stderr)
-        return 3
 
-    text_manifest = io.open(MANIFEST, encoding='utf-8').read()
+def masoara_arbore(radacina):
+    """Toate constatarile pe un arbore REAL de pe disc, plus cifrele pentru randul MASURAT.
+
+    Aceeasi functie masoara arborele proiectului SI arborele fabricat de `controale()` in
+    `tempfile.mkdtemp()`. De aia e parametrizata pe radacina: fara asta puntea catre disc
+    (`rezolva_real`, `citeste_real`, `pagini_reale`) n-ar fi atinsa de niciun martor, iar un
+    `rezolva_real` intors la `None` ar sterge tacut toata clasa ID-04 cu poarta iesind 0.
+    """
+    manifest = os.path.join(radacina, 'src', 'content', 'rute.ts')
+    dosar_app = os.path.join(radacina, 'src', 'app')
+    dosar_registru = os.path.join(radacina, 'src', 'content', 'afirmatii')
+
+    if not os.path.isfile(manifest):
+        raise Preconditie('lipseste src/content/rute.ts')
+    if not os.path.isdir(dosar_app):
+        raise Preconditie('lipseste src/app')
+
+    text_manifest = io.open(manifest, encoding='utf-8').read()
     cai = cai_din_manifest(text_manifest)
     ancore = ancore_din_manifest(text_manifest)
     if not cai:
-        print('poarta-identificatori: zero cai citite din rute.ts - NEMASURAT, nu curat',
-              file=sys.stderr)
-        return 3
+        raise Preconditie('zero cai citite din rute.ts')
 
     gasiri = []
     for cale, cate in duplicate_exacte(cai):
@@ -338,19 +434,19 @@ def main():
         gasiri.append(('ID-03', 'ancora `#' + ancora + '` apare de ' + str(cate) +
                        ' ori in SECTIUNI_ACASA: subsolul ar scrie doua randuri catre acelasi loc'))
 
-    pagini = pagini_reale()
+    pagini = pagini_reale(dosar_app, radacina)
     if not pagini:
-        print('poarta-identificatori: zero pagini gasite in src/app - NEMASURAT', file=sys.stderr)
-        return 3
+        raise Preconditie('zero pagini gasite in src/app')
     total_id = 0
     for ruta, radacini in pagini:
-        fisiere = inchidere_pagina(radacini, rezolva_real, citeste_real)
+        fisiere = inchidere_pagina(radacini, lambda spec: rezolva_real(spec, radacina),
+                                   citeste_real)
         aparitii = []
         for f in fisiere:
             text = citeste_real(f)
             if text is None:
                 continue
-            rel = os.path.relpath(f, RADACINA).replace(os.sep, '/')
+            rel = os.path.relpath(f, radacina).replace(os.sep, '/')
             for ident in id_uri_din_sursa(text):
                 aparitii.append((ident, rel))
         total_id += len(aparitii)
@@ -359,21 +455,40 @@ def main():
                            str(len(unde)) + ' ori in pagina randata (' + ', '.join(unde) + ')'))
 
     registre = []
-    if os.path.isdir(DOSAR_REGISTRU):
+    if os.path.isdir(dosar_registru):
         registre = [os.path.splitext(os.path.basename(p))[0]
-                    for p in sorted(glob.glob(os.path.join(DOSAR_REGISTRU, '*.json')))]
+                    for p in sorted(glob.glob(os.path.join(dosar_registru, '*.json')))]
         for _, lista in coliziuni_de_registru(registre):
             gasiri.append(('ID-05', 'registrele ' + ', '.join('`' + n + '.json`' for n in lista) +
                            ' difera doar prin registru: poarta-evidenta genereaza din amandoua '
                            'acelasi docs/afirmatii/<nume>.md si al doilea il suprascrie tacut'))
 
+    cifre = {'cai': len(cai), 'ancore': len(ancore), 'pagini': len(pagini),
+             'id_uri': total_id, 'registre': len(registre)}
+    return gasiri, cifre
+
+
+def main():
+    motiv = controale()
+    if motiv:
+        print('CONTROL PICAT: ' + motiv, file=sys.stderr)
+        return 3
+
+    try:
+        gasiri, cifre = masoara_arbore(RADACINA)
+    except Preconditie as e:
+        print('poarta-identificatori: ' + str(e) + ' - NEMASURAT, nu curat', file=sys.stderr)
+        return 3
+
     for cod, mesaj in sorted(gasiri):
         print('OPRESTE  ' + cod + '  ' + mesaj)
 
-    print('CONTROALE: martori ID-01 (+ancora RFC 3986), ID-02, ID-03, ID-04, extragere - toti OK')
-    print('MASURAT: ' + str(len(cai)) + ' cai, ' + str(len(ancore)) + ' ancore, ' +
-          str(len(pagini)) + ' pagini randate cu ' + str(total_id) + ' id-uri literale, ' +
-          str(len(registre)) + ' registre')
+    print('CONTROALE: martori ID-01 (+ancora RFC 3986), ID-02, ID-03, ID-04, extragere, plus '
+          'martorul CAP LA CAP pe arbore fabricat in temp (rezolva_real, citeste_real, '
+          'pagini_reale) - toti OK')
+    print('MASURAT: ' + str(cifre['cai']) + ' cai, ' + str(cifre['ancore']) + ' ancore, ' +
+          str(cifre['pagini']) + ' pagini randate cu ' + str(cifre['id_uri']) +
+          ' id-uri literale, ' + str(cifre['registre']) + ' registre')
     print('COLIZIUNI: ' + str(len(gasiri)))
     print('REZIDUURI: id-uri dinamice `id={...}` neevaluate (4 componente) · component cu id '
           'literal randat de doua ori numarat o data · id-urile din registre le acopera '

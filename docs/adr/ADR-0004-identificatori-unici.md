@@ -5,9 +5,17 @@
 ## Context
 
 Fabrica lucreaza cu felii paralele. Conditia care face paralelismul sa functioneze e ca feliile
-sa atinga multimi DISJUNCTE de fisiere: `plieaza.sh` o verifica inainte de pliere si refuza doua
-felii care scriu in acelasi fisier. Registrul de afirmatii a fost spart in `src/content/afirmatii/`
-cu cate un fisier per felie exact din motivul asta, si listele generate din el la fel.
+sa atinga multimi DISJUNCTE de fisiere. Inainte de pliere, `plieaza.sh` PREZICE suprapunerea de
+fisiere sursa si o tipareste - nu refuza nimic pe ea, si o spune el insusi in doua locuri: in
+comentariul din dreptul verificarii ("Un fisier atins de doua felii NU e neaparat un conflict -
+poate fi acelasi fisier, randuri diferite") si in randul de rezumat ("predictie, nu verdict").
+Refuzul vine de la merge-ul propriu-zis, la primul conflict real. Sursa e `scripturi/plieaza.sh`
+din depozitul fabricii - alt depozit decat asta, de aceea e numit fara citare de linie: o citare
+`fisier:NN` catre el ar trimite poarta de legaturi sa caute in arborele site-ului si ar pica pe
+drept. Cine citeste ADR-ul ca sa afle daca plierea il apara de suprapuneri: nu il apara - randul
+de predictie se citeste cu ochii, si abia merge-ul da verdictul. Registrul de afirmatii a
+fost spart in `src/content/afirmatii/` cu cate un fisier per felie exact din motivul asta, si
+listele generate din el la fel.
 
 Disjunctia rezolva conflictul de IMBINARE. Nu rezolva coliziunea de NUME. Doua felii care nu se
 ating deloc in git pot alege acelasi identificator global:
