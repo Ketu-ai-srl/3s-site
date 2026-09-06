@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 /**
@@ -187,10 +187,32 @@ describe('regresiile de directie prinse pe 2026-09-06', () => {
     )
   })
 
-  it('fiecare folosire a lui AntetPagina primeste o fotografie', () => {
+  it('fiecare folosire a lui AntetPagina primeste o fotografie, in afara celor declarate', () => {
     // Masurat inainte: `/` avea 3 fotografii in `main`, celelalte 21 de pagini aveau ZERO,
     // desi `AntetPagina` primea deja `imagine` si le pasa mai departe, iar patru din cele
     // sapte fotografii nu erau referite de niciun fisier din `src`.
+    //
+    // DE CE ARE EXCEPTII DECLARATE, de pe 2026-09-06. Regula scrisa asa, fara portita, e mai
+    // stricta decat directia: directia da ecranul de deschidere ca "fotografie SAU ton plin",
+    // iar pagina aprobata deschide doua din cele sase ecrane ale ei fara fotografie. Regula
+    // devenea blocanta cand cadrele se termina: sunt SAPTE fisiere in `public/img/`, nu se
+    // descarca altele, eroul paginii de start nu are voie sa reapara ca erou pe alta pagina,
+    // deci raman SASE cadre pentru OPT ecrane de deschidere in /solutii.
+    //
+    // Am probat intai varianta care ar fi lasat regula neatinsa - acelasi fisier cu alt
+    // decupaj - si masuratoarea a respins-o: pe sase pozitii de decupaj, `dulapuri` se muta
+    // cu 1,7-4,2 din 255, `cutii` cu 0,6-3,6 si `sertare` cu 0-7. Criticul numise "acelasi
+    // cadru" doua capturi la 1,16 diferenta, deci un decupaj mutat NU produce un cadru
+    // propriu; ar fi trecut litera probei lasand cititorului aceeasi fotografie.
+    //
+    // Exceptia se scrie deci pe nume, aici, si nu se poate lua tacut: o pagina noua fara
+    // fotografie inroseste proba pana cand cineva o adauga in lista asta, in acelasi commit.
+    const DESCHIDERI_TIPOGRAFICE = new Set([
+      // hub-ul /solutii: singura pagina a carei fotografie nu trebuie sa spuna un domeniu
+      // anume. Deschidea cu acelasi cadru ca fisa /solutii/imobiliare - diferenta medie
+      // absoluta ZERO intre capturile primului ecran, cu textul ascuns.
+      'src/app/solutii/page.tsx',
+    ])
     const faraFoto: string[] = []
     const mers = (dir: string) => {
       for (const nume of readdirSync(dir, { withFileTypes: true })) {
@@ -199,13 +221,51 @@ describe('regresiile de directie prinse pe 2026-09-06', () => {
         else if (nume.name.endsWith('.tsx')) {
           const text = readFileSync(cale, 'utf8')
           for (const m of text.matchAll(/<AntetPagina\b([\s\S]*?)\/>/g)) {
-            if (!/\bimagine=/.test(m[1])) faraFoto.push(cale.replace(RADACINA, ''))
+            // Calea se normalizeaza pe `/`: pe Windows `join` da backslash, si o lista scrisa
+            // cu bare oblice n-ar fi potrivit niciodata - proba ar fi trecut mereu, adica ar
+            // fi tacut exact cand are ceva de spus.
+            const relativa = cale.replace(RADACINA, '').split(sep).join('/').replace(/^\//, '')
+            if (!/\bimagine=/.test(m[1]) && !DESCHIDERI_TIPOGRAFICE.has(relativa)) {
+              faraFoto.push(relativa)
+            }
           }
         }
       }
     }
     mers(join(RADACINA, 'src'))
-    expect(faraFoto, 'AntetPagina fara `imagine`').toEqual([])
+    expect(faraFoto, 'AntetPagina fara `imagine` si fara declaratie').toEqual([])
+  })
+
+  it('niciun ecran de deschidere nu repeta cadrul altuia', () => {
+    // Clasa de defect, gasita de critic si nemasurata de nimic pana acum: /solutii/constructii
+    // deschidea cu `rafturi` la acelasi decupaj ca eroul paginii de start, iar hub-ul /solutii
+    // cu acelasi cadru ca fisa /solutii/imobiliare. Diferenta medie absoluta intre capturile
+    // primelor ecrane, cu textul ascuns si miscarea oprita: ZERO, in amandoua perechile.
+    // Regula era scrisa in `PaginaDeSegment.tsx`, dar compara cele sapte fise INTRE ELE si
+    // scotea din multime chiar pagina de referinta. Poarta de legaturi nu vede fotografii,
+    // axe nu numara cadre, si un `grep` prin `.claude/scripts/porti/` da zero.
+    const pagina = readFileSync(join(RADACINA, 'src', 'components', 'PaginaDeSegment.tsx'), 'utf8')
+    const tabel = pagina.match(/const FOTO_SEGMENT[^=]*=\s*\{([\s\S]*?)\n\};/)
+    expect(tabel, 'nu gasesc FOTO_SEGMENT in PaginaDeSegment.tsx').not.toBeNull()
+    const intrari = [...tabel![1].matchAll(/(\w+):\s*(?:"(\w+)"|null)/g)].map((m) => [m[1], m[2]])
+    expect(intrari.length, 'FOTO_SEGMENT pare gol').toBeGreaterThan(5)
+
+    // Cadrul eroului paginii de start: prima fotografie de dupa `nivel="h1"`. Pagina de start
+    // isi scrie fotografiile pe loc, nu din registru, deci se citeste de acolo.
+    const acasa = readFileSync(join(RADACINA, 'src', 'app', 'page.tsx'), 'utf8')
+    const dupaH1 = acasa.slice(acasa.indexOf('nivel="h1"'))
+    const erouAcasa = dupaH1.match(/nume:\s*"(\w+)"/)
+    expect(erouAcasa, 'nu gasesc fotografia eroului de pe pagina de start').not.toBeNull()
+
+    const cuFoto = intrari.filter(([, cheie]) => cheie)
+    const cheile = cuFoto.map(([, cheie]) => cheie)
+    // Surorile intre ele: sapte fise care se ajung din aceeasi lista.
+    expect(new Set(cheile).size, 'doua fise deschid cu acelasi cadru: ' + cheile.join(', ')).toBe(
+      cheile.length,
+    )
+    // Si contra referintei, care lipsea din comparatie.
+    const cuErouAcasa = cuFoto.filter(([, cheie]) => cheie === erouAcasa![1]).map(([s]) => s)
+    expect(cuErouAcasa, 'fise care deschid cu cadrul eroului paginii de start').toEqual([])
   })
 
   it('registrul de fotografii numeste doar fisiere care exista, in ambele marimi', () => {
