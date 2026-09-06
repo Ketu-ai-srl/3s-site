@@ -27,9 +27,9 @@ care poarta chiar tiparul pe care il vaneaza devine o instanta a lui, si atunci 
 gaseste pe sine. De aceea martorii se construiesc din `chr(0x2014)`, nu din caracterul insusi.
 
 UTILIZARE
-    python .claude/scripts/fabrica/tipografie-liniute.py --diff <baza>..<varf> [-- <cale>...]
-    python .claude/scripts/fabrica/tipografie-liniute.py --fisiere <cale>...
-    python .claude/scripts/fabrica/tipografie-liniute.py --text-stdin
+    python .claude/scripts/porti/tipografie-liniute.py --diff <baza>..<varf> [-- <cale>...]
+    python .claude/scripts/porti/tipografie-liniute.py --fisiere <cale>...
+    python .claude/scripts/porti/tipografie-liniute.py --text-stdin
 
 IESIRE
     0 = zero liniute lungi, si controalele au trecut (deci zeroul are acoperire)
