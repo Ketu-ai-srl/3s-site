@@ -43,3 +43,9 @@ next-env.d.ts
 # Python: cache-ul poate purta text vechi din porti (a purtat numele unui concurent)
 __pycache__/
 *.pyc
+
+# Constatarile agentului de revizuire, scrise in worktree (dev-reviewer).
+# Fara randul asta: poarta.sh le numara la `fisiere_murdare`, promoveaza.sh respinge
+# verdictul ca MURDAR, iar curata.sh refuza sa stearga worktree-ul. Adica unealta de
+# revizuire producea exact starea pe care trei mecanisme o trateaza ca defect.
+.fabrica-constatari.txt

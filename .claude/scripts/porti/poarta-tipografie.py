@@ -6,6 +6,17 @@ Motivul pentru care exista invelisul asta: detectorul primeste fisiere, nu
 directoare, iar lista de fisiere trebuie sa fie stabila si sa nu intre in
 node_modules sau .next. Verdictul detectorului se transmite ca atare - inclusiv
 codul 3, care inseamna NEMASURAT, nu "curat".
+
+PORTILE INSELE INTRA IN SCANARE. Pana pe 6 sep 2026, `.claude` era in SARITE si
+nu era in CAI, deci nicio poarta nu trecea prin igiena pe care o impune site-ului.
+Scutirea nu avea motiv scris, si o scutire nemotivata se re-examineaza: masurat pe
+cele 22 de fisiere din `.claude/scripts/porti/`, zero liniute lungi, deci includerea
+nu costa nimic azi si prinde ce ar veni maine. `.py` si `.sh` sunt in extensii din
+acelasi motiv - fara ele, un fisier de poarta cu liniuta lunga ar fi ramas nevazut
+chiar dupa ce directorul a intrat in lista.
+
+La rosu: nu se scoate o cale din CAI si nu se adauga un nume in SARITE ca sa treaca
+poarta. Se repara fisierul acuzat.
 """
 import os
 import subprocess
@@ -13,13 +24,17 @@ import sys
 
 RADACINA = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 DETECTOR = os.path.join(RADACINA, '.claude', 'scripts', 'porti', 'tipografie-liniute.py')
-EXTENSII = ('.md', '.mdx', '.ts', '.tsx', '.js', '.mjs', '.json', '.yml', '.yaml', '.css')
-SARITE = {'node_modules', '.next', '.git', 'dist', 'build', '__pycache__', '.claude'}
+EXTENSII = ('.md', '.mdx', '.ts', '.tsx', '.js', '.mjs', '.json', '.yml', '.yaml', '.css',
+            '.py', '.sh')
+SARITE = {'node_modules', '.next', '.git', 'dist', 'build', '__pycache__'}
+# `.claude/scripts/porti` e numit pe cale INTREAGA, nu prin `.claude`: restul lui `.claude`
+# (memoria, regulile de sesiune) nu e livrat si nu se scaneaza, dar portile da.
+CAI = ('src', 'docs', 'tests', '.github', os.path.join('.claude', 'scripts', 'porti'))
 
 
 def fisiere():
     gasite = []
-    for cale in ('src', 'docs', 'tests', '.github'):
+    for cale in CAI:
         absolut = os.path.join(RADACINA, cale)
         if not os.path.isdir(absolut):
             continue

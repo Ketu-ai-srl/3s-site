@@ -1,20 +1,27 @@
 # Portile de browser
 
-Cinci porti care cer un browser adevarat. Ruleaza pe serverul LOCAL, construit din arborele
+Portile care cer un browser adevarat. Ruleaza pe serverul LOCAL, construit din arborele
 curent (`pnpm build` plus `next start` pe un port liber), niciodata pe staging: o poarta care
 depinde de reteaua publica se inroseste din motive straine de cod si se invata a fi ignorata
 exact pana in ziua in care avea dreptate.
+
+**Cate sunt nu se scrie aici.** Fisierul asta a purtat luni de zile cifra „cinci" in timp ce
+pe disc erau sase spec-uri; nimeni nu minte, doar ca o cifra scrisa de mana intr-un document
+imbatraneste in tacere, iar cine o citeste crede ca a numarat cineva. Lista adevarata e
+`ls tests/browser/*.spec.ts`, si e verificata mecanic de
+`.claude/scripts/porti/probe/proba-completitudine.py`.
 
 ## Comenzi
 
 | Comanda | Ce ruleaza |
 |---|---|
-| `node .claude/scripts/porti/browser-toate.mjs` | toate cinci, un build, un server, o rulare |
-| `node .claude/scripts/porti/browser-accesibilitate.mjs` | `PA-03` plus `PA-05` |
-| `node .claude/scripts/porti/browser-html-brut.mjs` | `S-17` |
-| `node .claude/scripts/porti/browser-derapaj.mjs` | derapaj orizontal la 390 px |
-| `node .claude/scripts/porti/browser-consimtamant.mjs` | `C-01` |
-| `node .claude/scripts/porti/browser-legaturi.mjs` | legaturi si imagini |
+| `node .claude/scripts/porti/browser-toate.mjs` | **tot directorul** `tests/browser`, cu un build, un server, o rulare |
+| `node .claude/scripts/porti/browser-<poarta>.mjs` | doar poarta aceea, cand repari o singura problema |
+
+Lansatoarele individuale sunt o comoditate pentru rulari tintite, nu calea prin care un spec
+intra in verificare. `browser-toate.mjs` da lui Playwright DIRECTORUL, deci **un spec fara
+lansator propriu nu e un gol** - ruleaza si el. Lansatoarele existente se vad cu
+`ls .claude/scripts/porti/browser-*.mjs`.
 
 `SARI_BUILD=1` sare peste build cand arborele e deja construit. Probele se pot rula si direct:
 `pnpm exec playwright test --config tests/browser/playwright.config.ts`, dar atunci se pierde
@@ -27,6 +34,9 @@ necitit, zero probe rulate, un detector care a refuzat sa masoare, sau martori c
 amandoi. Ultimul caz e regula din PORTI-FABRICA.md §1.2: o poarta fara control pozitiv nu e
 poarta, e o decoratiune, iar verdictul ei nu are voie sa fie "curat".
 
+Contractul asta e publicat in antetul lui `browser-rulator.mjs` si e citit de acolo, ca valoare,
+si de probele portilor Python - ca unealta si asteptarea sa nu poata drifta impreuna.
+
 ## Ce masoara fiecare, si pragul
 
 | Poarta | Prag | Sursa pragului |
@@ -36,6 +46,11 @@ poarta, e o decoratiune, iar verdictul ei nu are voie sa fie "curat".
 | Derapaj orizontal | `scrollWidth <= innerWidth` la 390 px | `<<din cercetare>>`, catalogul nu are poarta de derapaj |
 | Consimtamant | zero gazde straine, zero cookie-uri, zero stocare, fara interactiune si dupa refuz | `C-01` |
 | Legaturi si imagini | zero legaturi interne moarte, zero ancore fara tinta, zero imagini fara `alt` | `PA-04`, `S-07`, `S-15` |
+| Meniu pliabil | panoul se deschide, poarta toate rutele publice si e servit din HTML, la 390 px | brief, aceeasi latime ca derapajul |
+
+Randurile de mai sus descriu, nu constituie lista. Cand apare un spec nou, aici se adauga un
+rand; daca cineva uita, poarta nu scade - se pierde doar explicatia. Ce nu are voie sa lipseasca
+sunt martorii din titluri, si aia se verifica mecanic.
 
 ## Doua lucruri care nu sunt de comoditate
 
@@ -55,3 +70,11 @@ ce vaneaza devine ea insasi o instanta a defectului si inroseste alte porti pe c
 Gazdele straine folosite de martorii pozitivi sunt sub TLD-ul rezervat `.invalid`, deci
 controlul nu produce trafic real catre nimeni; browserul inregistreaza cererea inainte de DNS,
 si exact asta se masoara.
+
+## Fiecare spec isi poarta amandoi martorii
+
+`browser-rulator.mjs` refuza sa dea verdict "curat" daca printre probele rulate nu exista si un
+titlu cu marcajul de martor pozitiv, si unul cu cel negativ. Cerinta lui e pe REUNIUNEA rularii;
+`proba-completitudine.py` o ridica la fiecare fisier in parte, fiindca un spec ai carui martori
+traiesc in alt fisier nu e el insusi masurat. Un spec nou care nu-i poarta pe amandoi inroseste
+`pnpm porti:probe`, adica inainte sa apuce sa porneasca vreun browser.
