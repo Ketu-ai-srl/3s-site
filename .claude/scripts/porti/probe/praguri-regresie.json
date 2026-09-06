@@ -1,10 +1,10 @@
 {
-  "fisiere": 7,
-  "teste": 22,
-  "asertiuni": 56,
+  "fisiere": 8,
+  "teste": 36,
+  "asertiuni": 96,
   "sarite_maxim": 0,
-  "masurat_la": "2026-09-05",
-  "masurat_pe": "lotul lot/e2-primele-pagini, dupa proba meniului pliabil: tests/marcaj.test.ts plus cele sase fisiere din tests/browser/. Cifrele sunt copiate din randul MASURAT al portii, nu estimate.",
+  "masurat_la": "2026-09-06",
+  "masurat_pe": "lotul lot/e6-reorganizare (reorganizarea vizuala, feliile 25-29): tests/marcaj.test.ts, tests/directia.test.ts si cele sase fisiere din tests/browser/. Cifrele sunt copiate din randul MASURAT al portii (8 fisiere, 36 teste, 96 asertiuni), nu estimate.",
   "de_ce": "Pragul e podeaua acceptata ultima data, nu tinta. E asezat pe ce era COMMITAT in momentul scrierii portii, deliberat, nu pe ce era in arborele de lucru: in aceeasi zi un alt val adauga tests/browser/, iar un prag luat dintr-o munca in curs devine fals in clipa in care ea se rearanjeaza, si ar inrosi lotul cuiva care face lucrul corect. Poarta tipareste AVERT R-01..R-03 cat timp masuratoarea e peste prag, cu textul 'ridica pragul': asta e semnalul ca valorile de aici trebuie inlocuite cu cele masurate, dupa ce valul de probe aterizeaza. Ridicarea se face copiind cifrele din randul MASURAT al portii.",
   "cum_se_coboara": "Stergerea unui test invechit e legitima. Se scade cifra de aici IN ACELASI COMMIT cu stergerea, si poarta o lasa sa treaca, marcand-o 'coborare DECLARATA'. Fara modificarea acestui fisier, scaderea fata de HEAD opreste lotul."
 }
