@@ -4,7 +4,7 @@ import BlocDovada from "./BlocDovada";
 import Buton from "./Buton";
 import ListaBifa from "./ListaBifa";
 import RandRaspundere from "./RandRaspundere";
-import SectiuneRegistru from "./SectiuneRegistru";
+import SectiuneRegistru, { LATIME_REGISTRU } from "./SectiuneRegistru";
 import { FOTOGRAFII, type CheieFotografie } from "@/content/fotografii";
 import { HUB, type PaginaSegment } from "@/content/segmente";
 
@@ -37,18 +37,41 @@ import { HUB, type PaginaSegment } from "@/content/segmente";
 //
 // FOTOGRAFIA de antet se alege dupa slug, aici si nu in `segmente.ts`, fiindca e o decizie
 // de vitrina, nu un fapt despre domeniu: cele sapte fise sunt surori si se ajunge la ele
-// din aceeasi lista, deci nu au voie sa deschida cu acelasi cadru. Sapte chei distincte
-// pentru sapte fise; hub-ul /solutii ia `dulapuri`, care se repeta o singura data, pe
-// ultima fisa din lista.
-const FOTO_SEGMENT: Record<string, CheieFotografie> = {
+// din aceeasi lista, deci nu au voie sa deschida cu acelasi cadru.
+//
+// SI NICI CU CADRUL PAGINII DE START, iar asta a fost defectul. Regula veche compara cele
+// sapte fise INTRE ELE si scotea din multime chiar pagina de referinta: `constructii` lua
+// `rafturi`, adica exact fotografia si exact decupajul eroului de pe `/`. Masurat pe primul
+// ecran, cu textul ascuns si miscarea oprita, diferenta medie absoluta intre cele doua
+// capturi era ZERO - nu un cadru asemanator, acelasi cadru. La fel se atingeau hub-ul
+// /solutii si fisa /solutii/imobiliare, amandoua pe `dulapuri`: omul apasa randul
+// "AGENTII IMOBILIARE..." de pe hub si ateriza pe poza pe care tocmai o parasise.
+// Argumentul vechi - "se repeta pe ULTIMA fisa din lista" - se sprijinea pe pozitia in
+// lista, dar nimeni nu ajunge ultimul intr-o lista: ajunge apasand exact randul acela.
+//
+// DE CE DOUA PAGINI DESCHID FARA FOTOGRAFIE, si de ce nu e o lipsa. In `public/img/` sunt
+// SAPTE cadre si nu se descarca altele (regula directiei: fotografii ilustrative de pe
+// Pexels, cu licenta in `LICENTA.md`). Eroul paginii de start tine `rafturi` si nu are voie
+// sa reapara, deci raman SASE cadre pentru OPT ecrane de deschidere: hub-ul si cele sapte
+// fise. Doua trebuie sa se deschida tipografic, iar directia scrie asta ca varianta egala,
+// nu ca exceptie: "fotografie sau `ton='plin'`". Aceeasi pagina aprobata face exact asa -
+// din sase ecrane, doua sunt fara fotografie (Solve si Pasul urmator), adica unul din trei.
+//
+// Cele doua alese: hub-ul, fiindca e singura pagina a carei fotografie nu trebuie sa spuna
+// un domeniu anume, si `constructii`, fisa al carei cadru se ciocnea cu pagina de start.
+const FOTO_SEGMENT: Record<string, CheieFotografie | null> = {
   notari: "maini",
   primarii: "sertare",
   contabilitate: "cutii",
   avocatura: "dosare",
-  constructii: "rafturi",
+  constructii: null,
   logistica: "legatura",
   imobiliare: "dulapuri",
 };
+
+// Sectiunile II, IV si V isi iau latimea din `LATIME_REGISTRU`: linia se opreste unde se
+// opreste textul. Defectul era reparat pentru sectiunea I si numai pentru ea, desi trei
+// sectiuni aveau aceeasi boala. Cifrele si motivul, in `SectiuneRegistru.tsx`.
 
 type Props = {
   segment: PaginaSegment;
@@ -59,12 +82,13 @@ type Props = {
 
 export default function PaginaDeSegment({ segment, nume, slug }: Props) {
   const adresa = "/solutii/" + slug;
+  const cheieFoto = FOTO_SEGMENT[slug] ?? null;
 
   return (
     <main id="continut">
       <AntetPagina
         adresa={adresa}
-        imagine={FOTOGRAFII[FOTO_SEGMENT[slug] ?? "rafturi"]}
+        imagine={cheieFoto ? FOTOGRAFII[cheieFoto] : undefined}
         fir={[
           { text: "Pagina de start", href: "/" },
           { text: HUB.titluMeta, href: "/solutii" },
@@ -80,7 +104,6 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
       <SectiuneRegistru
         id="situatia"
         ton="fisier"
-        cota="I"
         eticheta="Situația de azi"
         titlu="Ce se întâmplă acum, înainte să schimbăm ceva."
         // Linia asta e restul deschiderii, mutat de pe ecran (vezi `continuare` in
@@ -119,12 +142,11 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
       <SectiuneRegistru
         id="schimbare"
         ton="inchis"
-        cota="II"
         eticheta="Ce se schimbă"
         titlu="Aceleași documente, alt mod de a ajunge la ele."
         lead="Pașii serviciului sunt aceiași peste tot. Aici scriem numai ce arată altfel în ziua de lucru a acestui domeniu."
       >
-        <dl className="m-0 border-t border-linie-suprafata p-0">
+        <dl className={"m-0 border-t border-linie-suprafata p-0 " + LATIME_REGISTRU}>
           {segment.schimbare.map((f) => (
             <div
               key={f.titlu}
@@ -159,9 +181,8 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
       <SectiuneRegistru
         id="dovada"
         ton="fisier"
-        cota="III"
         eticheta="Dovada"
-        titlu="Ce puteți verifica, și ce nu putem susține încă."
+        titlu={segment.titluDovada}
         lead="Într-o relație care începe cu predarea unei arhive, afirmația nesusținută costă mai mult decât tăcerea. Punem pe masă prima listă; pe a doua o scriem tot noi, primii."
       >
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
@@ -173,12 +194,11 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
       <SectiuneRegistru
         id="temei"
         ton="inchis"
-        cota="IV"
         eticheta="Temeiul legal"
         titlu="Actele din care vine obligația, numite ca să le puteți citi."
         lead="Nu scriem un termen fără să spunem din ce act vine. Unde nu putem cita articolul, rândul rămâne gol și scriem de ce, în loc să punem o cifră care sună bine."
       >
-        <div className="border-t border-linie-suprafata">
+        <div className={"border-t border-linie-suprafata " + LATIME_REGISTRU}>
           {segment.temeiuri.map((t) => (
             <div
               key={t.act}
@@ -197,8 +217,26 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
           ))}
         </div>
 
-        <BlocDovada fel="limite" eticheta="Termenul pe care nu îl scriem" className="mt-10">
+        {/* Doua blocuri, nu unul. Masurat pe cele sapte fise, nota asta era SINGURUL bloc
+            care trecea de cele 60 de cuvinte ale directiei - intre 70 si 115, in timp ce cel
+            mai lung alt bloc de pe orice fisa are 55 - si e chiar blocul pe care pagina isi
+            sprijina onestitatea, deci cel mai pagubos de sarit. Nota avea de la inceput doua
+            miscari: de ce randul ramane gol, si ce se aplica in locul lui. Taietura e la
+            granita lor, cuvant cu cuvant: niciun cuvant scos, niciunul adaugat. */}
+        <BlocDovada
+          fel="limite"
+          eticheta="Termenul pe care nu îl scriem"
+          className={"mt-10 " + LATIME_REGISTRU}
+        >
           {segment.notaTermene}
+        </BlocDovada>
+
+        <BlocDovada
+          fel="limite"
+          eticheta="Ce se aplică în locul lui"
+          className={"mt-5 " + LATIME_REGISTRU}
+        >
+          {segment.notaCerere}
         </BlocDovada>
 
         <p className="mt-8 max-w-[62ch] text-[16px] leading-[1.55] text-cerneala-2">
@@ -216,22 +254,22 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
       <SectiuneRegistru
         id="intrebari"
         ton="fisier"
-        cota="V"
         eticheta="Întrebări"
-        titlu="Întrebările care apar oricum, cu răspunsul scris din start."
+        titlu={segment.titluIntrebari}
         lead="Apar în prima discuție sau în chestionarul de securitate. Le punem noi primii, ca să nu pierdeți o săptămână pe corespondență."
       >
-        {segment.intrebari.map((i) => (
-          <RandRaspundere key={i.intrebare} intrebare={i.intrebare}>
-            {i.raspuns}
-          </RandRaspundere>
-        ))}
+        <div className={LATIME_REGISTRU}>
+          {segment.intrebari.map((i) => (
+            <RandRaspundere key={i.intrebare} intrebare={i.intrebare}>
+              {i.raspuns}
+            </RandRaspundere>
+          ))}
+        </div>
       </SectiuneRegistru>
 
       <SectiuneRegistru
         id="discutie"
         ton="inchis"
-        cota="VI"
         eticheta="Pasul următor"
         titlu={segment.incheiere.titlu}
       >
@@ -239,12 +277,19 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
           {segment.incheiere.text}
         </p>
 
+        {/* UN buton, si spune ce se cere AICI. Masurat pe butoanele cu chenar din `main`:
+            pagina de start are sase butoane cu sase texte distincte, fiecare ecran cu pasul
+            lui; fisele aveau doua butoane si UN singur text - "Programati o discutie de 30
+            de minute" in antet si iar in incheiere - plus inca o cerere in bara fixa, adica
+            trei cereri pentru acelasi lucru pe aceeasi pagina. Dupa sase sectiuni de temeiuri
+            si intrebari omul are ce cere, si fiecare fisa scrie ce anume, din propriul ei
+            paragraf de incheiere.
+            Legatura de text de langa el a plecat din acelasi motiv: era al doilea
+            "Vedeti toate domeniile" de pe pagina, dupa cel din antet, iar drumul inapoi la
+            hub e deja in firul de navigare si in bara de sus. */}
         <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
-          <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
-            Programați o discuție de 30 de minute
-          </Buton>
-          <Buton href="/solutii" fel="text" marime="mare">
-            Vedeți toate domeniile
+          <Buton href="/contact" marime="mare" sageata className="max-sm:w-full">
+            {segment.incheiere.buton}
           </Buton>
         </div>
 

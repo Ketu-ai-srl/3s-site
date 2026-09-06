@@ -4,9 +4,8 @@ import BandaTitlu from "@/components/BandaTitlu";
 import BlocDovada from "@/components/BlocDovada";
 import Buton from "@/components/Buton";
 import FisaDomeniu from "@/components/FisaDomeniu";
-import SectiuneRegistru from "@/components/SectiuneRegistru";
+import SectiuneRegistru, { LATIME_REGISTRU } from "@/components/SectiuneRegistru";
 import { HUB, INDIFERENT_DE_DOMENIU, SEGMENTE } from "@/content/segmente";
-import { FOTOGRAFII } from "@/content/fotografii";
 
 // Hub-ul de domenii. Nu contine continut scris de mana despre vreun segment: lista se
 // genereaza din SEGMENTE, deci un domeniu nou apare aici in clipa in care primeste o
@@ -40,9 +39,18 @@ const TITLU_RUPT = HUB.h1.split("\n").flatMap((rand, i) =>
 export default function Solutii() {
   return (
     <main id="continut">
+      {/* Hub-ul se deschide TIPOGRAFIC, fara fotografie, si nu din lipsa. Deschidea cu
+          `dulapuri`, exact cadrul fisei /solutii/imobiliare: masurat pe primul ecran, cu
+          textul ascuns si miscarea oprita, diferenta medie absoluta intre cele doua capturi
+          era zero. Randul "AGENTII IMOBILIARE SI ADMINISTRARE DE IMOBILE" de pe lista de mai
+          jos ducea deci pe poza pe care omul tocmai o parasise. Sunt sapte fotografii pentru
+          opt ecrane de deschidere (hub plus sapte fise), fara cea a paginii de start, care nu
+          are voie sa se repete; din cele doua care raman fara cadru, hub-ul e alegerea
+          evidenta - e singura pagina a carei fotografie nu trebuie sa spuna un domeniu anume.
+          Directia da ecranul tipografic ca varianta egala, iar pagina de start face la fel pe
+          doua din sase ecrane. */}
       <AntetPagina
         adresa="/solutii"
-        imagine={FOTOGRAFII.dulapuri}
         fir={[{ text: "Pagina de start", href: "/" }, { text: HUB.titluMeta }]}
         eticheta={HUB.eticheta}
         titlu={TITLU_RUPT}
@@ -54,7 +62,6 @@ export default function Solutii() {
       <SectiuneRegistru
         id="domenii"
         ton="fisier"
-        cota="I"
         eticheta="Domenii"
         // Titlul NU numara domeniile, si asta e o reparatie, nu o preferinta de stil. Pana
         // acum scria "Patru domenii, in ordinea in care le luam" deasupra unei liste
@@ -98,7 +105,6 @@ export default function Solutii() {
 
       <SectiuneRegistru
         ton="inchis"
-        cota="II"
         eticheta="Ce nu se schimbă"
         // Si aici a plecat numarul, din acelasi motiv: lista vine din
         // INDIFERENT_DE_DOMENIU, iar "Trei lucruri" ar fi fost fals in ziua in care se
@@ -110,7 +116,7 @@ export default function Solutii() {
             forma pe care directia o refuza, si aparea la un clic distanta de lista
             tipografica de deasupra - acelasi continut in doua limbaje vizuale. Randul
             asta e larg si citibil pana la capat, iar titlul din stanga tine coloana. */}
-        <dl className="m-0 border-t border-linie-suprafata p-0">
+        <dl className={"m-0 border-t border-linie-suprafata p-0 " + LATIME_REGISTRU}>
           {INDIFERENT_DE_DOMENIU.map((f) => (
             <div
               key={f.titlu}
@@ -137,7 +143,6 @@ export default function Solutii() {
 
       <SectiuneRegistru
         ton="fisier"
-        cota="III"
         eticheta="Pasul următor"
         titlu="Discuția începe de la arhiva dumneavoastră."
       >
@@ -147,9 +152,12 @@ export default function Solutii() {
           cu un calendar de preluare scris, nu cu o ofertă trimisă a doua zi pe email.
         </p>
 
+        {/* Butonul NU repeta cererea din antet. Acolo scrie "Programati o discutie de 30 de
+            minute"; aici, dupa lista de domenii si dupa ce nu se schimba, omul are ce cere, si
+            butonul spune anume ce - din chiar paragraful de deasupra lui. */}
         <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
-          <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
-            Programați o discuție de 30 de minute
+          <Buton href="/contact" marime="mare" sageata className="max-sm:w-full">
+            Cereți estimarea de volum
           </Buton>
           {/* Tinta era `/#termene`, o ancora care nu mai exista: verificatorul a plecat de
               pe pagina de start pe pagina lui, iar legatura ateriza tacut in capul paginii

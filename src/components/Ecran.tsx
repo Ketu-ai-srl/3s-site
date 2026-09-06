@@ -22,6 +22,11 @@ import type { ReactNode } from "react";
 // sunt decupaje PORTRET (2:3 sau 3:4): pe un telefon tinut vertical `object-cover` dintr-un
 // peisaj de 960x637 marea fotografia de 1,32 ori si o inmuia.
 //
+// CULOAREA fotografiei se corecteaza din registru (`filtru` in `fotografii.ts`), nu aici:
+// patru cadre masurau intre 2,2 si 7,1 ori saturatia paginii de start si se citeau ca fiind
+// din alta pelicula. `Ecran` doar aplica ce scrie in registru, si numai cand scrie ceva - pagina
+// de start isi da fotografiile pe loc, fara filtru, si ramane exact cum a fost aprobata.
+//
 // VOALUL e LOCAL, nu pe tot ecranul (clasa `.voal` din `globals.css`): negru sub coloana de
 // text - jos si in stanga, unde stau eticheta, titlul, linia si butonul - si un voal subtire
 // pe primii 140 px, sub bara de sus. Restul fotografiei ramane fotografie. Varianta veche
@@ -45,6 +50,8 @@ type Imagine = {
   alt: string;
   /** unde sa se ancoreze decupajul cand ecranul are alta proportie decat fotografia */
   pozitie?: string;
+  /** filtru CSS care aduce cadrul in banda de culoare a paginii de start; vezi `fotografii.ts` */
+  filtru?: string;
 };
 
 type Legatura = { href: string; text: string };
@@ -113,7 +120,14 @@ export default function Ecran({
     >
       {imagine ? (
         <>
-          <picture className="absolute inset-0 -z-20">
+          {/* Filtrul sta pe `picture`, nu pe `img`: `img` e elementul care se misca
+              (`respira`, 20 s de `transform`), iar un filtru pe elementul animat s-ar
+              recalcula la fiecare cadru. Pe invelis se aplica o data, iar transformarea
+              ramane compozabila. Cine da filtrul, si de ce tocmai atat: `fotografii.ts`. */}
+          <picture
+            className="absolute inset-0 -z-20"
+            style={imagine.filtru ? { filter: imagine.filtru } : undefined}
+          >
             <source media="(max-width: 767px)" srcSet={"/img/" + imagine.nume + "-960.webp"} />
             <img
               src={"/img/" + imagine.nume + "-1920.webp"}

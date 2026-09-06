@@ -8,10 +8,37 @@
 // `inchis` da o treapta mai deschisa (noapte-2), celelalte doua raman pe noapte. Valorile
 // se accepta in continuare ca paginile sa compileze si sa treaca singure in directia noua.
 //
-// Cota romana nu e decor "01/02/03": e numarul de registru pe care paginile il dau si il
-// citeaza intre ele. Sta mic, in mono, langa eticheta - nu mare, in serifa, cum era.
+// COTA e OPTIONALA, si asta e o schimbare, nu o comoditate. Argumentul vechi era ca nu e
+// decor "01/02/03" ci numarul de registru pe care paginile il dau si il citeaza intre ele.
+// Citarea a fost cautata si nu exista: zero trimiteri la o cota in `src/content`, `src/app`
+// si `src/components` (control pozitiv, ca sa nu masor o cautare stricata: cuvantul "cota"
+// apare de patru ori in registrul de afirmatii, deci cautarea gaseste ce exista). Iar
+// `JuridicPagina.tsx` scrie chiar contrariul, in aceleasi cuvinte: "pe o pagina de prezentare
+// cota romana e ornament, pe un text juridic cifra e un mijloc de trimitere". Fisele de
+// domeniu si hub-ul SUNT pagini de prezentare, iar pagina de start - directia aprobata - isi
+// eticheteaza cele sase ecrane numai cu cuvinte, fara nicio cifra.
+//
+// Deci: paginile de vitrina nu mai dau cota si raman cu eticheta-cuvant, ca pagina de start.
+// Paginile care sunt DOCUMENTE sau UNELTE o dau in continuare, si o pastreaza: acolo
+// numaratoarea e chiar mijlocul de trimitere. Cand cota lipseste, eticheta trece pe arama -
+// altfel randul de deasupra titlului si-ar pierde accentul, iar pe pagina de start eticheta
+// de sectiune e chiar in arama.
 
 export type Ton = "hartie" | "fisier" | "inchis";
+
+/**
+ * Latimea registrului: linia orizontala se opreste unde se opreste textul.
+ *
+ * Se pune pe LISTA, nu pe fiecare rand: capetele de linie raman aliniate intre ele. Masurat
+ * la 1280 px inainte, pe fisele de domeniu si pe hub, linia mergea pana la 1240 iar ultimul
+ * pixel cu litera cadea la 922-975 - intre 265 si 318 px de margine moarta la dreapta, de
+ * trei ori pe fiecare fisa si o data pe hub. Dupa: intre 0 si 18 px.
+ *
+ * 900 = eticheta din stanga (320-340) + spatiul dintre coloane (40) + coloana de text
+ * (aproximativ 62ch la 16 px). E scrisa o singura data fiindca deja s-a intamplat o data ca
+ * reparatia sa se aplice unei singure sectiuni din trei care aveau aceeasi boala.
+ */
+export const LATIME_REGISTRU = "max-w-[900px]";
 
 const FUNDAL: Record<Ton, string> = {
   hartie: "bg-noapte",
@@ -21,7 +48,8 @@ const FUNDAL: Record<Ton, string> = {
 
 type Props = {
   id?: string;
-  cota: string;
+  /** numarul de registru; se da numai pe paginile-document, nu pe cele de vitrina */
+  cota?: string;
   eticheta: string;
   titlu: string;
   lead?: React.ReactNode;
@@ -57,8 +85,8 @@ export default function SectiuneRegistru({
             sunt proza, si sunt scrise cu majuscule din CSS. Vezi nota lunga din
             `Ecran.tsx`. */}
         <div className="mb-5 flex items-baseline gap-3 font-mono text-[12px] tracking-[0.22em] uppercase">
-          <span className="text-cerneala-accent">{cota}</span>
-          <span className="text-cerneala-3">{eticheta}</span>
+          {cota ? <span className="text-cerneala-accent">{cota}</span> : null}
+          <span className={cota ? "text-cerneala-3" : "text-cerneala-accent"}>{eticheta}</span>
         </div>
         {/* La `dens`, titlul si linia stau alaturi, ca la banda de antet: asezate una sub
             alta impingeau primul rand al tabelului sub margine chiar dupa ce antetul se
