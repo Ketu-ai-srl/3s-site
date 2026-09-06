@@ -11,9 +11,10 @@ invoca niciodata ca motiv.
 
 1. Citeste `CONTEXT.md`. Este glosarul: fiecare termen care apare in cod, in sarcini si in
    discutie, cu locul unde ii traieste detaliul.
-2. Regulile din `.claude/rules/` se incarca singure, pe calea fisierului atins - fiecare isi
-   declara suprafata in frontmatter. Nu exista un pas in care alegi ce sa citesti.
-   `.claude/rules/INDEX.md` e harta suprafetelor, nu o obligatie de lectura.
+2. Fiecare regula din `.claude/rules/` isi declara suprafata in frontmatter-ul `paths`, pe
+   calea fisierului atins. `paths` e o DECLARATIE, nu un mecanism al depozitului: nimic din
+   `pnpm verifica` nu o citeste, iar daca unealta cu care lucrezi nu o onoreaza, nimic nu
+   incarca regula. Atunci `.claude/rules/INDEX.md` e harta pe care o deschizi de mana.
 3. Ruleaza poarta locala: `pnpm verifica`. Nimic nu pleaca spre depozitul de la distanta fara
    ea verde. Un pas care iese 3 inseamna NEMASURAT, nu curat.
 
@@ -24,7 +25,7 @@ invoca niciodata ca motiv.
 - **Fara preturi** pe site. Pagina de investitie explica ce influenteaza costul.
 - **Fara numar de telefon** pe site: formular si adresa de posta.
 - **Vechimea, autorizarea si certificarile se scriu atribuit** entitatii care ar scoate actul
-  daca un cititor cere dovada. Regula are fisierul ei si se incarca odata cu textul.
+  daca un cititor cere dovada. Regula are fisierul ei: `.claude/rules/afirmatii-atribuite.md`.
 - **Site-ul are o singura actiune principala**, iar fiecare pagina duce la ea. Nu se adauga a
   doua actiune concurenta; care e actiunea, si in ce forma, sta in glosar.
 - **Portile nu se slabesc ca sa treaca lotul.** Cand una e rosie, editarea legitima e ingusta si

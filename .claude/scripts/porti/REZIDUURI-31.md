@@ -7,11 +7,20 @@
 >
 > **Instructiune pentru dispecer, la pliere:** muta fiecare bloc de mai jos in docstringul portii
 > lui, imediat inaintea randului `IESIRE:`, apoi sterge fisierul asta. Blocurile sunt scrise ca
-> text de docstring, nu ca marcare: se copiaza asa cum sunt. Reziduurile descriu codul asa cum
-> era la scrierea lor - daca felia 31 a schimbat una dintre limitele numite mai jos, se corecteaza
-> randul acela la mutare, nu se sare peste el.
+> text de docstring, nu ca marcare: se copiaza asa cum sunt.
 >
-> Reziduurile de mai jos sunt fapte citite din cod, nu formule.
+> **Contra carei versiuni sunt scrise.** Blocurile descriu codul de pe `felie/31` - fisierul in
+> care ajung - nu pe cel de langa ele, de pe `felie/33`. Fiecare limita numita mai jos a fost
+> citita din:
+>
+> ```
+> MSYS_NO_PATHCONV=1 git show felie/31:.claude/scripts/porti/poarta-evidenta.py
+> MSYS_NO_PATHCONV=1 git show felie/31:.claude/scripts/porti/poarta-tipografie.py
+> ```
+>
+> Daca felia 31 se mai misca inainte de pliere, se reruleaza cele doua comenzi si se compara
+> rand cu rand. Un reziduu e un fapt despre codul in care ajunge; scris despre alt cod, devine
+> exact defectul pe care felia 33 il vaneaza - o limita DECLARATA care nu exista.
 
 ---
 
@@ -33,8 +42,9 @@ intrare", si nu "e sursa buna".
   - Textul intrarii nu se compara cu textul paginii; o afirmatie rescrisa pe pagina lasa
     registrul cu formularea veche, si nimic nu semnaleaza.
   - Poarta asta SCRIE in arbore: regenereaza listele, sterge listele orfane si sterge forma
-    veche cu un singur fisier. Nu are mod "doar raport" si nu are `--radacina`, deci rulata din
-    alt loc scrie acolo unde o duce calea propriului fisier, si murdareste arborele.
+    veche cu un singur fisier. `--doar-raport` opreste scrierea, dar trebuie CERUT: implicit
+    poarta scrie. `--radacina` alege arborele, iar implicitul e depozitul din care e rulata,
+    deci o rulare fara argumente pe un arbore fabricat atinge depozitul REAL.
   - Un fisier de registru care nu e o lista, sau care nu e JSON valid, intoarce 1 imediat: din
     momentul acela restul registrului nu mai e citit deloc.
 
@@ -56,10 +66,12 @@ Poarta asta nu masoara ea insasi nimic: aduna o lista de fisiere si transmite ve
 detectorului. Intrebarea pe care o pune de fapt: "are vreunul dintre fisierele pe care le-am
 ADUNAT EU vreunul dintre punctele de cod pe care le vaneaza detectorul?" Deci acoperirea ei e
 exact lista ei de fisiere, si nimic mai mult.
-  - `.claude` e sarit de doua ori - lipseste din CAI si e in SARITE - deci portile insele,
-    regulile si fisierul asta nu sunt scanate NICIODATA de poarta care impune tipografia.
-  - Se aduna doar din src, docs, tests si .github, plus README.md din radacina. CLAUDE.md,
-    CONTEXT.md, package.json, Dockerfile, config/ si public/ raman nemasurate.
+  - Din `.claude` intra in CAI o singura cale, scrisa intreaga: `.claude/scripts/porti`.
+    Restul - memoria de proiect, regulile de sesiune - ramane nescanat fiindca nu e in CAI,
+    nu fiindca ar fi in SARITE; acolo `.claude` nu mai apare.
+  - Se aduna din src, docs, tests, .github si .claude/scripts/porti, plus README.md din
+    radacina. CLAUDE.md, CONTEXT.md, package.json, Dockerfile, config/ si public/ raman
+    nemasurate.
   - Doar extensiile din EXTENSII. Un .txt, un .html sau un .svg cu o liniuta lunga trece.
   - Reziduurile DETECTORULUI (alte liniute din Unicode, ghilimele tipografice, puncte de
     suspensie, spatii neintrerupte, codificari non-UTF-8) se aplica intacte si aici; sunt

@@ -1,10 +1,11 @@
-# Regulile se incarca pe cale, nu se cauta intr-un router
+# Fiecare regula isi declara suprafata, in frontmatter
 
-Fiecare regula din directorul asta isi declara singura suprafata, in frontmatter-ul `paths`. Cine
-atinge un fisier primeste regulile a caror suprafata il contine; nu exista un pas in care cineva
-alege ce sa citeasca.
+Fiecare regula din directorul asta spune singura pe ce fisiere se aplica, in frontmatter-ul
+`paths`. Intentia e ca cine atinge un fisier sa primeasca regulile a caror suprafata il contine.
+Cat din intentie se intampla depinde de unealta - vezi nota de la finalul fisierului.
 
-Randurile de mai jos sunt harta suprafetelor, nu un pas obligatoriu de lectura.
+Randurile de mai jos sunt harta suprafetelor. Cand unealta nu incarca nimic dupa `paths`, tabelul
+asta e chiar pasul de lectura: se deschide regula a carei suprafata contine fisierul atins.
 
 | Regula | Suprafata declarata |
 |---|---|

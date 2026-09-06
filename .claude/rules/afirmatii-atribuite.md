@@ -73,8 +73,8 @@ care stia ca depozitul chiar exista din 2019 si a scurtat propozitia.
 De ce nu-l vede masinaria: intre "avem 6 ani" si "ADRIA are 6 ani" nu e nicio diferenta de
 sintaxa, de ortografie sau de randare. Diferenta e cine tine actul, si asta nu e in fisier.
 
-Poarta care il prinde: **`poarta-afirmatii.py`**, pe sase tipare, cu o fereastra de negare de 90 de
-caractere inaintea potrivirii. Ce nu prinde ea - o formulare care spune acelasi lucru cu alte
+Poarta care il prinde: **`poarta-afirmatii.py`**, pe o lista de tipare, cu o fereastra de negare
+inaintea potrivirii. Ce nu prinde ea - o formulare care spune acelasi lucru cu alte
 cuvinte, sau un "nu" fara legatura aflat in fereastra - ramane pe seama omului care scrie. Pentru
 acoperirea unei afirmatii cu o sursa, **`poarta-evidenta.py`** verifica forma registrului, nu
 faptul ca fiecare afirmatie de pe pagina are intrare: legatura pagina-registru e proza si atat.

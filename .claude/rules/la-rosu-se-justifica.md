@@ -62,7 +62,7 @@ si abia apoi ca proba e slaba.
 ## Zona editabila, pe poarta
 
 Fiecare rand spune ce se editeaza cand poarta aceea e rosie, si ce nu se atinge in niciun caz.
-Suprafata e larga - zece porti cu zone diferite - de aia e tabel.
+Suprafata e larga - o poarta cu zona ei, pentru fiecare poarta - de aia e tabel.
 
 | Poarta | La rosu se editeaza | Nu se atinge |
 |---|---|---|
@@ -71,7 +71,7 @@ Suprafata e larga - zece porti cu zone diferite - de aia e tabel.
 | `poarta-afirmatii.py` | textul acuzat, rescris atribuit; intrarea din registrul de afirmatii | `TIPARE`, `NEGARI`, `FEREASTRA`, regula care decide `este_site`, `controale()` |
 | `poarta-limba.py` | textul acuzat. Un cuvant se scoate din `CUVINTE` DOAR cand poarta acuza o forma corecta, si scoaterea se scrie in nota deja existenta din fisier, cu motivul | `LUNGIME_MINIMA_SIR`, `pare_cod`, `siruri_din_cod`, `CAI`, `EXTENSII`, `SARITE`, `controale()` |
 | `poarta-evidenta.py` | fisierele din `src/content/afirmatii/`; listele regenerate din `docs/afirmatii/`, comise in acelasi commit | `OBLIGATORII`, `STARI`, `probleme`, `genereaza_lista`, `controale()` |
-| `poarta-tipografie.py` | fisierul raportat, in care liniuta lunga devine cratima | `CAI`, `EXTENSII`, `SARITE` - largirea lor e permisa, ingustarea nu |
+| `poarta-tipografie.py` | fisierul raportat, in care liniuta lunga devine cratima | multimea de cai din care aduna `fisiere()`, `EXTENSII`, `SARITE` - largirea lor e permisa, ingustarea nu |
 | `tipografie-liniute.py` | fisierul raportat | `TINTE`, `FRATI`, `controale()` |
 | `poarta-seo.py` | metadata paginii acuzate. `PRAGURI` se schimba numai odata cu documentul de porti si citand sectiunea; `PAGINI_SARITE` numai cu motiv scris; `TIPURI_CUNOSCUTE` numai cu un tip real din vocabularul declarat | `Culegator`, `analizeaza_pagina`, `analizeaza_lot`, refuzul buildului invechit, `controale()` |
 | `poarta-juridic.py` | `config/entitate.<jurisdictie>.json`, paginile juridice, textul formularului. O gazda in `GAZDE_PROPRII` se adauga numai cu motiv scris | `RUTE_JURIDICE`, `CAMPURI_IDENTITATE`, `TIPAR_SUBSTITUENT`, temeiurile citate, gradarea pe mediu, `NUME_TERTI` prin stergere, `controale()` |
@@ -80,9 +80,9 @@ Suprafata e larga - zece porti cu zone diferite - de aia e tabel.
 
 Tabelul numeste INSTANTE - fisiere, constante, functii - si asta e deliberat: o zona editabila
 descrisa in general ("configurarea", "datele") se lasa citita cum are nevoie cine o citeste, si
-atunci regula nu mai desparte nimic. Numele din coloana a treia sunt constante si functii din
-corpul portii, adica exact contractul ei; cand poarta se rescrie, se rescrie si randul, in acelasi
-commit.
+atunci regula nu mai desparte nimic. Coloana a treia numeste constante si functii din corpul portii - adica exact
+contractul ei - iar acolo unde numele nu e stabil intre versiunile portii, numeste locul care e.
+Cand poarta se rescrie, se rescrie si randul, in acelasi commit.
 
 ## Tabelul de la rosu la verde
 
