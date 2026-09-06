@@ -10,7 +10,7 @@ Pana atunci, afirmatiile stau pe site ca text redactional, nu ca fapt verificat.
 
 | # | Afirmatia, asa cum apare pe site | Unde |
 |---|---|---|
-| 1 | ADRIA, firma-mama, arhiveaza documente din 2019, la Golesti, judetul Arges | `src/components/BaraAnunt.tsx` |
+| 1 | ADRIA, firma-mama, arhiveaza documente din 2019, la Golesti, judetul Arges | `src/components/Subsol.tsx` |
 | 2 | Depozitul este la Golesti, langa Pitesti, si poate fi vizitat inainte de semnare | `src/app/page.tsx` |
 | 3 | Preluarea se face cu proces-verbal de predare-primire, cu masurarea metrilor liniari si sigilarea cutiilor | `src/app/page.tsx` |
 | 4 | Intocmim nomenclatorul arhivistic si il pregatim pentru avizare la Arhivele Nationale | `src/app/page.tsx` |

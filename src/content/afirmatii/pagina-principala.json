@@ -2,7 +2,7 @@
   {
     "id": "adria-din-2019",
     "text": "ADRIA, firma-mama, arhiveaza documente din 2019, la Golesti, judetul Arges",
-    "unde": "src/components/BaraAnunt.tsx",
+    "unde": "src/components/Subsol.tsx",
     "stare": "neconfirmat",
     "sursa": "",
     "confirmat_de": "",

@@ -17,6 +17,29 @@ chiar dupa ce directorul a intrat in lista.
 
 La rosu: nu se scoate o cale din CAI si nu se adauga un nume in SARITE ca sa treaca
 poarta. Se repara fisierul acuzat.
+
+CE NU VERIFICA (reziduuri)
+Poarta asta nu masoara ea insasi nimic: aduna o lista de fisiere si transmite verdictul
+detectorului. Intrebarea pe care o pune de fapt: "are vreunul dintre fisierele pe care le-am
+ADUNAT EU vreunul dintre punctele de cod pe care le vaneaza detectorul?" Deci acoperirea ei e
+exact lista ei de fisiere, si nimic mai mult.
+  - Din `.claude` intra in CAI o singura cale, scrisa intreaga: `.claude/scripts/porti`.
+    Restul - memoria de proiect, regulile de sesiune - ramane nescanat fiindca nu e in CAI,
+    nu fiindca ar fi in SARITE; acolo `.claude` nu mai apare.
+  - Se aduna din src, docs, tests, .github si .claude/scripts/porti, plus README.md din
+    radacina. CLAUDE.md, CONTEXT.md, package.json, Dockerfile, config/ si public/ raman
+    nemasurate.
+  - Doar extensiile din EXTENSII. Un .txt, un .html sau un .svg cu o liniuta lunga trece.
+  - Reziduurile DETECTORULUI (alte liniute din Unicode, ghilimele tipografice, puncte de
+    suspensie, spatii neintrerupte, codificari non-UTF-8) se aplica intacte si aici; sunt
+    scrise in antetul lui tipografie-liniute.py.
+  - Lista goala iese 3, nu 0 - singurul lucru pe care poarta asta il verifica singura.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  fisierul raportat, in care liniuta lunga devine cratima.
+  NU  CAI, EXTENSII, SARITE prin INGUSTARE. Largirea lor e libera si e chiar imbunatatirea de
+      facut; scoaterea unui director sau a unei extensii din multimea masurata ca sa treaca
+      lotul e slabire.
 """
 import os
 import subprocess

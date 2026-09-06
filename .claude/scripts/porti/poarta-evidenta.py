@@ -54,6 +54,34 @@ CONTROALE la fiecare rulare:
     sa fie prinsa; daca nu, poarta nu masoara nimic (iesire 3);
   - martor negativ: o intrare corecta NU trebuie prinsa.
 
+CE NU VERIFICA (reziduuri)
+Intrebarea pe care o pune de fapt: "sunt intrarile din registru bine formate, si e fiecare
+lista generata identica cu fisierul de pe disc?" Nu "are fiecare afirmatie de pe site o
+intrare", si nu "e sursa buna".
+  - NIMIC nu leaga o pagina de o intrare. Campul `unde` e un sir liber: nu se verifica nici ca
+    fisierul indicat exista, nici ca textul intrarii mai apare in el. Un registru complet
+    corect poate acoperi zero din afirmatiile de pe site, si poarta iese verde.
+  - Starea `neconfirmat` trece intotdeauna. E deliberat - asa arata "inca nu am intrebat
+    clientul" - dar inseamna ca un site intreg cu afirmatii neconfirmate e verde.
+  - La `confirmat` se cere ca `sursa` si `confirmat_de` sa fie NEVIDE. Continutul lor nu se
+    verifica in niciun fel: un singur caracter satisface amandoua campurile.
+  - Nu se verifica formatul datei si nici ca `data` e completata.
+  - Textul intrarii nu se compara cu textul paginii; o afirmatie rescrisa pe pagina lasa
+    registrul cu formularea veche, si nimic nu semnaleaza.
+  - Poarta asta SCRIE in arbore: regenereaza listele, sterge listele orfane si sterge forma
+    veche cu un singur fisier. `--doar-raport` opreste scrierea, dar trebuie CERUT: implicit
+    poarta scrie. `--radacina` alege arborele, iar implicitul e depozitul din care e rulata,
+    deci o rulare fara argumente pe un arbore fabricat atinge depozitul REAL.
+  - Un fisier de registru care nu e o lista, sau care nu e JSON valid, intoarce 1 imediat: din
+    momentul acela restul registrului nu mai e citit deloc.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  fisierele din src/content/afirmatii/, unde se adauga sau se repara intrari.
+      Listele regenerate din docs/afirmatii/, comise in ACELASI commit cu registrul.
+  NU  OBLIGATORII, STARI, probleme(), genereaza_lista(), controale().
+      O intrare nu se repara mutand-o din `confirmat` in `neconfirmat` ca sa taca poarta:
+      atunci se pierde chiar informatia pentru care exista registrul.
+
 IESIRE: 0 curat - 1 probleme gasite - 2 folosire gresita - 3 control picat
 """
 import argparse
