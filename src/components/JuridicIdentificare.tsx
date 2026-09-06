@@ -1,4 +1,3 @@
-import { MASURA, MASURA_CASETA } from "./JuridicMasura";
 import {
   CAMPURI_IDENTITATE,
   ETICHETE,
@@ -32,21 +31,21 @@ import {
 export default function JuridicIdentificare() {
   if (!identitateCompleta()) {
     return (
-      <div className={MASURA_CASETA + " border-l-2 border-cerneala-accent bg-noapte-3 px-6 py-5"}>
+      <div className="border-l-2 border-cerneala-accent bg-noapte-3 px-6 py-5">
         {/* Aceeasi caseta ca `declaratie` din `JuridicBlocuri` si `BlocDovada`: arama pe
             noapte-3 da 5,72:1. Fundalul bej de dinainte era ultima suprafata deschisa
             ramasa in mijlocul paginii de termeni. */}
         <span className="mb-1.5 block font-mono text-eticheta font-medium tracking-[0.1em] text-cerneala-accent uppercase">
           Ce lipsește azi, și de ce
         </span>
-        <p className={MASURA + " text-corp text-cerneala-2"}>
+        <p className="text-corp text-cerneala-2">
           3S este o firmă în curs de înființare. Din datele cerute de art. 5, azi există una
           singură, adresa de poștă electronică: <strong className="font-semibold text-cerneala">contact@3s.ro</strong>.
           Denumirea exactă, sediul, datele din registrul comerțului, codul de identificare
           fiscală și telefonul apar aici după înmatriculare, copiate dintr-un certificat, nu
           scrise din memorie.
         </p>
-        <p className={"mt-3 " + MASURA + " text-corp text-cerneala-2"}>
+        <p className="mt-3 text-corp text-cerneala-2">
           Nu le înlocuim cu datele firmei-mamă: ar fi o afirmație falsă despre o altă persoană
           juridică. Golul este verificat automat înainte de fiecare publicare și blochează
           punerea site-ului în producție cât timp durează, tocmai ca să nu poată fi uitat.

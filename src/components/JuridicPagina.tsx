@@ -2,9 +2,7 @@ import Link from "next/link";
 import AntetPagina from "./AntetPagina";
 import Buton from "./Buton";
 import Eticheta from "./Eticheta";
-import Invelis from "./Invelis";
 import JuridicBlocuri from "./JuridicBlocuri";
-import { MASURA, MASURA_CASETA } from "./JuridicMasura";
 import { FOTOGRAFII, type CheieFotografie } from "@/content/fotografii";
 import { PAGINI_JURIDICE, type PaginaJuridica, type Sectiune } from "@/content/juridic";
 
@@ -26,6 +24,22 @@ import { PAGINI_JURIDICE, type PaginaJuridica, type Sectiune } from "@/content/j
 // CUPRINSUL sta pe banda inchisa, imediat sub antet. Pe un text de noua sectiuni e singura
 // piesa care transforma pagina din perete de text in document navigabil, iar fiecare intrare
 // duce la o ancora scrisa citibil (`#temeiul`, nu `#s-3`), ca sa poata fi trimisa prin mesaj.
+//
+// CADRUL. Corpul actului nu mai sta in `Invelis` (1180 px), ci in `CadruAct` (720 px,
+// `--container-act` din `globals.css`). Motivul e masurat, nu de gust: la 1180 grila
+// declara `148px 952px`, dar h2 folosea 516 px si paragraful 485, deci 436 px ramaneau goi
+// INAUNTRUL coloanei declarate - nu ca marja in afara cadrului, ci ca jumatate de cadru
+// care nu se umple. Marginea dreapta a continutului, contra celei a containerului (1206):
+// 770 pe noua sectiuni din noua pe /termeni, 966 acolo unde blocul de randuri se intinde,
+// 801 la casete, 621 la blocul de incheiere - cinci margini drepte pe aceeasi pagina,
+// niciuna a containerului, cu cuprinsul chiar deasupra lor la 1206. Pagina de start umple
+// cadrul pe toate cele cinci sectiuni ale ei.
+//
+// Reparatia nu ingusteaza TEXTUL - masura ramane cea masurata - ci CADRUL din jurul lui,
+// pana cand coloana de text ajunge marginea lui. De aceea au disparut si plafoanele scrise
+// pe elemente (`max-w-[52ch]`, `max-w-[57ch]`, `max-w-[30ch]`): cu un cadru pe masura
+// randului, coloana grilei E masura, iar un al doilea plafon inauntrul ei nu poate decat
+// sa se abata de la primul. O singura latime, intr-un singur loc.
 
 // Alternanta benzilor, pe noapte. Pana pe 2026-09-06 era ["bg-suprafata", "bg-hartie"],
 // adica alb si aproape-alb: masurat, /termeni avea 80% suprafata deschisa la 1280 px si 84%
@@ -45,6 +59,18 @@ const FOTO_JURIDIC: Record<string, CheieFotografie> = {
   "/cookies": "rafturi",
 };
 
+// Cadrul actului si grila lui, o singura data. Nu e `Invelis` cu alta clasa: doua utilitare
+// de `max-width` pe acelasi element se departajeaza dupa ordinea din foaia de stil, nu dupa
+// ordinea in care le scrii, deci suprascrierea ar fi fost o presupunere.
+function CadruAct({ children }: { children: React.ReactNode }) {
+  return <div className="mx-auto w-full max-w-act px-4 sm:px-6">{children}</div>;
+}
+
+// Jgheabul cifrei plus coloana de text: 148 + 32 + 492 = 672, latimea interioara a
+// cadrului (720 minus cele doua paddinguri de 24). Cifra coloanei e pusa de RAND, nu de
+// titlu - vezi nota de langa `--container-act` in `globals.css`.
+const GRILA_ACT = "grid gap-4 md:grid-cols-[148px_1fr] md:gap-8";
+
 function SectiuneJuridica({
   sectiune,
   numar,
@@ -56,7 +82,7 @@ function SectiuneJuridica({
 }) {
   return (
     <section id={sectiune.id} className={`border-t border-linie-suprafata ${fundal}`}>
-      <Invelis>
+      <CadruAct>
         {/* RITMUL. `py-14 md:py-24`, adica 56 px pe telefon si 96 px pe ecran lat, deci
             192 px de la ultimul rand al unei sectiuni la titlul urmatoarei. Nu e nici pasul
             paginilor de prezentare (`py-24 md:py-36`, care ar da 288 px si ar transforma un
@@ -65,8 +91,14 @@ function SectiuneJuridica({
             ramanea singurul semn ca a inceput alta). E treapta documentelor, aceeasi
             alegere argumentata ca antetul-banda: mai stransa decat afisul, larga cat sa se
             vada unde se termina o clauza. */}
-        <div className="grid gap-4 py-14 md:grid-cols-[148px_1fr] md:gap-8 md:py-24">
-          <div className="flex items-baseline gap-3 border-b border-linie-suprafata pb-3 md:relative md:block md:border-b-0 md:pb-0">
+        <div className={GRILA_ACT + " py-14 md:py-24"}>
+          {/* Cifra e ALIPITA DE FILET, nu de marginea din stanga a jgheabului. Pe telefon
+              asta se citea deja corect - acolo cifra sta langa cuvantul „Secțiunea", pe un
+              rand cu linie dedesubt - dar pe ecran lat statea la 163 px de filetul pe care
+              il coteaza si la 167 de titlul pe care il numeroteaza, adica mai aproape de
+              nimic decat de amandoua. Aliniata la dreapta, ramane la 16 px de filet si se
+              citeste ca marca a coloanei din dreapta lui. */}
+          <div className="flex items-baseline gap-3 border-b border-linie-suprafata pb-3 md:relative md:block md:border-b-0 md:pb-0 md:text-right">
             <span
               aria-hidden
               className="absolute top-1.5 -right-4 bottom-0 hidden w-px bg-linie-suprafata md:block"
@@ -98,13 +130,13 @@ function SectiuneJuridica({
                 2,3 fata de corp, si o distanta limpede fata de cele 64 ale titlului de
                 pagina. Nu urca la `text-titlu-2`: cu noua sectiuni, fiecare titlu ar deveni
                 un afis si documentul s-ar citi ca noua pagini lipite. */}
-            <h2 className="mb-6 max-w-[30ch] font-afis text-[clamp(1.65rem,3vw,2.375rem)] tracking-[-0.01em] uppercase text-cerneala">
+            <h2 className="mb-6 font-afis text-[clamp(1.65rem,3vw,2.375rem)] tracking-[-0.01em] uppercase text-cerneala">
               {sectiune.titlu}
             </h2>
             <JuridicBlocuri blocuri={sectiune.blocuri} />
           </div>
         </div>
-      </Invelis>
+      </CadruAct>
     </section>
   );
 }
@@ -112,12 +144,17 @@ function SectiuneJuridica({
 function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
   return (
     <section className="border-t border-linie-suprafata bg-noapte-2">
-      <Invelis>
-        <div className="py-12 md:py-16">
-          <h2 className="mb-5 font-mono text-eticheta font-medium tracking-[0.18em] text-cerneala-3 uppercase">
+      <CadruAct>
+        {/* Cuvantul „Cuprins" trece in jgheabul cifrelor, iar lista pe coloana de text: e
+            aceeasi impartire ca la sectiuni, deci intrarile cuprinsului incep exact acolo
+            unde incepe, mai jos, titlul catre care duc. Doua coloane nu mai au loc in 492
+            px si nici nu mai sunt necesare - noua intrari pe o coloana sunt un cuprins de
+            document, doua coloane erau un artificiu de umplut latimea. */}
+        <div className={GRILA_ACT + " py-12 md:py-16"}>
+          <h2 className="font-mono text-eticheta font-medium tracking-[0.18em] text-cerneala-3 uppercase md:text-right">
             Cuprins
           </h2>
-          <ol className="m-0 grid list-none gap-x-10 gap-y-2.5 p-0 md:grid-cols-2">
+          <ol className="m-0 grid list-none gap-y-2.5 p-0">
             {sectiuni.map((s, i) => (
               <li key={s.id} className="flex items-baseline gap-3 text-[15.5px]">
                 <span
@@ -136,7 +173,7 @@ function Cuprins({ sectiuni }: { sectiuni: Sectiune[] }) {
             ))}
           </ol>
         </div>
-      </Invelis>
+      </CadruAct>
     </section>
   );
 }
@@ -146,11 +183,16 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
 
   return (
     <section className="border-t border-linie-suprafata bg-noapte">
-      <Invelis>
-        <div className="py-12 md:py-16">
-          <div className={"mb-8 " + MASURA_CASETA + " border border-linie-suprafata bg-noapte-2 px-6 py-5"}>
+      <CadruAct>
+        {/* Incheierea sta pe coloana de text a actului, nu pe toata latimea cadrului:
+            altfel ultimul bloc al paginii ar fi singurul care incepe cu 180 px mai la
+            stanga decat tot ce e deasupra lui. Jgheabul ramane gol - nu are ce cota sa
+            poarte aici - dar coloana pe care o deschide se pastreaza. */}
+        <div className={GRILA_ACT + " py-12 md:py-16"}>
+          <div className="md:col-start-2">
+          <div className="mb-8 border border-linie-suprafata bg-noapte-2 px-6 py-5">
             <Eticheta className="mb-1.5 block">Despre textul acesta</Eticheta>
-            <p className={MASURA + " text-corp text-cerneala-2"}>{pagina.redactat}</p>
+            <p className="text-corp text-cerneala-2">{pagina.redactat}</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
@@ -169,7 +211,7 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
             ))}
           </div>
 
-          <p className={"mt-6 " + MASURA + " text-[15.5px] text-cerneala-3"}>
+          <p className="mt-6 text-[15.5px] text-cerneala-3">
             Dacă ceva din pagina aceasta este neclar sau vă pare greșit, scrieți-ne la{" "}
             <a
               href="mailto:contact@3s.ro"
@@ -184,8 +226,9 @@ function Incheiere({ pagina }: { pagina: PaginaJuridica }) {
             </Link>
             .
           </p>
+          </div>
         </div>
-      </Invelis>
+      </CadruAct>
     </section>
   );
 }

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import JuridicIdentificare from "./JuridicIdentificare";
-import { MASURA, MASURA_CASETA, MASURA_STRANSA } from "./JuridicMasura";
 import type { Bloc, Frag } from "@/content/juridic";
 
 // Randarea blocurilor dintr-o sectiune juridica. Un singur loc care stie cum arata un
@@ -11,8 +10,19 @@ import type { Bloc, Frag } from "@/content/juridic";
 // ancora din pagina CURENTA sare peste derularea lina din `globals.css`. Conditia pe diez
 // acopera ambele cazuri cu o singura regula, deci nu se poate aplica gresit.
 //
-// LATIMEA RANDULUI sta in `JuridicMasura`, cu masuratoarea care a stabilit-o: clasa de
-// dinainte, `max-w-[74ch]`, nu dadea 74 de caractere pe rand, ci 98.
+// LATIMEA RANDULUI nu se mai scrie aici. O da coloana grilei, adica cadrul actului
+// (`--container-act`, 720 px), si de-asta nu mai exista niciun `max-w-[..ch]` pe elemente:
+// doua plafoane pentru aceeasi masura se pot abate unul de la altul, iar exact asta se si
+// intampla - h2 statea la 516 px, paragraful la 485, caseta la 547 si blocul de randuri la
+// 712, in aceeasi coloana declarata de 952.
+//
+// Ce ramane din masuratoarea veche, fiindca e capcana care a produs-o: plafonul dinainte
+// era scris `max-w-[74ch]` si suna a „74 de caractere pe rand". Nu era. `ch` e latimea
+// glifei ZERO, printre cele mai late ale fontului, deci unitatea raspunde la alta intrebare
+// decat cea pusa: masurat cu un `Range` peste fiecare rand vizual, dadea 661 px si 98 de
+// caractere in medie, cu varf la 103. Nicio poarta nu se inrosea, fiindca niciuna nu numara
+// caractere. Cifrele de azi se masoara la fel, pe pagina randata, nu din aritmetica lui
+// `ch`, si sunt scrise langa `--container-act` in `globals.css`.
 
 function bucata(f: Frag, i: number) {
   if (typeof f === "string") {
@@ -62,13 +72,13 @@ function Caseta({
   const stilEticheta = fel === "declaratie" ? "text-cerneala-accent" : "text-cerneala-3";
 
   return (
-    <div className={`my-6 ${MASURA_CASETA} ${stil}`}>
+    <div className={`my-6 ${stil}`}>
       <span
         className={`mb-1.5 block font-mono text-eticheta font-medium tracking-[0.1em] uppercase ${stilEticheta}`}
       >
         {eticheta}
       </span>
-      <p className={MASURA + " text-corp text-cerneala-2"}>
+      <p className="text-corp text-cerneala-2">
         <Text parti={parti} />
       </p>
     </div>
@@ -82,14 +92,14 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
         switch (b.fel) {
           case "paragraf":
             return (
-              <p key={i} className={"mb-4 " + MASURA + " text-corp text-cerneala-2 last:mb-0"}>
+              <p key={i} className="mb-4 text-corp text-cerneala-2 last:mb-0">
                 <Text parti={b.text} />
               </p>
             );
 
           case "lista":
             return (
-              <ul key={i} className={"m-0 mb-4 " + MASURA + " list-none p-0 last:mb-0"}>
+              <ul key={i} className="m-0 mb-4 list-none p-0 last:mb-0">
                 {b.elemente.map((e, j) => (
                   <li key={j} className="mb-3 flex gap-4 text-corp text-cerneala-2 last:mb-0">
                     {/* Cratima de arama e un element real, nu un marcator de lista: se
@@ -109,10 +119,17 @@ export default function JuridicBlocuri({ blocuri }: { blocuri: Bloc[] }) {
                 {b.randuri.map((r) => (
                   <div
                     key={r.titlu}
-                    className="grid gap-1.5 border-t border-linie-suprafata py-4 last:border-b lg:grid-cols-[260px_1fr] lg:gap-8"
+                    className="grid gap-1.5 border-t border-linie-suprafata py-4 last:border-b md:grid-cols-[170px_1fr] md:gap-6"
                   >
+                    {/* Coloana titlului s-a stramtat de la 260 la 170 px odata cu cadrul,
+                        si tot atunci `lg` a devenit `md`, ca sa se schimbe odata cu grila
+                        sectiunii. In 492 px, un titlu de 260 ar fi lasat textului 208 -
+                        mai putin decat titlului, care e o eticheta scurta. Asa, masurat,
+                        textul sta pe 298 px si 41 de caractere pe rand. Titlurile lungi
+                        („Verificarea intr-un browser real") trec pe doua randuri, ceea ce
+                        la o lista de definitii e firesc. */}
                     <h3 className="font-afis text-[19px] tracking-[0.02em] uppercase text-cerneala">{r.titlu}</h3>
-                    <p className={MASURA_STRANSA + " text-corp text-cerneala-2"}>
+                    <p className="text-corp text-cerneala-2">
                       <Text parti={r.text} />
                     </p>
                   </div>

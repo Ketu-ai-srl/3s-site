@@ -224,4 +224,50 @@ describe('regresiile de directie prinse pe 2026-09-06', () => {
     expect(alturi.length).toBe(nume.length)
     for (const a of alturi) expect(a, 'alt fara mentiunea ilustrativa: ' + a).toMatch(/ilustrativ/)
   })
+
+  it('paginile care sunt acte au un singur plafon de latime: cadrul lor', () => {
+    // Clasa de defect: doua plafoane pentru aceeasi masura se abat unul de la altul si nu
+    // are ce sa le compare. Masurat inainte, in aceeasi coloana declarata de 952 px, h2
+    // statea la 516, paragraful la 485, caseta la 547 si blocul de randuri la 712 - cinci
+    // margini drepte pe o pagina, niciuna a containerului, si 436 px de gol pe 26 din 28
+    // de sectiuni. De cand coloana grilei E masura, un `max-w-[..ch]` scris pe element nu
+    // poate decat sa reintroduca abaterea.
+    const juridice = readdirSync(COMPONENTE).filter((n) => /^Juridic.*\.tsx$/.test(n))
+    expect(juridice.length, 'nu s-a gasit nicio componenta Juridic*').toBeGreaterThan(2)
+    for (const nume of juridice) {
+      const text = readFileSync(join(COMPONENTE, nume), 'utf8')
+      const cod = text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '')
+      const gasite = [...cod.matchAll(/max-w-\[[^\]]*ch\]/g)].map((m) => m[0])
+      expect(gasite, 'plafon de latime scris pe element in ' + nume).toEqual([])
+    }
+    // Iar cadrul exista si e explicat acolo unde se cauta o latime.
+    const css = readFileSync(join(RADACINA, 'src', 'app', 'globals.css'), 'utf8')
+    expect(css, 'lipseste jetonul cadrului de act').toMatch(/--container-act:\s*\d+px/)
+    const directia = readFileSync(join(RADACINA, 'docs', 'design', 'DIRECTIA.md'), 'utf8')
+    expect(directia, 'cadrul de act nu e explicat in DIRECTIA.md').toMatch(/--container-act/)
+  })
+
+  it('voalul benzii de antet se calibreaza per fotografie, nu o data pentru toate', () => {
+    // Clasa de defect: acelasi voal peste patru expuneri diferite da patru rezultate
+    // diferite. Masurat pe captura, amplitudinea de luminanta a benzii la 1280 px mergea
+    // de la 0,0138 (`rafturi`, fotografia se vede) la 0,0036 (`legatura`, sase niveluri de
+    // gri platite cu 139.896 de octeti). Factorul sta langa fotografie, iar regula il
+    // aplica pe TRANSMITANTA stratului vertical - la 1 raman valorile aprobate.
+    const css = readFileSync(join(RADACINA, 'src', 'app', 'globals.css'), 'utf8')
+    const regula = css.match(/\.voal-banda\s*\{[\s\S]*?\n\}/)
+    expect(regula, 'nu s-a gasit regula .voal-banda').not.toBeNull()
+    expect(regula![0], '.voal-banda nu citeste --voal-tarie').toMatch(/var\(--voal-tarie\)/)
+    expect(regula![0], '.voal-banda nu are implicit pentru --voal-tarie').toMatch(
+      /--voal-tarie:\s*1\s*;/,
+    )
+    // La tarie 1 valorile trebuie sa ramana cele aprobate: 1 - 0,07 / 0,12 / 0,16.
+    const factori = [...regula![0].matchAll(/1\s*-\s*(0\.\d+)\s*\*\s*var\(--voal-tarie\)/g)].map(
+      (m) => Number(m[1]),
+    )
+    expect(factori, 'transmitantele stratului vertical').toEqual([0.07, 0.12, 0.16])
+    // Si cineva chiar il pune pe element, din registru.
+    const ecran = readFileSync(join(COMPONENTE, 'Ecran.tsx'), 'utf8')
+    expect(ecran, 'Ecran nu citeste voalBanda din fotografie').toMatch(/imagine\.voalBanda/)
+    expect(ecran, 'Ecran nu scrie --voal-tarie pe element').toMatch(/"--voal-tarie"/)
+  })
 })
