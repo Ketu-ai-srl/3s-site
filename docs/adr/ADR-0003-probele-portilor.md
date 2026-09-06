@@ -22,11 +22,26 @@ Trei lucruri masurate in aceeasi zi, pe arborele nostru:
 
 **1. `porti:probe` intra in `verifica`, imediat inaintea lui `porti:sursa`.**
 
-Contractul e o PRECONDITIE a portii, nu un pas paralel: o poarta nu are voie sa ruleze pe logica
-nevalidata. Asezarea e cea mai ieftina posibila - niciuna dintre probe nu cere build, fiecare isi
-fabrica arborele in `temp` si cheama poarta ca proces, deci pasul incape inaintea lui `build`.
-Durata masurata a lantului intreg: **48,5 s** (plafon declarat: 60 s). Daca vreo proba viitoare
-ajunge sa aiba nevoie de build, ea se muta dupa `build`, nu se muta pasul.
+Criteriul asezarii e unul singur, si NU e costul: contractul e o PRECONDITIE a portii, deci trebuie
+sa fie adevarat inainte ca portile sa ruleze, iar `porti:probe` e singurul pas dintre cei de
+dinaintea browserului care nu consuma un build - fiecare proba isi fabrica arborele in `temp` si
+cheama poarta ca proces. De aceea incape acolo unde preconditia cere sa fie. Daca vreo proba
+viitoare ajunge sa aiba nevoie de build, ea se muta dupa `build`, nu se muta pasul.
+
+Cat costa, masurat pe 6 sep 2026, pe aceeasi statie si cu alte felii lucrand in paralel:
+**23-59,5 s pe 10 esantioane** - patru cronometrate la scrierea ADR-ului (32,5 / 35,5 / 46,3 /
+52,6 s) si sase la trecerea de control. Se scrie ca interval, nu ca o cifra: o singura valoare
+sugereaza o stabilitate pe care masuratoarea nu o arata, iar imprastierea vine din ce mai ruleaza
+pe masina, nu din pas. Pasul NU e ieftin in raport cu vecinii lui: in verdictul `felie-31-b6584cc`
+`porti:probe` a durat 31,6 s fata de 21,2 s cat a durat `build`. Regula „ieftinul inaintea
+scumpului" ordoneaza restul lantului; locul acestui pas il tine preconditia, si numai ea.
+
+Plafonul de 60 s nu se mai scrie in proza. Un prag enuntat intr-un document nu opreste nimic, iar
+maximul masurat a ajuns la 0,5 s de el fara ca ceva sa se strice - un prag asezat pe punctul de
+esec e necrolog, nu avertisment. Nu se pune nici ca poarta: pe o statie incarcata ar suna din
+imprastiere, nu din regresie, si o poarta zgomotoasa se dezarmeaza in cateva saptamani. Singurul
+plafon care exista azi e `timeout-minutes: 10` din `.github/workflows/ci.yml:29`, si e pe tot
+jobul, nu pe pasul asta. Nu am declansat nicio rulare CI: cifra e citita din fisier, nu masurata.
 
 Un pas ieftin asezat dupa unul scump nu economiseste nimic - regula e scrisa in antetul lui
 `browser-toate.mjs` si de acolo o citeste verificarea de ordine, ca sa nu existe doua exemplare
@@ -77,10 +92,23 @@ liniute lungi in cele 22 de fisiere ale directorului, deci includerea nu costa n
 ce ar veni maine. Restul lui `.claude` ramane afara - `.claude/scripts/porti` e numit pe cale
 intreaga, nu prin numele directorului parinte.
 
+Includerea are doua jumatati - calea in `CAI` si `.py`/`.sh` in `EXTENSII` - si amandoua sunt
+probate de acelasi caz din `proba-porti-proces.py`: martorul e un `poarta-martor.py` cu liniuta
+lunga, cu un frate curat sub `docs` care tine arborele nevid. Dezarmata oricare dintre ele, cazul
+se inroseste cu „cod 0, asteptam 1". Martorul a fost initial un `.md`, adica proba jumatatii
+ieftine: `.md` ar fi fost prins si fara schimbarea de extensii, deci extensiile erau o schimbare
+cu cost declarat si beneficiu nemasurat.
+
 ## Consecinte
 
-- `verifica` are un pas in plus, cu 48,5 s masurate. Rosul vine acum mai devreme si mai ieftin:
-  o poarta stricata se vede inainte de build, nu dupa.
+- `verifica` are un pas in plus, de 23-59,5 s pe 10 esantioane (6 sep 2026). Rosul vine mai
+  devreme, nu mai ieftin: masurat, `porti:probe` e mai scump decat `build`, iar castigul e
+  ordinea cauzala - o poarta stricata se vede inainte sa se plateasca build-ul.
+- Acoperirea per poarta se numara, nu se presupune. `caz()` inregistreaza perechea (poarta, cod
+  cerut), iar la finalul rularii un control cere fiecarei porti macar un caz de 1, unul de 0 si -
+  daca nu e in tabelul de scutiri - unul de 3; altfel iesirea e 3, NEMASURAT. Fara el, un corp de
+  functie golit tiparea antetul portii si lasa verdictul verde: `controale()` verifica doar ca
+  poarta ARE o intrare in `CAZURI`, nu ca intrarea ruleaza ceva.
 - Doua porti nu au caz de cod 3 in `proba-porti-proces.py`, si motivul e scris in fisier si
   tiparit la fiecare rulare: `poarta-scurgeri.py` si `poarta-tipografie.py` isi scaneaza propriul
   fisier, deci ramura „zero fisiere" e inaccesibila prin constructie. Un zero de acolo nu e

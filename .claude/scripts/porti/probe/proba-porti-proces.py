@@ -57,6 +57,12 @@ DETECTOR = os.path.join(PORTI, 'tipografie-liniute.py')
 
 T = P = 0
 
+# Ce cod a fost CERUT efectiv, per poarta: {'poarta-x.py': {0, 1, 3}}. Se umple la rulare, din
+# `caz()`, si se compara la final cu tabelul CAZURI. `controale()` verifica doar ca fiecare
+# poarta de pe disc ARE o intrare in CAZURI - nu si ca intrarea ruleaza ceva. Un corp de functie
+# golit tiparea antetul portii si lasa verdictul verde, adica poarta ramanea neatinsa in tacere.
+ACOPERIRE = {}
+
 # Portile fara caz de cod 3, cu motivul. Cheia e numele fisierului; valoarea e motivul,
 # tiparit in rezumat. O intrare fara motiv nu e permisa: o scutire nemotivata se uita.
 FARA_CAZ_DE_TREI = {
@@ -198,7 +204,14 @@ def ruleaza(nume, radacina, argumente=(), mutatie=None):
     return r.returncode, (r.stdout or '') + (r.stderr or '')
 
 
+def inregistreaza(nume, cod_asteptat):
+    """Ce cod cere cazul asta. Se noteaza INAINTE de rulare: un caz care pica e oricum rosu,
+    dar el a atins poarta - iar acoperirea masoara atingerea, nu rezultatul."""
+    ACOPERIRE.setdefault(nume, set()).add(cod_asteptat)
+
+
 def caz(nume, eticheta, construieste, cod_asteptat, contine=None, argumente=(), mutatie=None):
+    inregistreaza(nume, cod_asteptat)
     d = tempfile.mkdtemp(prefix='proba-proces-')
     try:
         construieste(d)
@@ -377,11 +390,20 @@ def cazuri_tipografie():
     caz('poarta-tipografie.py', 'liniuta lunga sub docs: cod 1, mesajul o numeste',
         lambda d: scrie(os.path.join(d, 'docs', 'nota.md'), 'nota ' + chr(0x2014) + ' aici\n'),
         PICAT, 'EM DASH')
+    def poarta_cu_liniuta(d):
+        # Martorul e un `.py`, nu un `.md`: asa cazul masoara DOUA schimbari deodata - calea
+        # `.claude/scripts/porti` din CAI si extensia `.py` din EXTENSII. Cu un `.md` ar fi
+        # fost prins si fara extensii, deci jumatatea aceea ramanea nemasurata.
+        # Fratele curat de sub `docs` tine arborele nevid cand una dintre ele e dezarmata:
+        # fara el poarta ar iesi 3 pentru "niciun fisier", si rosul ar spune "preconditie
+        # lipsa" in loc de "liniuta lunga nevazuta".
+        scrie(os.path.join(d, '.claude', 'scripts', 'porti', 'poarta-martor.py'),
+              '# nota ' + chr(0x2014) + ' aici\n')
+        scrie(os.path.join(d, 'docs', 'nota-curata.md'), 'nota - aici\n')
+
     caz('poarta-tipografie.py',
-        'liniuta lunga sub .claude/scripts/porti: cod 1 (portile intra in igiena lor)',
-        lambda d: scrie(os.path.join(d, '.claude', 'scripts', 'porti', 'nota-martor.md'),
-                        'nota ' + chr(0x2014) + ' aici\n'),
-        PICAT, 'EM DASH')
+        'liniuta lunga intr-un `.py` de sub .claude/scripts/porti: cod 1 (cale SI extensie)',
+        poarta_cu_liniuta, PICAT, 'EM DASH')
     caz('poarta-tipografie.py',
         str(u2500) + ' de U+2500 (cifra incidentului #988) NU sunt liniute lungi: cod 0',
         lambda d: scrie(os.path.join(d, 'docs', 'separator.md'),
@@ -407,6 +429,8 @@ def cazuri_evidenta():
     d = tempfile.mkdtemp(prefix='proba-proces-')
     try:
         registru([INTRARE_BUNA])(d)
+        inregistreaza('poarta-evidenta.py', PICAT)
+        inregistreaza('poarta-evidenta.py', CURAT)
         cod1, _ = ruleaza('poarta-evidenta.py', d)
         cod2, iesire2 = ruleaza('poarta-evidenta.py', d)
         generat = os.path.join(d, 'docs', 'afirmatii', 'pagina.md')
@@ -427,6 +451,7 @@ def cazuri_evidenta():
     d = tempfile.mkdtemp(prefix='proba-proces-')
     try:
         registru([INTRARE_BUNA])(d)
+        inregistreaza('poarta-evidenta.py', PICAT)
         cod, iesire = ruleaza('poarta-evidenta.py', d, argumente=('--doar-raport',))
         dosar = os.path.join(d, 'docs', 'afirmatii')
         if cod != PICAT:
@@ -502,6 +527,30 @@ def controale():
     return None
 
 
+def acoperire_lipsa():
+    """Ce poarta a ramas fara cazuri reale. Se cere, per poarta, macar un caz care asteapta 1,
+    unul care asteapta 0 si - daca poarta nu e in FARA_CAZ_DE_TREI - unul care asteapta 3.
+
+    Cele doua liste se produc altfel si de aceea nu pot drifta impreuna: CAZURI e declarat in
+    fisierul asta, ACOPERIRE se umple din apelurile care chiar au rulat. Tabelul de scutiri e
+    acelasi FARA_CAZ_DE_TREI care se tipareste in rezumat, nu o a doua copie a lui.
+    """
+    lipsuri = []
+    for nume in sorted(CAZURI):
+        avute = ACOPERIRE.get(nume, set())
+        ceruta = {PICAT, CURAT}
+        if nume not in FARA_CAZ_DE_TREI:
+            ceruta.add(NEMASURAT)
+        lipsa = sorted(ceruta - avute)
+        if lipsa:
+            lipsuri.append(nume + ': niciun caz care sa ceara cod '
+                           + ', '.join(str(x) for x in lipsa)
+                           + ' (cerute: ' + ', '.join(str(x) for x in sorted(ceruta))
+                           + '; rulate: ' + (', '.join(str(x) for x in sorted(avute)) or 'niciunul')
+                           + ')')
+    return lipsuri
+
+
 def main():
     print('proba-porti-proces: portile din ' + PORTI)
     print('coduri de iesire, citite din browser-rulator.mjs: '
@@ -522,6 +571,15 @@ def main():
         print('  fara caz de cod 3: ' + nume + ' - ' + motiv_scutire)
 
     print('\nREZULTAT: ' + str(T) + ' trecute, ' + str(P) + ' picate')
+
+    lipsuri = acoperire_lipsa()
+    if lipsuri:
+        print('CONTROL DE ACOPERIRE PICAT - poarta cu antet tiparit si fara cazuri reale:',
+              file=sys.stderr)
+        for rand in lipsuri:
+            print('  ' + rand, file=sys.stderr)
+        print('Verdictul e NEMASURAT, nu "curat".', file=sys.stderr)
+        return NEMASURAT
     return 1 if P else 0
 
 
