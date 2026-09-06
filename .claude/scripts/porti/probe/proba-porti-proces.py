@@ -494,12 +494,87 @@ def cazuri_regresie():
         probe_vitest(1, 2, 2, None), NEMASURAT, 'lipseste fisierul de referinta')
 
 
+def _manifest_si_pagini(rute, pagini, ancore=(), id_pagina=None):
+    """Arbore minim pentru portile care citesc rute.ts si src/app: manifest cu `cale:` (si
+    optional `ancora:`), cate un page.tsx per ruta. `id_pagina` = lista de id-uri literale puse
+    in page.tsx-ul rutei `/` (ca sa poata fi fabricat un duplicat in ACEEASI pagina)."""
+    def construieste(d):
+        corp = 'export const RUTE = [\n'
+        for r in rute:
+            corp += '  { cale: "' + r + '", inMeniu: true },\n'
+        corp += '];\n'
+        if ancore:
+            corp += 'export const SECTIUNI_ACASA = [\n'
+            for a in ancore:
+                corp += '  { ancora: "' + a + '" },\n'
+            corp += '];\n'
+        scrie(os.path.join(d, 'src', 'content', 'rute.ts'), corp)
+        for pth in pagini:
+            bucati = [x for x in pth.split('/') if x]
+            ids = ''.join('<section id="' + i + '">x</section>' for i in (id_pagina or [])) if pth == '/' else ''
+            scrie(os.path.join(d, 'src', 'app', *bucati, 'page.tsx'),
+                  'export default function P() { return <main>' + ids + '<p>x</p></main> }\n')
+    return construieste
+
+
+def cazuri_identificatori():
+    caz('poarta-identificatori.py', 'aceeasi cale de doua ori in RUTE: cod 1, mesajul o numeste',
+        _manifest_si_pagini(['/', '/contact', '/contact'], ['/', '/contact']), PICAT, 'ID-01')
+    caz('poarta-identificatori.py', 'acelasi id literal de doua ori in aceeasi pagina: cod 1',
+        _manifest_si_pagini(['/'], ['/'], id_pagina=['dosar', 'dosar']), PICAT, 'ID-04')
+    caz('poarta-identificatori.py', 'cai, ancore si id-uri unice: cod 0',
+        _manifest_si_pagini(['/', '/contact'], ['/', '/contact'], ancore=('scan', 'solve'),
+                            id_pagina=['scan', 'solve']), CURAT)
+    caz('poarta-identificatori.py', 'arbore fara rute.ts: cod 3, nu 0', gol, NEMASURAT, 'lipseste')
+
+
+def cazuri_legaturi_md():
+    def md(readme):
+        def construieste(d):
+            scrie(os.path.join(d, 'README.md'), readme)
+            scrie(os.path.join(d, 'CONTEXT.md'), '# Context\n\nFara legaturi.\n')
+        return construieste
+
+    caz('poarta-legaturi-md.py', 'legatura catre un fisier care nu exista: cod 1, mesajul o numeste',
+        md('# R\n\nVezi [ghidul](docs/ghid-care-lipseste.md).\n'), PICAT, 'LG-01')
+    caz('poarta-legaturi-md.py', 'citare cu numar de linie dincolo de sfarsitul fisierului: cod 1',
+        md('# R\n\nDetaliu in CONTEXT.md:40 (linia nu exista)\n'), PICAT, 'LG-03')
+    caz('poarta-legaturi-md.py', 'legatura si citare care se rezolva: cod 0',
+        md('# R\n\nVezi [contextul](CONTEXT.md) si CONTEXT.md:1 (titlul)\n'), CURAT)
+    caz('poarta-legaturi-md.py', 'arbore fara niciun .md: cod 3, nu 0', gol, NEMASURAT, 'NEMASURAT')
+
+
+def cazuri_registru_rute():
+    def cu_registru(rute, pagini, unde_per_intrare):
+        baza = _manifest_si_pagini(rute, pagini)
+        def construieste(d):
+            baza(d)
+            intrari = [{'id': 'a' + str(i), 'text': 'afirmatie ' + str(i), 'unde': u,
+                        'stare': 'neconfirmat', 'sursa': '', 'confirmat_de': '', 'data': ''}
+                       for i, u in enumerate(unde_per_intrare)]
+            scrie(os.path.join(d, 'src', 'content', 'afirmatii', 'proba.json'),
+                  json.dumps(intrari, ensure_ascii=False, indent=2) + '\n')
+        return construieste
+
+    caz('poarta-registru-rute.py', 'ruta cu pagina dar fara nicio afirmatie: cod 1, mesajul o numeste',
+        cu_registru(['/', '/contact'], ['/', '/contact'], ['src/app/page.tsx']), PICAT, 'RR-01')
+    caz('poarta-registru-rute.py', 'campul unde trimite la un fisier care nu exista: cod 1',
+        cu_registru(['/'], ['/'], ['src/app/page.tsx, src/components/Disparut.tsx']), PICAT, 'RR-03')
+    caz('poarta-registru-rute.py', 'fiecare ruta acoperita de o intrare: cod 0',
+        cu_registru(['/', '/contact'], ['/', '/contact'],
+                    ['src/app/page.tsx', 'src/app/contact/page.tsx']), CURAT)
+    caz('poarta-registru-rute.py', 'arbore fara rute.ts: cod 3, nu 0', gol, NEMASURAT, 'lipseste')
+
+
 CAZURI = {
     'poarta-afirmatii.py': cazuri_afirmatii,
     'poarta-evidenta.py': cazuri_evidenta,
+    'poarta-identificatori.py': cazuri_identificatori,
+    'poarta-legaturi-md.py': cazuri_legaturi_md,
     'poarta-juridic.py': cazuri_juridic,
     'poarta-limba.py': cazuri_limba,
     'poarta-regresie.py': cazuri_regresie,
+    'poarta-registru-rute.py': cazuri_registru_rute,
     'poarta-rute.py': cazuri_rute,
     'poarta-scurgeri.py': cazuri_scurgeri,
     'poarta-seo.py': cazuri_seo,
