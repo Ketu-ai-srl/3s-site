@@ -39,8 +39,16 @@ type Props = {
   fir: Veriga[];
   eticheta: string;
   titlu: React.ReactNode;
-  lead: React.ReactNode;
-  actiune: { href: string; text: string };
+  /**
+   * Linia de sub titlu. Optionala DOAR pentru banda unei unelte, unde continutul urmeaza
+   * imediat sub h1; un ecran plin fara linie ar fi un afis fara text.
+   */
+  lead?: React.ReactNode;
+  /**
+   * UN buton. Optional din acelasi motiv, si numai acolo: pe `/instrumente` raspunsul e
+   * chiar tabelul de dedesubt, iar butonul care statea aici era o ancora spre el.
+   */
+  actiune?: { href: string; text: string };
   secundar?: { href: string; text: string };
   /** Adresa canonica a paginii, ca ultima veriga din datele structurate sa aiba adresa. */
   adresa: string;

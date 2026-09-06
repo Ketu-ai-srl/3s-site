@@ -9,27 +9,27 @@ import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { campLipsa, entitate } from "@/content/entitate";
 import { FOTOGRAFII } from "@/content/fotografii";
 
-// PAGINA DE CONTACT, FĂRĂ FORMULAR. Decizia și motivul ei, scrise aici fiindcă e prima
-// întrebare pe care o pune oricine deschide fișierul.
+// PAGINA DE CONTACT: trei drumuri, din care unul singur ajunge la noi azi.
 //
-// Pe pagina de start există `FormularDiscutie`. El spune, în propriul text, că nu trimite
-// nimic: nu pleacă niciun e-mail și nu se salvează nimic, fiindcă nu este legat de niciun
-// destinatar. Asta e adevărat azi.
+// CE S-A SCHIMBAT PE 2026-09-06, ȘI DE CE ERA OBLIGATORIU. Pagina avea un al patrulea rând,
+// „Formularul de pe pagina de start”, care explica vizitatorului că formularul acela există,
+// dar nu are destinatar. Odată cu reașezarea paginii de start în direcția nouă, formularul a
+// fost scos de acolo: componenta `FormularDiscutie` nu mai există în arbore. Rândul a rămas
+// deci o explicație pentru un obiect inexistent, cu o legătură către o ancoră fără secțiune.
 //
-// Aveam voie să îl refolosim aici ca atare. Nu am făcut-o, din două motive măsurabile:
+// Nu se putea repara scriind mai bine textul: nu mai există niciun formular pe site, nicăieri,
+// deci pagina spune drumurile care CHIAR funcționează, și atât. Afirmația din registru care
+// descria formularul (`formular-fara-destinatar`) a fost RETRASĂ în același commit - ce se
+// taie din pagină se taie și din registrul ei de afirmații.
 //
-//   1. Pe pagina de start, formularul este o secțiune din șapte. Pe o pagină numită
-//      „Contact”, ar fi singurul lucru pentru care omul a venit. Un vizitator care
-//      completează cinci câmpuri și abia apoi află că cererea rămâne în pagină a plătit
-//      efortul înainte de a primi informația. Ordinea corectă este inversă: întâi se spune
-//      ce ajunge la noi, apoi se scrie.
-//   2. Două locuri în care se poate scrie în gol sunt de două ori mai multe decât unul,
-//      iar al doilea l-am fi adăugat noi, azi, știind ce știm.
+// Consecința bună a dispariției: nu mai există niciun loc de pe site în care cineva poate
+// scrie o cerere care nu pleacă nicăieri. Înainte erau două - formularul și rândul care îl
+// explica; acum zero.
 //
-// Ce punem în loc: drumurile care chiar funcționează, plus rândurile pentru cele care nu
-// există încă, cu motivul lor. Formularul de pe pagina de start apare și el ca rând, cu
-// starea scrisă, fiindcă vizitatorul care l-a văzut acolo merită să afle aici de ce nu a
-// primit răspuns.
+// DE CE NU PUNEM UN FORMULAR AICI, acum că locul e liber. Ar trebui să trimită undeva, iar
+// azi nu are unde: nu există destinatar configurat. Un buton care spune „Trimiteți cererea”
+// și nu trimite costă mai mult decât absența lui, fiindcă omul pleacă convins că a lăsat o
+// cerere și așteaptă un răspuns care nu are de unde să vină.
 //
 // DE CE VALORILE NU SUNT SCRISE ÎN PAGINĂ. Adresa și telefonul se citesc din
 // `config/entitate.ro.json`, prin `src/content/entitate.ts` - același loc din care le ia
@@ -54,7 +54,7 @@ const DRUMURI: Drum[] = [
     valoare: ARE_EMAIL ? entitate.email : null,
     href: ARE_EMAIL ? CATRE : undefined,
     nota: ARE_EMAIL
-      ? "Drumul care funcționează azi. Scrieți de la adresa la care vreți să primiți răspunsul, ca discuția să rămână într-un singur fir."
+      ? "Drumul care funcționează azi, și singurul. Scrieți de la adresa la care vreți să primiți răspunsul, ca discuția să rămână într-un singur fir."
       : "Adresa se scrie aici din configurarea firmei. Cât timp lipsește de acolo, nu punem alta în loc.",
   },
   {
@@ -66,12 +66,6 @@ const DRUMURI: Drum[] = [
     eticheta: "Sediu",
     valoare: campLipsa(entitate.sediu) ? null : entitate.sediu,
     nota: "Sediul se declară la înmatriculare și abia atunci se scrie. Depozitul în care ajunge hârtia este cel al ADRIEI, la Golești, județul Argeș, și poate fi vizitat cu programare înainte să semnați ceva.",
-  },
-  {
-    eticheta: "Formularul de pe pagina de start",
-    valoare: "/#discutie",
-    href: "/#discutie",
-    nota: "Există, dar nu are încă destinatar: cererea completată acolo rămâne în pagină, iar formularul o spune el însuși după apăsare. Îl lăsăm la vedere fiindcă arată ce vă întrebăm la începutul discuției. Până este legat, mesajul care ajunge la noi este cel de poștă electronică.",
   },
 ];
 
@@ -91,43 +85,58 @@ export default function Contact() {
         imagine={FOTOGRAFII.legatura}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Contact" }]}
         eticheta="Contact"
-        titlu="Ne scrieți pe e-mail. Restul drumurilor nu există încă."
-        lead="Scriem mai jos exact ce ajunge la noi și ce nu, fiindcă o pagină de contact care promite mai multe drumuri decât are transformă o cerere într-un mesaj pierdut. 3S se înființează acum, deci telefonul și sediul lipsesc, iar rândurile lor spun de ce."
+        titlu={
+          <>
+            Ne scrieți pe e-mail.
+            <br />
+            Restul drumurilor nu există încă.
+          </>
+        }
+        lead="Scriem mai jos exact ce ajunge la noi și ce nu. 3S se înființează acum, deci telefonul și sediul lipsesc, iar rândurile lor spun de ce."
+        // Butonul al doilea RAMANE numai aici, din cele patru pagini ale lotului: /despre
+        // e singura destinatie secundara care nu sta si in bara de sus, deci singura care nu
+        // repeta un rand deja vizibil. Cand adresa lipseste din configurare, pagina nu are
+        // ce actiune sa promita: locul principal il ia "Cine suntem", in locul unei ancore
+        // care doar derula catre cele trei randuri de mai jos.
         actiune={
           ARE_EMAIL
             ? { href: CATRE, text: "Scrieți-ne la " + entitate.email }
-            : { href: "#drumuri", text: "Vedeți ce drumuri există" }
+            : { href: "/despre", text: "Cine suntem" }
         }
-        secundar={{ href: "/despre", text: "Cine suntem" }}
+        secundar={ARE_EMAIL ? { href: "/despre", text: "Cine suntem" } : undefined}
       />
 
       <SectiuneRegistru
         id="drumuri"
-        ton="fisier"
+        dens
         cota="I"
         eticheta="Drumuri"
-        titlu="Patru drumuri, din care unul singur ajunge la noi azi."
+        titlu="Trei drumuri, din care unul singur ajunge la noi azi."
         lead="Rândurile de mai jos se citesc din configurarea firmei, nu se scriu de mână în pagină. Unde valoarea lipsește, scrie că lipsește: nici substituent, nici datele firmei-mamă puse în locul lor."
       >
         <ContactDrumuri drumuri={DRUMURI} />
 
-        <BlocDovada className="mt-8">
-          <strong className="font-semibold text-tus">De ce nu punem un formular aici:</strong>{" "}
-          nu ar trimite nimic. Un buton care spune „Trimiteți cererea” și nu trimite costă mai
-          mult decât absența lui, fiindcă omul pleacă convins că a lăsat o cerere și așteaptă
-          un răspuns care nu are de unde să vină. Când formularul are destinatar, apare și
-          aici, iar rândul de mai sus se schimbă odată cu el.
+        <BlocDovada className="mt-10">
+          <strong className="font-semibold text-cerneala">
+            Nu există niciun formular pe site:
+          </strong>{" "}
+          nici aici, nici pe pagina de start. Un câmp în care se scrie o cerere trebuie să
+          aibă un destinatar, iar 3S nu are încă unul configurat. Până atunci, singurul loc în
+          care puteți lăsa o cerere este poșta electronică, unde se vede că a plecat. Când
+          formularul are destinatar, apare și aici, iar rândurile de mai sus se schimbă odată
+          cu el.
         </BlocDovada>
       </SectiuneRegistru>
 
       <SectiuneRegistru
-        ton="hartie"
+        id="primul-mesaj"
+        ton="inchis"
         cota="II"
         eticheta="Primul mesaj"
         titlu="Cinci rânduri de la dumneavoastră scurtează discuția cu o săptămână."
         lead="Scrieți cât vreți și în ce ordine vreți. Lista de mai jos este ce ne trebuie oricum ca să vă putem răspunde cu ceva concret din primul mesaj, în loc să cerem detalii pe încă două."
       >
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <ListaBifa titlu="Ce ajută să scrieți" elemente={PRIMUL_MESAJ} />
           <ListaBifa
             titlu="Ce primiți înapoi"
@@ -142,15 +151,14 @@ export default function Contact() {
       </SectiuneRegistru>
 
       <SectiuneRegistru
-        ton="inchis"
+        id="datele"
         cota="III"
         eticheta="Datele din mesaj"
         titlu="Ce facem cu ce ne scrieți."
         lead="Un mesaj către un furnizor de arhivare conține adesea mai mult decât un salut: numele instituției, ce se caută des, uneori un termen de control. Deci merită spus dinainte ce se întâmplă cu el."
       >
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <ListaBifa
-            inchis
             titlu="Ce se întâmplă cu mesajul"
             elemente={[
               "Se folosește numai ca să răspundem cererii dumneavoastră",
@@ -160,7 +168,6 @@ export default function Contact() {
             ]}
           />
           <ListaBifa
-            inchis
             titlu="Ce nu vă cerem în primul mesaj"
             elemente={[
               "Documente scanate sau fișiere cu date personale",
@@ -172,12 +179,13 @@ export default function Contact() {
       </SectiuneRegistru>
 
       <SectiuneRegistru
-        ton="fisier"
+        id="discutie"
+        ton="inchis"
         cota="IV"
         eticheta="Pasul următor"
         titlu="Un mesaj de cinci rânduri este de ajuns ca să începem."
       >
-        <p className="mb-8 max-w-[62ch] text-lead text-tus-2">
+        <p className="mb-10 max-w-[62ch] text-[clamp(1.05rem,1.3vw,1.2rem)] leading-[1.5] text-hartie-veche-2">
           Discuția de treizeci de minute se programează din același mesaj. Ne uităm peste umăr
           la arhiva dumneavoastră așa cum arată ea azi, nu la o prezentare a noastră.
         </p>
@@ -193,13 +201,19 @@ export default function Contact() {
           </Buton>
         </div>
 
-        <p className="mt-6 max-w-[62ch] text-[15.5px] text-tus-3">
+        <p className="mt-8 max-w-[62ch] text-[15.5px] leading-[1.5] text-hartie-veche-3">
           Dacă vă interesează întâi ce facem pentru domeniul dumneavoastră, fișele stau la{" "}
-          <Link href="/solutii" className="text-verde underline underline-offset-[3px]">
+          <Link href="/solutii" className="text-arama-clar underline underline-offset-[3px]">
             domenii
           </Link>
-          , iar termenele legale, cu actul normativ citat, în verificatorul de pe pagina de
-          start.
+          , iar termenele legale, cu actul normativ citat, în{" "}
+          <Link
+            href="/instrumente/termene-de-pastrare"
+            className="text-arama-clar underline underline-offset-[3px]"
+          >
+            instrumentul de termene
+          </Link>
+          .
         </p>
       </SectiuneRegistru>
     </main>

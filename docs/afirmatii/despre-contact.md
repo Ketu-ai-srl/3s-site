@@ -6,7 +6,7 @@
 Lista de mai jos e ce trebuie sa bifeze cineva care stie afacerea, inainte de publicare.
 Pana atunci, afirmatiile stau pe site ca text redactional, nu ca fapt verificat.
 
-**De confirmat: 6 din 8**
+**De confirmat: 6 din 9**
 
 | # | Afirmatia, asa cum apare pe site | Unde |
 |---|---|---|

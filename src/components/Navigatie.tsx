@@ -73,11 +73,26 @@ export default function Navigatie() {
   // pagina interioara) venea din vremea cand interioarele erau deschise la culoare si axe
   // picase color-contrast pe 21 de pagini deodata.
   const paginaCunoscuta = RUTE.some((r) => r.cale === cale);
-  const fundal =
-    derulat || deschis || !paginaCunoscuta ? "bg-noapte/92 backdrop-blur-[10px]" : "bg-transparent";
+  const opac = derulat || deschis || !paginaCunoscuta;
+  const fundal = opac ? "bg-noapte/92 backdrop-blur-[10px]" : "bg-transparent";
 
   return (
     <header className={"fixed inset-x-0 top-0 z-40 transition-colors duration-300 " + fundal}>
+      {/* Voalul barei, si e o reparatie masurata, nu o umbra de gust. Cat timp bara e
+          transparenta, randurile ei stau peste fotografia primului ecran, iar acolo unde
+          fotografia are o banda luminoasa contrastul cade sub 4,5:1: masurat la 1280x800, pe
+          pixelii acoperiti de litera, "Contact" 4,26, "Termene de pastrare" 4,35,
+          "Investitia" 4,39 peste `cutii`, si "Arhivare fizica" 3,92 peste `rafturi`, adica si
+          pe pagina de start. Voalul din `Ecran` incepe de la marginea de sus a SECTIUNII si
+          se stinge in 140 px, deci la y=24 mai lasa aproape 30% din fotografie.
+          Se randeaza doar in starea transparenta: derulata, bara are deja fundal opac, si un
+          strat in plus peste el n-ar schimba nimic in afara de a strica neclaritatea. */}
+      {opac ? null : (
+        <div
+          aria-hidden="true"
+          className="voal-bara pointer-events-none absolute inset-x-0 top-0 -z-10 h-24"
+        />
+      )}
       <div className="mx-auto flex h-[68px] max-w-vitrina items-center gap-6 px-6 md:px-10">
         <Link href="/" className="flex items-baseline gap-3 no-underline">
           <span className="font-afis text-[30px] leading-none font-bold tracking-[0.02em] text-hartie-veche">

@@ -27,7 +27,7 @@ export const DESPRE = {
   eticheta: "Despre noi",
   h1: "Firma este nouă. Depozitul din care a crescut lucrează din 2019.",
   lead:
-    "3S se înființează acum, ca firmă româno-moldovenească. Arhivarea fizică, depozitul de la Golești și anii de la 2019 încoace sunt ale ADRIA Servicii Arhivare SRL, firma-mamă. Mai jos scriem ce este al ei, ce se construiește la noi și ce nu putem susține deocamdată.",
+    "Arhivarea fizică, depozitul de la Golești și anii de la 2019 încoace sunt ale ADRIA Servicii Arhivare SRL, firma-mamă. Mai jos scriem ce este al ei și ce se construiește la noi.",
 };
 
 /** Ce există azi, ce se construiește și ce lipsește. Trei fișe, în ordinea asta. */
@@ -55,14 +55,17 @@ export const MOSTENIT: string[] = [
   "Oamenii care ridică documentele, le inventariază și le scanează",
 ];
 
-/** Ce se construiește la 3S. Nimic de aici nu are vechime, și nu se scrie ca și cum ar avea. */
-export const CONSTRUIT: string[] = [
-  "Căutarea în documente, cu întrebarea pusă în română, ca unui coleg care cunoaște arhiva",
-  "Răspunsul care citează documentul și pagina, sau spune limpede că nu a găsit",
-  "Canalul de pe telefon, ca răspunsul să vină fără să deschideți un calculator",
-  "Site-ul acesta, cu termenele legale citate pe actul normativ din care provin",
-  "Firma nouă, româno-moldovenească, aflată în curs de înființare",
-];
+/**
+ * Ce se construiește la 3S. Nimic de aici nu are vechime, și nu se scrie ca și cum ar avea.
+ *
+ * PROZĂ, NU LISTĂ, din 2026-09-06, și nu din gust. Erau cinci rânduri bifate, lângă cele
+ * cinci rânduri bifate ale ADRIEI, pe două ecrane construite identic - iar despărțirea în
+ * două ecrane există tocmai ca cele două firme să nu se citească drept una singură. Lista
+ * bifată promite lucruri gata făcute; aici niciunul nu este. Cuvintele au rămas aceleași,
+ * în aceeași ordine, doar că acum se citesc ca o frază, nu ca un inventar.
+ */
+export const CONSTRUIT =
+  "Se construiesc căutarea în documente, cu întrebarea pusă în română, ca unui coleg care cunoaște arhiva, și răspunsul care citează documentul și pagina sau spune limpede că nu a găsit. Tot aici intră canalul de pe telefon, ca răspunsul să vină fără să deschideți un calculator, site-ul acesta, cu termenele legale citate pe actul normativ din care provin, și firma însăși, româno-moldovenească, aflată în curs de înființare.";
 
 /** Cele trei verbe din nume, în ordinea în care se întâmplă cu documentele dumneavoastră. */
 export const NUMELE: FaptDespre[] = [
@@ -96,5 +99,5 @@ export const ARATAM: string[] = [
   "Depozitul de la Golești, cu programare, înainte să semnați ceva",
   "Procesul-verbal de predare-primire, în forma exactă în care se semnează",
   "Contractul și anexa de prelucrare a datelor, în română, înainte de preluare",
-  "Termenele legale cu actul normativ citat, în verificatorul de pe pagina de start",
+  "Termenele legale cu actul normativ citat, în instrumentul de termene de păstrare",
 ];

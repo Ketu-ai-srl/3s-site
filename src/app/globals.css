@@ -428,6 +428,21 @@
     );
 }
 
+/* Voalul barei fixe (`Navigatie`), randat numai cat timp bara e transparenta peste primul
+   ecran. Nu dubleaza voalul din `Ecran`: acela apara COLOANA DE TEXT, jos si in stanga, si
+   se stinge in 140 px de sus, ceea ce la y=24 mai lasa aproape 30% din fotografie sub
+   randurile barei. Masurat la 1280x800, pe pixelii acoperiti de litera, cu unealta care a
+   dat 6,73 pe un control cunoscut: "Contact" 4,26, "Termene de pastrare" 4,35, "Investitia"
+   4,39 peste `cutii-1920.webp`, si "Arhivare fizica" 3,92 peste `rafturi-1920.webp`, adica
+   inclusiv pe pagina de start aprobata - deci slabiciunea e a antetului comun, nu a unei
+   pagini. 96 px acopera bara de 68 px si rasuflarea de sub ea; 0,7 la varf coboara sub 0,2
+   la jumatate, deci fotografia ramane fotografie sub prima treime a ecranului. La 390 px nu
+   pica nimic, dar voalul e acelasi: o regula care se aplica pe o singura latime se strica la
+   prima fotografie noua. */
+.voal-bara {
+  background: linear-gradient(to bottom, rgba(11, 11, 12, 0.7) 0%, rgba(11, 11, 12, 0) 100%);
+}
+
 /* Sub 768 px voalul se ingroasa, si nu din gust. Masurat pe captura reala (culoarea
    textului contra pixelilor de sub literele lui, pe dreptunghiuri stranse pe text, nu pe
    cutia elementului): pe pagina de start eticheta de arama de 11 px statea la 4,03:1 medie

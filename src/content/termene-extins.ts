@@ -67,7 +67,9 @@ export const PAGINA_TERMENE = {
     "Cât se păstrează registrele contabile, statele de salarii sau actele de stare civilă, cu actul normativ și articolul pe fiecare rând. România, atât.",
   eticheta: "Instrument",
   h1: "Cât se păstrează, și din ce articol de lege vine termenul",
-  lead: "Opt categorii de documente, fiecare cu termenul, cu momentul din care începe să curgă și cu actul normativ din care provine. Acoperim România. Unde nu putem arăta articolul, rândul rămâne gol și scriem de ce.",
+  // Nu mai exista camp `lead` pentru antet, si nu s-a pierdut niciun cuvant din el: textul
+  // a coborat in `cuprins.subTabel`, sub tabel. Motivul e masurat, nu de gust - vezi nota
+  // din `src/app/instrumente/termene-de-pastrare/page.tsx`.
 
   acoperire: {
     titlu: "România, atât. O scriem pe pagină, nu la subsol.",
@@ -89,8 +91,14 @@ export const PAGINA_TERMENE = {
   },
 
   cuprins: {
-    titlu: "Toate rândurile, pe scurt.",
-    lead: "Alegeți categoria ca să ajungeți la rândul întreg, cu actul, cu momentul din care curge și cu nota lui. Pe ecran îngust, coloana cu actul normativ se ascunde: trei coloane de text la 390 px se rup după fiecare cuvânt, iar actul se citește oricum în rândul întreg.",
+    // Tabelul nu mai are titlu de sectiune si nici linie de deschidere DEASUPRA lui: h1-ul
+    // paginii este chiar titlul lui, iar cele doua paragrafe de mai jos - unul mutat din
+    // antet, celalalt de deasupra tabelului - se citesc dupa randuri, unde nu mai tin pe
+    // nimeni departe de raspuns.
+    subTabel: [
+      "Opt categorii de documente, fiecare cu termenul, cu momentul din care începe să curgă și cu actul normativ din care provine. Acoperim România. Unde nu putem arăta articolul, rândul rămâne gol și scriem de ce.",
+      "Actul normativ stă pe rând, sub numele categoriei, la orice lățime de ecran. Categoria duce la fișa întreagă, cu momentul din care curge termenul și cu nota lui.",
+    ],
     antetDocument: "Categoria de documente",
     antetTermen: "Termen",
     antetTemei: "Actul normativ",
@@ -100,7 +108,11 @@ export const PAGINA_TERMENE = {
 
   fise: {
     titlu: "Fiecare rând, cu actul lui.",
-    lead: "Ordinea este cea din verificatorul de pe pagina de start. Rândul fără cifră nu are cifră fiindcă nu am găsit articolul, nu fiindcă am uitat de el.",
+    // „Ordinea este cea din verificatorul de pe pagina de start" a stat aici pana pe
+    // 2026-09-06 si trimitea la un obiect care nu mai exista nicaieri pe site: `id="termene"`
+    // pe pagina de start da zero potriviri, iar `VerificatorTermene` nu e importat de nicio
+    // pagina. Ordinea CHIAR e a tabelului de mai sus, deci propozitia se scrie despre el.
+    lead: "Ordinea este cea din tabelul de mai sus. Rândul fără cifră nu are cifră fiindcă nu am găsit articolul, nu fiindcă am uitat de el.",
   },
 
   moldova: {
