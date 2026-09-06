@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 // Un ecran al vitrinei: o fotografie pe tot ecranul, o eticheta, un titlu, o linie, un buton.
 //
@@ -52,6 +52,8 @@ type Imagine = {
   pozitie?: string;
   /** filtru CSS care aduce cadrul in banda de culoare a paginii de start; vezi `fotografii.ts` */
   filtru?: string;
+  /** cat se subtiaza voalul BENZII peste fotografia asta; 1 = referinta (vezi `fotografii.ts`) */
+  voalBanda?: number;
 };
 
 type Legatura = { href: string; text: string };
@@ -139,9 +141,20 @@ export default function Ecran({
               decoding="async"
             />
           </picture>
+          {/* Taria voalului de banda vine de la FOTOGRAFIE, nu de la componenta: acelasi
+              voal peste patru expuneri diferite dadea patru rezultate diferite, masurat
+              intre 0,0035 si 0,0130 amplitudine de luminanta. Cifra si masuratoarea care
+              a stabilit-o sunt in `src/content/fotografii.ts`. Ecranul plin nu are inca
+              nevoie de asta: acolo fotografia ramane descoperita pe doua treimi din
+              latime, deci diferentele de expunere se vad oricum. */}
           <div
             aria-hidden="true"
             className={(banda ? "voal-banda" : "voal") + " absolute inset-0 -z-10"}
+            style={
+              banda && imagine.voalBanda
+                ? ({ "--voal-tarie": imagine.voalBanda } as CSSProperties)
+                : undefined
+            }
           />
         </>
       ) : null}

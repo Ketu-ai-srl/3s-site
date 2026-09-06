@@ -137,6 +137,20 @@ ecran plin.
 Sub el vin secțiunile, pe fundal de noapte, cu `py-24 md:py-36` între ele, titluri condensate
 cu majuscule și text sub 60 de cuvinte pe bloc.
 
+**Cadrul se umple sau nu există.** Lățimea containerului nu e o decorație pe care o alegi o
+dată și o refolosești: e promisiunea că textul ajunge la marginea ei. Paginile juridice stăteau
+în containerul de registru (1180 px) și declarau o coloană de conținut de 952 px, dar h2 folosea
+516 și paragraful 485 - deci 436 px rămâneau goi ÎNĂUNTRUL coloanei declarate, pe 26 din 28 de
+secțiuni, cu cinci margini drepte diferite pe aceeași pagină și niciuna a containerului. Pagina
+de start umple cadrul pe toate cele cinci secțiuni ale ei. Reparația nu îngustează textul, ci
+cadrul: `--container-act` (720 px) dă 148 px de jgheab pentru cifră plus 492 px de coloană, iar
+coloana ESTE măsura - de aceea pe paginile acelea nu mai există niciun `max-w-[..ch]` scris pe
+element. Două plafoane pentru aceeași măsură se abat unul de la altul; unul singur nu poate.
+
+Măsura se verifică numărând caractere pe pagina randată, nu în `ch`: `ch` e lățimea glifei
+ZERO, printre cele mai late ale fontului, iar `max-w-[74ch]` dădea 98 de caractere pe rând, nu
+74. La 492 px ies 68 în medie, cu vârf la 75.
+
 Listele tipografice: un rând = o legătură, cu numele condensat cu majuscule și o săgeată de
 aramă la capăt. Pe pagina de start stau pe trei coloane, fiindcă rândul poartă doar numele;
 când poartă și o descriere, ca pe /solutii, lista trece pe o coloană și rândul ține toată
@@ -188,6 +202,26 @@ mediană (cea mai mică: /arhivare-fizica). **Pe paginile de vitrină pe care nu
 felia 27 măsurătoarea nu s-a repetat cu metoda nouă, iar percentila 90 a fundalului scade
 acolo până la 1,22 (/solutii/imobiliare) - de verificat separat.** **O fotografie nouă, o
 mutare de decupaj sau o schimbare de înălțime a titlului cer remăsurarea.** A treia nu
+
+**Un voal constant nu dă un rezultat constant.** Fotografiile intră cu expuneri foarte diferite,
+deci ce se egalizează e IEȘIREA, nu intrarea. Amplitudinea de luminanță a benzii (p95-p5),
+măsurată pe captură cu textul făcut transparent, la 1280 px: cu un singur voal peste toate,
+`rafturi` dădea 0,0138 (fotografia se vede), `dosare` 0,0081 (o aluzie) și `legatura` 0,0036 -
+de 3,8 ori mai plat, adică 139.896 de octeți plătiți pentru șase niveluri de gri. Fiecare
+fotografie își poartă acum factorul ei în registru (`voalBanda`), iar `.voal-banda` îl aplică pe
+TRANSMITANȚA stratului vertical, nu pe opacitate: la 1 rămân exact valorile aprobate.
+
+Plafonul nu-l pune ținta, îl pune litera. Voalul subțiat lasă să treacă și lumina de sub text,
+iar contrastul peste fotografie nu e măsurat de `axe`. `legatura` ar fi avut nevoie de 2,9 ca să
+atingă referința; la 2,9 eticheta de aramă cădea la 4,44:1 la 390 px. Stă la 2,5, unde dă 0,0108
+și 4,80:1. Se scrie ce s-a măsurat: două din trei pagini ajung la referință, a treia se oprește
+cu o cincime sub ea, fiindcă dincolo se plătește în literă.
+
+Contrastul textului peste fotografie NU e măsurat de `axe`. Se măsoară pe captură, cu textul
+ascuns și cu pixelii citiți sub dreptunghiurile strânse pe litere. Pragul: media peste 4,5:1
+pentru text mic - eticheta de 11 px și firul de navigare sunt cele care cad primele. Măsurat
+pe toate cele 22 de pagini, la 1280 și la 390: cea mai mică medie este 5,18:1. **O fotografie
+nouă, o mutare de decupaj sau o schimbare de înălțime a titlului cer remăsurarea.** A treia nu
 e evidentă și a fost prinsă chiar aici: titlurile mai înalte urcă blocul de text, iar blocul e
 lipit de marginea de jos, deci eticheta iese din zona groasă a voalului.
 

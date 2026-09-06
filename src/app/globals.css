@@ -117,6 +117,24 @@
   /* --- latimi ----------------------------------------------------------- */
   --container-registru: 1180px;
   --container-vitrina: 1400px;
+
+  /* Cadrul paginilor care sunt ACTE - /termeni, /confidentialitate, /cookies. Nu e o a
+     treia latime de decor: e singura in care coloana de text ajunge pana la marginea
+     cadrului. Masurat la 1180: grila declara `148px 952px`, dar h2 folosea 516 px si
+     paragraful 485, deci 436 px ramaneau goi INAUNTRUL coloanei declarate, pe 26 din 28
+     de sectiuni, iar blocul de incheiere lasa 585; pagina de start umple cadrul pe toate
+     cele 5 sectiuni ale ei.
+
+     CINE PUNE CIFRA: RANDUL, nu titlul. Prima incercare a fost 744 px, adica exact latimea
+     la care jgheabul de 148 plus coloana de 516 - latimea pe care o folosea h2 - umplu
+     cadrul. La 516 px insa, coloana fiind acum si masura textului, randul a urcat la 83 de
+     caractere in varf (median 72), peste plafonul de optzeci de la care ochiul pierde
+     inceputul randului urmator. La 492 ies 68 in medie si 75 in varf, adica aceeasi median
+     ca la plafonul vechi de 485 px, dar cu coloana umpluta. De aceea cifra e
+     24 (px-6) + 148 (jgheabul cifrei) + 32 (gap-8) + 492 (coloana de text) + 24 = 720,
+     si de aceea se remasoara cu Range pe pagina randata daca se schimba fontul de corp,
+     nu se recalculeaza din `ch`. */
+  --container-act: 720px;
 }
 
 @theme inline {
@@ -413,12 +431,28 @@
    cere aproximativ 0,85 opacitate ca sa treaca 4,5:1; sub asta linia se pierde pe muchiile
    luminate. Verificarea reala se face pe captura, ca la ecranul plin. */
 .voal-banda {
+  /* TARIA E PER FOTOGRAFIE, si nu din gust. Voalul e o constanta, dar fotografiile care
+     intra pe sub el au expuneri diferite, deci acelasi voal da rezultate diferite: o
+     constanta la intrare nu e o constanta la iesire. Masurat pe captura reala, cu textul
+     facut transparent, amplitudinea de luminanta a benzii (p95-p5) la 1280 px:
+     `rafturi` 0,0130 (fotografia se vede, cutiile se citesc) - `dosare` 0,0078 (o aluzie)
+     - `sertare` 0,0061 - `legatura` 0,0035, adica de 3,7 ori mai plat decat referinta.
+     Pe /termeni banda de 1280x527 varia intre sRGB ~13 si ~19 din 255: nu fotografie,
+     vopsea, si 139.896 de octeti platiti ca sa iasa sase niveluri de gri.
+
+     Ce scalam si de ce asa. `--voal-tarie` inmulteste TRANSMITANTA stratului vertical
+     (1 - alfa), nu opacitatea: la 1 raman exact valorile aprobate (0,93 / 0,88 / 0,84),
+     iar la 2,9 trece de 2,9 ori mai multa lumina prin el. Stratul orizontal ramane
+     neatins, fiindca el apara coloana din dreapta, unde stau linia si legatura secundara;
+     scaland si pe el, factorul s-ar aplica de doua ori. Cifra fiecarei fotografii sta in
+     `src/content/fotografii.ts`, langa fotografie, si e masurata, nu calculata. */
+  --voal-tarie: 1;
   background:
     linear-gradient(
       to top,
-      rgba(11, 11, 12, 0.93) 0%,
-      rgba(11, 11, 12, 0.88) 60%,
-      rgba(11, 11, 12, 0.84) 100%
+      rgb(11 11 12 / calc(1 - 0.07 * var(--voal-tarie))) 0%,
+      rgb(11 11 12 / calc(1 - 0.12 * var(--voal-tarie))) 60%,
+      rgb(11 11 12 / calc(1 - 0.16 * var(--voal-tarie))) 100%
     ),
     linear-gradient(
       to right,
