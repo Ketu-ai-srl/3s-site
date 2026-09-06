@@ -8,6 +8,29 @@
 //
 // Iesire: 0 = poarta trece · 1 = poarta pica · 2 = folosire gresita · 3 = NEMASURAT
 //
+// CE NU VERIFICA (reziduurile comune ale tuturor portilor de browser)
+// Intrebarea pe care o pune de fapt: "au rulat probele cerute, au trecut toate, si au rulat
+// printre ele si un martor pozitiv si unul negativ?" Nu "e pagina buna".
+//  - Martorii se recunosc dupa TITLU: un titlu care contine 'martor POZITIV' respectiv
+//    'martor NEGATIV'. O proba redenumita dezarmeaza verificarea fara sa schimbe nimic altceva,
+//    si nimic nu semnaleaza asta.
+//  - Se cere ca AMANDOI martorii sa fi rulat undeva in rularea curenta, nu ca fiecare fisier
+//    de proba sa aiba martorii lui. Cu mai multe fisiere deodata, unul fara martori trece pe
+//    seama celorlalte.
+//  - NEMASURAT se deduce dintr-un sir cautat in textul erorilor. O proba care esueaza altfel,
+//    fara acel sir, se citeste ca defect obisnuit, nu ca masuratoare invalida.
+//  - Build-ul se REFOLOSESTE cand e mai nou decat sursa, iar prospetimea se judeca doar dupa
+//    src, public, next.config.ts si package.json. O schimbare in afara acestor patru radacini
+//    nu declanseaza reconstruirea.
+//  - SARI_BUILD=1 sare build-ul cu totul: rularea masoara atunci ce era construit dinainte.
+//  - Probele sarite se scot din numarare inainte de verdict, deci un fisier sarit integral nu
+//    coboara numarul de porti trecute; el dispare pur si simplu.
+//  - Verdictul se citeste din raportul JSON, nu din codul de iesire al rulatorului de probe.
+//
+// LA ROSU: se editeaza proba picata sau codul paginii. Nu se ating: cerinta ca ambii martori
+// sa fi rulat, tratarea cazului 'nicio proba nu a rulat', deducerea lui NEMASURAT, si nu se
+// foloseste SARI_BUILD ca sa treaca o poarta.
+//
 // Tot ce tipareste scriptul e ASCII, deliberat: consola Windows e cp1252 si ar strica
 // diacriticele, iar un raport cu litere rupte se citeste gresit exact cand conteaza.
 

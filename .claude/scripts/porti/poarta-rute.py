@@ -21,15 +21,30 @@ CE VERIFICA, in ambele directii:
   RU-02  fiecare intrare din `RUTE` are un `page.tsx`
          (altfel meniul din layout produce o legatura moarta pe tot site-ul)
 
-CE NU VERIFICA, deliberat: `inMeniu` si `inHarta`. Alea sunt decizii editoriale - o pagina
-poate exista si sa nu apara in bara de sus, si e in regula. Ce nu e in regula e sa nu fie
-CUNOSCUTA.
-
 CONTROALE la fiecare rulare, pe arbori fabricati in memorie:
   - martor pozitiv A: pagina fara intrare in manifest TREBUIE prinsa;
   - martor pozitiv B: intrare in manifest fara pagina TREBUIE prinsa;
   - martor negativ: multimi identice NU trebuie sa produca nimic.
 Daca vreunul cade, verdictul e NEMASURAT (iesire 3), nu "curat".
+
+CE NU VERIFICA (reziduuri)
+Intrebarea pe care o pune de fapt: "coincid doua multimi de siruri - caile citite din
+manifest si caile deduse din arborele de fisiere?" Nu "e pagina accesibila".
+  - O ruta prezenta in ambele multimi, dar cu inMeniu si inHarta false, e VERDE si totusi nu
+    e legata de nicaieri. Asta e deliberat: sunt decizii editoriale.
+  - Segmentele dinamice si grupurile de rute se sar; un subarbore dinamic intreg ramane
+    nemasurat, in ambele directii.
+  - Manifestul se citeste cu un tipar pe campul de cale. O cale compusa din bucati, dintr-o
+    variabila sau dintr-o constanta nu se vede.
+  - Se numara doar fisierele de pagina. Un manipulator de ruta care serveste o adresa nu e
+    ruta pentru poarta asta.
+  - Sitemap-ul, meniul si subsolul nu se citesc. Simptomul din incident - zero aparitii in
+    sitemap - se DEDUCE din manifest, nu se masoara.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  intrarea din src/content/rute.ts, sau fisierul de pagina care lipseste.
+  NU  TIPAR_CALE, sarirea grupurilor si a segmentelor dinamice din rute_din_fisiere,
+      compara(), controale().
 
 IESIRE: 0 curat - 1 nepotriviri - 2 folosire gresita - 3 control picat
 """

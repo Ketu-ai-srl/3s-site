@@ -28,6 +28,31 @@ CONTROALE la fiecare rulare:
 CUM SE ADAUGA UN NUME: se ruleaza `python poarta-scurgeri.py --amprenta <cuvant>` si se
 pune amprenta in AMPRENTE. Cuvantul insusi nu se scrie in fisier, niciodata.
 
+CE NU VERIFICA (reziduuri, scrise ca un zero sa nu fie citit drept acoperire)
+Intrebarea pe care o pune de fapt: "are vreun cuvant din arborele de lucru una dintre
+amprentele listei, sau se potriveste vreun RAND cu unul dintre tiparele de forma?"
+  - Un nume scris altfel decat amprenta lui trece: despartit in doua cuvinte, cu cratima,
+    cu o litera schimbata, cu diacritice. Amprenta e pe cuvantul exact, in minuscule.
+  - Lista de amprente e o copie scrisa de mana a unei multimi pe care nu o enumera nimeni;
+    nimic nu masoara completitudinea ei.
+  - Se deschid doar fisierele cu extensiile din EXTENSII. Un PDF, un document de birou, o
+    imagine, un fisier compilat sau unul fara extensie nu se citesc NICIODATA - fisierul
+    compilat din incidentul care a nascut poarta nu ar fi prins nici azi.
+  - Tiparele se aplica pe RAND: un numar sau o cheie taiata pe doua randuri trece.
+  - Adresele de posta se cauta doar pe cativa furnizori publici; una pe un domeniu de firma
+    trece.
+  - telefon_plauzibil lasa DELIBERAT sa treaca numerele cu toate cifrele identice.
+  - Se citeste arborele de LUCRU. Ce e deja in istoricul git nu se vede de aici.
+  - Fisierele care nu se decodeaza UTF-8 se sar in tacere.
+  - Materialul intern fara nume propriu (pret de cost, analiza, nota de vanzare) nu are
+    nicio forma dupa care sa fie prins: acolo proza e singura garda.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  fisierul raportat, din care se scoate scurgerea.
+      AMPRENTE, numai prin ADAUGARE, cu amprenta produsa de --amprenta.
+  NU  stergerea unei amprente, SARITE, EXTENSII, TIPARE, telefon_plauzibil, controale().
+      O scurgere nu se rezolva scotand fisierul din multimea masurata.
+
 IESIRE: 0 curat - 1 scurgeri gasite - 2 folosire gresita - 3 control picat
 """
 import argparse

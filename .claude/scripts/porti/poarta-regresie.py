@@ -33,6 +33,29 @@ CONTROALE, la fiecare rulare, pe DOUA niveluri, fiindca poarta are doua piese:
              (trebuie sa treaca), si coborare declarata in acelasi commit
              (trebuie sa TREACA - martorul care apara munca legitima).
 
+CE NU VERIFICA (reziduuri)
+Intrebarea pe care o pune de fapt: "cate fisiere de proba, cate apeluri de caz, cate apeluri
+de asertiune si cate cazuri sarite sunt in arbore, si sunt mai putine decat pragul?"
+  - Nu ruleaza nimic. Un test care pica, unul gol si unul care afirma ceva fals se numara la
+    fel ca unul bun. Poarta apara CANTITATEA, nu adevarul probelor.
+  - Nu masoara acoperirea: cinci asertiuni pe acelasi lucru cantaresc cat cinci pe lucruri
+    diferite. Contorul poate creste fara ca protectia sa creasca.
+  - Numararea e pe TIPARE. Un caz generat intr-o bucla, un ajutor care ascunde asertiunea, sau
+    un cadru de test cu alte cuvinte-cheie nu se numara.
+  - Comentariile de linie se scot doar cand semnul INCEPE randul; o asertiune comentata la
+    coada unui rand se numara in continuare.
+  - Doar arborele tests/, doar extensiile din EXTENSII_PROBA. Probele Python ale portilor nu
+    intra in niciun contor de aici.
+  - Cand git nu raspunde, pragul din HEAD lipseste si a doua comparatie - cea care prinde
+    coborarea pragului de aceeasi mana - pur si simplu nu se face.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  probele insesi, scrise la loc.
+      Fisierul de praguri, cu cifra COBORATA in acelasi commit cu stergerea si cu motivul in
+      campul care ii e destinat. Ridicarea pragului la cifra masurata e libera.
+  NU  TIPAR_TEST, TIPAR_TEST_SARIT, TIPAR_ASERTIUNE, fara_comentarii, verdict(), ridicarea lui
+      sarite_maxim peste zero, controale().
+
 IESIRE
     0 = curat (avertismentele se tiparesc, dar nu opresc)
     1 = regresie
