@@ -14,7 +14,6 @@
     "porti": "pnpm porti:sursa && pnpm build && pnpm porti:build",
     "test": "vitest run",
     "verifica": "pnpm lint && pnpm typecheck && pnpm porti:sursa && pnpm build && pnpm porti:build && pnpm test && pnpm porti:browser",
-    "lot": "bash .claude/scripts/fabrica/probe/ruleaza-probele.sh",
     "staging": "bash .claude/scripts/porti/verifica-staging.sh"
   },
   "dependencies": {
