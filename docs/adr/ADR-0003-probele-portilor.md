@@ -29,18 +29,18 @@ cheama poarta ca proces. De aceea incape acolo unde preconditia cere sa fie. Dac
 viitoare ajunge sa aiba nevoie de build, ea se muta dupa `build`, nu se muta pasul.
 
 Cat costa, pe 6 sep 2026, pe aceeasi statie si cu alte felii lucrand in paralel: **18,3-52,6 s pe
-sase esantioane masurate aici** - patru cronometrate direct (32,5 / 35,5 / 46,3 / 52,6 s) si doua
-citite din verdicte, 18,3 s in `felie-31-769ed14` si 31,6 s in `felie-31-b6584cc`. Trecerea de
-control a raportat un maxim de 59,5 s; cifra aceea e relatata, nu masurata de mine, si conteaza
-fiindca ajunge la 0,5 s de plafonul care era scris aici. Se scrie ca interval, nu ca o cifra: o
-singura valoare sugereaza o stabilitate pe care masuratoarea nu o arata, iar imprastierea de
-aproape 3x vine din ce mai ruleaza pe masina, nu din pas.
+sapte esantioane masurate aici** - patru cronometrate direct (32,5 / 35,5 / 46,3 / 52,6 s) si trei
+citite din verdictele feliei (18,3 s in `769ed14`, 31,6 s in `b6584cc`, 35,4 s in `42e4f8d`).
+Trecerea de control a raportat un maxim de 59,5 s; cifra aceea e relatata, nu masurata de mine, si
+conteaza fiindca ajunge la 0,5 s de plafonul care era scris aici. Se scrie ca interval, nu ca o
+cifra: o singura valoare sugereaza o stabilitate pe care masuratoarea nu o arata, iar imprastierea
+de aproape 3x vine din ce mai ruleaza pe masina, nu din pas.
 
-Pasul NU e cel mai ieftin dintre vecinii lui, si asta se vede in amandoua verdictele: `porti:probe`
-contra `build` da 31,6 s contra 21,2 s in `felie-31-b6584cc` si 18,3 s contra 17,6 s in
-`felie-31-769ed14`. Ordinea celor doi nu se schimba, dar distanta dintre ei da - inca un motiv sa
-nu se sprijine nicio decizie pe un singur esantion. Regula „ieftinul inaintea scumpului" ordoneaza
-restul lantului; locul acestui pas il tine preconditia, si numai ea.
+Pasul NU e cel mai ieftin dintre vecinii lui. `porti:probe` contra `build`, in cele trei verdicte
+de mai sus: 31,6 contra 21,2 s · 18,3 contra 17,6 s · 35,4 contra 21,9 s. Ordinea celor doi nu s-a
+schimbat in niciunul, dar distanta dintre ei da, de la 13,5 s la 0,7 s - inca un motiv sa nu se
+sprijine nicio decizie pe un singur esantion. Regula „ieftinul inaintea scumpului" ordoneaza restul
+lantului; locul acestui pas il tine preconditia, si numai ea.
 
 Plafonul de 60 s nu se mai scrie in proza. Un prag enuntat intr-un document nu opreste nimic, iar
 maximul masurat a ajuns la 0,5 s de el fara ca ceva sa se strice - un prag asezat pe punctul de
@@ -107,10 +107,10 @@ cu cost declarat si beneficiu nemasurat.
 
 ## Consecinte
 
-- `verifica` are un pas in plus, de 18,3-52,6 s pe sase esantioane masurate (6 sep 2026; un al
-  saptelea, relatat de trecerea de control, a dat 59,5 s). Rosul vine mai devreme, nu mai ieftin:
-  in amandoua verdictele `porti:probe` e mai scump decat `build`, iar castigul e ordinea cauzala -
-  o poarta stricata se vede inainte sa se plateasca build-ul.
+- `verifica` are un pas in plus, de 18,3-52,6 s pe sapte esantioane masurate (6 sep 2026; un al
+  optulea, relatat de trecerea de control, a dat 59,5 s). Rosul vine mai devreme, nu mai ieftin:
+  in cele trei verdicte ale feliei `porti:probe` a iesit de fiecare data mai scump decat `build`,
+  iar castigul e ordinea cauzala - o poarta stricata se vede inainte sa se plateasca build-ul.
 - Acoperirea per poarta se numara, nu se presupune. `caz()` inregistreaza perechea (poarta, cod
   cerut), iar la finalul rularii un control cere fiecarei porti macar un caz de 1, unul de 0 si -
   daca nu e in tabelul de scutiri - unul de 3; altfel iesirea e 3, NEMASURAT. Fara el, un corp de
