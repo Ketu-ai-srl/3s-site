@@ -2,7 +2,7 @@ import Link from "next/link";
 import Buton from "@/components/Buton";
 import Eticheta from "@/components/Eticheta";
 import Invelis from "@/components/Invelis";
-import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA } from "@/content/rute";
+import { CALE_DISCUTIE, RUTE, type Ruta } from "@/content/rute";
 
 // Pagina de 404, in limbajul directiei: fundal de noapte, cota mono pe coloana de margine,
 // titlul in fontul de afis, cu majuscule. Pana pe 2026-09-06 era ultima suprafata alba a
@@ -13,14 +13,27 @@ import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA } from "@/content/rute";
 // Nu se deschide cu ecran plin si nu poarta fotografie: nu e o pagina de vitrina, e un
 // indicator. Cine ajunge aici cauta un drum, nu un afis.
 //
-// LISTA POARTA NUMELE, NU SI DESCRIEREA. Toate cele 22 de rute erau scrise aici cu descrierea
-// lor, adica exact continutul paginii /harta-site, in alt limbaj vizual, la un clic distanta -
-// chiar lucrul pe care directia il refuza. Aici omul cauta un NUME pe care sa-l recunoasca,
-// nu o prezentare a paginii; descrierile raman intr-un singur loc, in harta, iar randul care
-// duce la ea e chiar sub lista. Nicio ruta nu se pierde: sunt toate, in aceeasi ordine.
+// PATRU DRUMURI, NU TOT SITE-UL. Doua runde au incercat sa faca lista de 22 de rute mai
+// suportabila - intai scotandu-le descrierile, apoi asezandu-le pe trei coloane - si niciuna
+// n-a atins defectul. Masurat inainte: 27 de randuri identice (22 de rute plus cele 5 ancore
+// ale paginii de start), 23 dintre ele in primul ecran la 1280 px, iar la 390 px pagina avea
+// 2569 px si iesirea catre pagina de start statea sub doua ecrane de legaturi. Ordinea era
+// cea bruta a manifestului, deci pozitiile 3 si 4 erau "Securitate" si "Accesibilitate",
+// inaintea lui "Cum functioneaza". Descrierile, mutate in atributul `title`, nu se vad pe
+// atingere - adica pentru cititorul de pe telefon disparusera cu totul.
 //
-// Lista se compune din manifestul de rute, nu de mana: o pagina de 404 care trimite spre
-// adrese inexistente e chiar defectul pe care il explica.
+// Omul care ajunge aici cauta UN drum, nu harta intreaga; harta intreaga are pagina ei, si
+// randul care duce la ea sta chiar sub lista. Deci raman patru destinatii: pagina de start,
+// domeniile, instrumentul de termene si contactul.
+//
+// Numele si adresele vin tot din manifest, cautate dupa cale: daca o ruta e redenumita,
+// randul isi ia numele nou, iar daca dispare din manifest, randul dispare cu ea. O pagina de
+// 404 care trimite spre adrese inexistente ar fi chiar defectul pe care il explica.
+const CAI_SCURTE = ["/", "/solutii", "/instrumente/termene-de-pastrare", "/contact"];
+
+const DESTINATII: Ruta[] = CAI_SCURTE.map((cale) => RUTE.find((r) => r.cale === cale)).filter(
+  (r): r is Ruta => Boolean(r),
+);
 //
 // Nu poarta titlu propriu in `metadata`: fisierul asta nu e o pagina de ruta, iar HTML-ul
 // lui (`_not-found`) nu intra in harta de site si nu se indexeaza.
@@ -56,14 +69,14 @@ export default function PaginaNegasita() {
             </h1>
             <p className="mb-10 max-w-[60ch] text-lead text-cerneala-2">
               Fie adresa a fost scrisă altfel, fie pagina pe care o căutați nu există pe acest
-              site. Mai jos sunt paginile care există acum.
+              site. Mai jos sunt patru drumuri scurte.
             </p>
 
-            <Eticheta className="mb-3 block">Pagini</Eticheta>
-            <ul className="m-0 grid list-none border-t border-linie-suprafata p-0 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
-              {RUTE.map((ruta) => (
+            <Eticheta className="mb-3 block">Drumuri</Eticheta>
+            <ul className="m-0 list-none border-t border-linie-suprafata p-0">
+              {DESTINATII.map((ruta) => (
                 <li key={ruta.cale} className="list-none">
-                  <Link href={ruta.cale} title={ruta.descriere} className={RAND_LISTA}>
+                  <Link href={ruta.cale} className={RAND_LISTA}>
                     {ruta.scurt}
                     <span aria-hidden className={SAGEATA}>
                       →
@@ -74,7 +87,7 @@ export default function PaginaNegasita() {
             </ul>
 
             <p className="mt-6 max-w-[60ch] text-nota text-cerneala-3">
-              Ce scrie pe fiecare dintre ele, într-un rând, stă în{" "}
+              Toate paginile site-ului, fiecare cu ce scrie pe ea într-un rând, stau în{" "}
               <Link
                 href="/harta-site"
                 className="text-cerneala-accent underline underline-offset-[3px]"
@@ -83,20 +96,6 @@ export default function PaginaNegasita() {
               </Link>
               .
             </p>
-
-            <Eticheta className="mt-12 mb-3 block">Pe pagina de start</Eticheta>
-            <ul className="m-0 grid list-none border-t border-linie-suprafata p-0 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
-              {SECTIUNI_ACASA.map((sectiune) => (
-                <li key={sectiune.ancora} className="list-none">
-                  <a href={"/#" + sectiune.ancora} className={RAND_LISTA}>
-                    {sectiune.scurt}
-                    <span aria-hidden className={SAGEATA}>
-                      →
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
 
             <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
               <Buton href="/" marime="mare" sageata className="max-sm:w-full">

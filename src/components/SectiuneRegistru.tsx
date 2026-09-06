@@ -23,7 +23,13 @@ type Props = {
   id?: string;
   cota: string;
   eticheta: string;
-  titlu: string;
+  /**
+   * Titlul sectiunii, ca `h2`. Lipseste doar acolo unde h1-ul paginii E chiar titlul
+   * continutului sectiunii: pe `/instrumente` banda de antet s-a topit in sectiunea I, iar
+   * un al doilea titlu deasupra tabelului ar fi spus a doua oara ce scrie in h1 - si ar fi
+   * costat 153 px inainte de primul rand, masurat la 1280 px.
+   */
+  titlu?: string;
   lead?: React.ReactNode;
   ton?: Ton;
   /**
@@ -64,28 +70,36 @@ export default function SectiuneRegistru({
             alta impingeau primul rand al tabelului sub margine chiar dupa ce antetul se
             scurtase. Masurat pe /instrumente la 1280 px: 1,12 ecrane cu ele stivuite, sub
             un ecran cu ele alaturi. */}
-        <div
-          className={
-            dens
-              ? "md:grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-x-12 lg:gap-x-20"
-              : "contents"
-          }
-        >
-          <h2 className="font-afis max-w-[22ch] text-titlu-2 font-bold tracking-[-0.01em] uppercase text-cerneala">
-            {titlu}
-          </h2>
-          {lead ? (
-            <p
-              className={
-                "mt-6 max-w-[52ch] text-[clamp(1.05rem,1.3vw,1.2rem)] leading-[1.5] text-cerneala-2" +
-                (dens ? " md:mt-1" : "")
-              }
-            >
-              {lead}
-            </p>
-          ) : null}
+        {titlu || lead ? (
+          <div
+            className={
+              dens
+                ? "md:grid md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-x-12 lg:gap-x-20"
+                : "contents"
+            }
+          >
+            {titlu ? (
+              <h2 className="font-afis max-w-[22ch] text-titlu-2 font-bold tracking-[-0.01em] uppercase text-cerneala">
+                {titlu}
+              </h2>
+            ) : null}
+            {lead ? (
+              <p
+                className={
+                  "mt-6 max-w-[52ch] text-[clamp(1.05rem,1.3vw,1.2rem)] leading-[1.5] text-cerneala-2" +
+                  (dens ? " md:mt-1" : "")
+                }
+              >
+                {lead}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+        {/* Fara titlu si fara linie, continutul urca lipit de randul de cota: `mt-*` ar
+            deschide un gol care nu mai desparte nimic. */}
+        <div className={titlu || lead ? (dens ? "mt-8 md:mt-10" : "mt-14 md:mt-16") : ""}>
+          {children}
         </div>
-        <div className={dens ? "mt-8 md:mt-10" : "mt-14 md:mt-16"}>{children}</div>
       </div>
     </section>
   );

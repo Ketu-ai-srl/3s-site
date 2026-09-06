@@ -56,8 +56,7 @@ export default function Despre() {
           </>
         }
         lead={DESPRE.lead}
-        actiune={{ href: "/contact", text: "Vedeți cum ne scrieți" }}
-        secundar={{ href: "/solutii", text: "Vedeți domeniile" }}
+        actiune={{ href: "/contact", text: "Scrieți-ne" }}
       />
 
       <SectiuneRegistru
@@ -96,13 +95,26 @@ export default function Despre() {
           </>
         }
         text="Vechimea, autorizațiile și depozitul aparțin firmei-mamă, deci o afirmație despre ele se verifică la ea, nu la noi."
-        actiune={{ href: "/arhivare-fizica", text: "Vedeți depozitul și preluarea" }}
+        actiune={{ href: "/arhivare-fizica", text: "Depozitul și preluarea" }}
       >
         <div className="mt-8 max-w-[560px]">
           <ListaBifa titlu="ADRIA Servicii Arhivare SRL" elemente={MOSTENIT} />
         </div>
       </Ecran>
 
+      {/* AL DOILEA ECRAN NU E GEAMANUL PRIMULUI, si diferenta o cere continutul. Pana pe
+          2026-09-06 aveau aceeasi geometrie pana la ultimul element: eticheta mono de arama,
+          titlu pe doua randuri, linie pe doua randuri, lista cu EXACT cinci elemente si un
+          buton incadrat, amandoua de 800 px. Despartirea in doua ecrane exista tocmai ca
+          ochiul sa nu le citeasca drept doua jumatati ale aceluiasi lucru, iar simetria
+          perfecta o desfacea: se citeau ca un sablon aplicat de doua ori.
+
+          ADRIA are dovezi care se pot CERE, deci lista ramane - fiecare rand numeste un
+          lucru care se arata inainte de semnatura - si butonul duce la pagina care le
+          descrie. 3S are munca NEINCEPUTA: nimic de cerut, nimic de aratat, deci proza
+          scurta, fara lista si fara buton. Butonul de aici ducea la /cum-functioneaza, care
+          sta oricum in bara de sus. Cele cinci randuri de dinainte n-au disparut: sunt in
+          proza de mai jos, cu aceleasi cuvinte. */}
       <Ecran
         id="trei-s"
         ton="plin"
@@ -115,11 +127,10 @@ export default function Despre() {
           </>
         }
         text="Ce urmează este muncă nouă și nu are în spate niciun an de funcționare. Riscul ei ni-l asumăm noi, nu firma-mamă."
-        actiune={{ href: "/cum-functioneaza", text: "Vedeți mecanismul" }}
       >
-        <div className="mt-8 max-w-[560px]">
-          <ListaBifa titlu="3S, firma care se înființează" elemente={CONSTRUIT} />
-        </div>
+        <p className="font-vitrina mt-6 max-w-[52ch] text-[16px] leading-[1.6] text-hartie-veche-2">
+          {CONSTRUIT}
+        </p>
       </Ecran>
 
       <SectiuneRegistru
@@ -164,10 +175,10 @@ export default function Despre() {
 
         <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/contact" marime="mare" sageata className="max-sm:w-full">
-            Vedeți cum ne scrieți
+            Pagina de contact
           </Buton>
           <Buton href="/solutii" fel="text" marime="mare">
-            Vedeți domeniile
+            Fișele pe domenii
           </Buton>
         </div>
 

@@ -19,10 +19,17 @@ import { PAGINA_TERMENE as P, TERMENE_ROMANIA } from "@/content/termene-extins";
 // ancora proprie, deci pagina se poate tipari, trimite prin mesaj cu trimitere la un rand
 // anume, si citi de un crawler care nu executa JavaScript.
 //
-// De aceea au disparut si cele trei trimiteri catre "verificatorul de pe pagina de start":
-// duceau la `/#termene`, o ancora ramasa fara sectiune. Poarta de legaturi nu le-ar fi
-// prins - ea verifica ancorele doar in pagina care le poarta, iar acestea aratau spre alta
-// pagina - deci erau legaturi moarte pe care nicio masina nu le numara.
+// De aceea au disparut si trimiterile catre "verificatorul de pe pagina de start": duceau
+// la `/#termene`, o ancora ramasa fara sectiune. Poarta de legaturi nu le-ar fi prins - ea
+// verifica ancorele doar in pagina care le poarta, iar acestea aratau spre alta pagina -
+// deci erau legaturi moarte pe care nicio masina nu le numara.
+//
+// Erau PATRU, nu trei. Prima runda le-a scos pe cele trei din JSX si a lasat-o pe a patra,
+// care statea in fisierul de continut (`termene-extins.ts`, linia de deschidere a sectiunii
+// II) si se randa in pagina ca propozitie, fara legatura: "Ordinea este cea din verificatorul
+// de pe pagina de start". Trimiterea fara `href` e mai greu de vazut si la fel de falsa -
+// pe o pagina al carei argument e ca nu scriem ce nu putem sustine, cu atat mai mult.
+// De cautat cu grep in `src/content/`, nu doar in `src/app/`, cand se retrage un obiect.
 //
 // CE NU FACE, si e o decizie, nu o scapare: nu adauga niciun termen nou. Cifrele raman cele
 // din `src/content/termene.ts`, unde le-a scris felia care le-a cules, cu actul pe fiecare
@@ -46,7 +53,23 @@ export default function TermeneDePastrare() {
           acoperire, iar primul rand din tabel aparea pe la 1800 px - dupa 2,25 ecrane la 1280
           px. Cine vrea sa afle cati ani se pastreaza statele de salarii derula doua ecrane si
           jumatate, iar primul lucru care i se cerea era o intalnire. Discutia n-a disparut:
-          sta in blocul de incheiere, unde era deja. */}
+          sta in blocul de incheiere, unde era deja.
+
+          BANDA S-A TOPIT IN SECTIUNEA I pe 2026-09-06, si iata de ce costul de coerenta se
+          platise fara ca beneficiul sa fie livrat. Cu banda scurtata, dar cu linia ei de
+          patru randuri, cu doua butoane si cu titlul sectiunii I deasupra tabelului, primul
+          rand incepea la y=772 la 1280x800 (o felie de 28 px vizibila) si la y=997 la
+          390x844, adica 153 px SUB linia de plutire - exact pe latimea cititorului care
+          primeste pagina prin mesaj. Erau trei lucruri intre h1 si primul rand: linia,
+          butoanele si al doilea titlu.
+
+          Ce s-a facut cu fiecare, fiindca niciunul nu s-a pierdut: linia din antet si linia
+          de deasupra tabelului au coborat SUB tabel (`cuprins.subTabel`); butonul principal
+          era o ancora catre `#pe-scurt`, adica derula 294 px catre ceva ce devine oricum
+          vizibil, si a disparut cu totul; butonul al doilea ducea la /arhivare-fizica, care
+          sta in bara de sus, iar drumul catre ea a ramas scris in sectiunea V, in propozitia
+          care spune ce se citeste acolo. Titlul sectiunii I ar fi repetat h1-ul, deci
+          sectiunea a ramas cu cota si eticheta ei, si cu tabelul dedesubt. */}
       <AntetPagina
         adresa="/instrumente/termene-de-pastrare"
         forma="banda"
@@ -54,19 +77,9 @@ export default function TermeneDePastrare() {
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Termene de păstrare" }]}
         eticheta={P.eticheta}
         titlu={P.h1}
-        lead={P.lead}
-        actiune={{ href: "#pe-scurt", text: "Vedeți toate cele opt termene" }}
-        secundar={{ href: "/arhivare-fizica", text: "Vedeți cum se păstrează" }}
       />
 
-      <SectiuneRegistru
-        id="pe-scurt"
-        dens
-        cota="I"
-        eticheta="Pe scurt"
-        titlu={P.cuprins.titlu}
-        lead={P.cuprins.lead}
-      >
+      <SectiuneRegistru id="pe-scurt" dens cota="I" eticheta="Pe scurt">
         <TermeneCuprins
           termene={TERMENE_ROMANIA}
           antetDocument={P.cuprins.antetDocument}
@@ -75,6 +88,15 @@ export default function TermeneDePastrare() {
           fara={P.cuprins.fara}
           faraTemei={P.cuprins.faraTemei}
         />
+
+        {P.cuprins.subTabel.map((text) => (
+          <p
+            key={text.slice(0, 40)}
+            className="mt-8 max-w-[66ch] text-[16px] leading-[1.55] text-hartie-veche-2"
+          >
+            {text}
+          </p>
+        ))}
       </SectiuneRegistru>
 
       <SectiuneRegistru
@@ -202,7 +224,7 @@ export default function TermeneDePastrare() {
             Programați o discuție de 30 de minute
           </Buton>
           <Buton href="/solutii" fel="text" marime="mare">
-            Vedeți fișele de domeniu
+            Fișele pe domenii
           </Buton>
         </div>
 

@@ -93,12 +93,17 @@ export default function Contact() {
           </>
         }
         lead="Scriem mai jos exact ce ajunge la noi și ce nu. 3S se înființează acum, deci telefonul și sediul lipsesc, iar rândurile lor spun de ce."
+        // Butonul al doilea RAMANE numai aici, din cele patru pagini ale lotului: /despre
+        // e singura destinatie secundara care nu sta si in bara de sus, deci singura care nu
+        // repeta un rand deja vizibil. Cand adresa lipseste din configurare, pagina nu are
+        // ce actiune sa promita: locul principal il ia "Cine suntem", in locul unei ancore
+        // care doar derula catre cele trei randuri de mai jos.
         actiune={
           ARE_EMAIL
             ? { href: CATRE, text: "Scrieți-ne la " + entitate.email }
-            : { href: "#drumuri", text: "Vedeți ce drumuri există" }
+            : { href: "/despre", text: "Cine suntem" }
         }
-        secundar={{ href: "/despre", text: "Cine suntem" }}
+        secundar={ARE_EMAIL ? { href: "/despre", text: "Cine suntem" } : undefined}
       />
 
       <SectiuneRegistru

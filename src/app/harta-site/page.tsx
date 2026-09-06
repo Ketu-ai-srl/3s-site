@@ -3,7 +3,7 @@ import AntetPagina from "@/components/AntetPagina";
 import HartaLista from "@/components/HartaLista";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { PAGINI_JURIDICE } from "@/content/juridic";
-import { RUTE, SECTIUNI_ACASA, type Ruta } from "@/content/rute";
+import { CALE_DISCUTIE, RUTE, SECTIUNI_ACASA, type Ruta } from "@/content/rute";
 import { FOTOGRAFII } from "@/content/fotografii";
 
 // Harta site-ului pentru om. `sitemap.xml` exista de mult si e pentru masini; pagina asta
@@ -24,6 +24,13 @@ import { FOTOGRAFII } from "@/content/fotografii";
 // fiselor de domeniu de pe /solutii. Inainte era o legatura subliniata cu doua randuri de
 // text sub ea, adica al doilea limbaj vizual pentru acelasi fel de continut, la un clic
 // distanta de hub.
+//
+// UN SINGUR BUTON IN EROU, si nu e o ancora. Erau doua: "Vedeti toate paginile" catre
+// `#pagini` si "Vedeti cum functioneaza" catre o pagina care sta oricum in bara de sus.
+// Primul nu promitea nimic - derula catre lista care urmeaza imediat sub ecran - iar al
+// doilea repeta un rand din bara. Pagina de start, aprobata, poarta UN buton, si el numeste
+// un angajament; aici e acelasi, cel din `CALE_DISCUTIE`, adica regula de proiect: butonul
+// principal duce mereu la discutia de treizeci de minute.
 
 export const metadata: Metadata = {
   title: "Harta site-ului",
@@ -68,8 +75,7 @@ export default function HartaSite() {
           </>
         }
         lead="Lista se face din manifestul de rute al site-ului, deci nu poate arăta o pagină care nu există și nici ascunde una care există."
-        actiune={{ href: "#pagini", text: "Vedeți toate paginile" }}
-        secundar={{ href: "/cum-functioneaza", text: "Vedeți cum funcționează" }}
+        actiune={{ href: CALE_DISCUTIE, text: "Discuție de 30 de minute" }}
       />
 
       <SectiuneRegistru
