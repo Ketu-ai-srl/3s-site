@@ -35,6 +35,20 @@ Poarta face trei lucruri:
      fiecare data. O iesire partajata reintroduce exact cuplarea pe care intrarea, deja
      sparta pe fisiere, o desfacuse.
 
+POARTA ASTA SCRIE IN ARBORE, singura dintre porti. Regenereaza `docs/afirmatii/*.md`
+si sterge listele ramase orfane. De aceea are doua argumente pe care celelalte nu le au:
+
+  --radacina <cale>   pe ce arbore lucreaza (implicit: depozitul din care e rulata).
+                      Fara el, o rulare pe un arbore fabricat scria in depozitul REAL
+                      si ii murdarea `fisiere_murdare` din verdict.
+  --doar-raport       nu scrie si nu sterge NIMIC; spune ce ar regenera si ce ar sterge,
+                      si iese 1 daca ceva difera. Pentru cine vrea sa masoare fara sa
+                      modifice - o revizuire, o poarta rulata pe arborele altcuiva.
+
+In `verifica` ramane comportamentul de azi: fara argumente, adica scrie si repara.
+Motivul e ca lista trebuie sa ajunga in ACELASI commit cu registrul, iar un mod care
+doar raporteaza ar lasa-o pe seama disciplinei.
+
 CONTROALE la fiecare rulare:
   - martor pozitiv: o intrare fabricata cu stare `confirmat` si sursa goala TREBUIE
     sa fie prinsa; daca nu, poarta nu masoara nimic (iesire 3);
@@ -42,6 +56,7 @@ CONTROALE la fiecare rulare:
 
 IESIRE: 0 curat - 1 probleme gasite - 2 folosire gresita - 3 control picat
 """
+import argparse
 import glob
 import io
 import json
@@ -52,10 +67,10 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
-RADACINA = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-REGISTRU = os.path.join(RADACINA, 'src', 'content', 'afirmatii')
-LISTA = os.path.join(RADACINA, 'docs', 'afirmatii-de-confirmat.md')  # forma veche, se sterge
-DOSAR_LISTE = os.path.join(RADACINA, 'docs', 'afirmatii')
+RADACINA_IMPLICITA = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+REL_REGISTRU = os.path.join('src', 'content', 'afirmatii')
+REL_LISTA_VECHE = os.path.join('docs', 'afirmatii-de-confirmat.md')  # forma veche, se sterge
+REL_DOSAR_LISTE = os.path.join('docs', 'afirmatii')
 STARI = {'confirmat', 'neconfirmat', 'retras'}
 OBLIGATORII = ('id', 'text', 'unde', 'stare')
 
@@ -121,20 +136,35 @@ def controale():
 
 
 def main():
+    p = argparse.ArgumentParser(description='Evidenta afirmatiilor (registru + liste generate).')
+    p.add_argument('--radacina', default=RADACINA_IMPLICITA,
+                   help='arborele pe care lucreaza poarta (implicit: depozitul din care e rulata)')
+    p.add_argument('--doar-raport', action='store_true',
+                   help='nu scrie si nu sterge nimic; spune ce ar face si iese 1 daca difera')
+    a = p.parse_args()
+
     motiv = controale()
     if motiv:
         print('CONTROL PICAT: ' + motiv, file=sys.stderr)
         return 3
 
-    if not os.path.isdir(REGISTRU):
-        print('Registrul lipseste: ' + os.path.relpath(REGISTRU, RADACINA) + os.sep, file=sys.stderr)
+    radacina = os.path.abspath(a.radacina)
+    registru = os.path.join(radacina, REL_REGISTRU)
+    dosar_liste = os.path.join(radacina, REL_DOSAR_LISTE)
+    lista_veche = os.path.join(radacina, REL_LISTA_VECHE)
+    # Verbul se alege o data, aici, si se tipareste in raport. Cine citeste iesirea trebuie
+    # sa poata spune daca arborele a fost atins, fara sa deduca din absenta unui mesaj.
+    scrie_pe_disc = not a.doar_raport
+
+    if not os.path.isdir(registru):
+        print('Registrul lipseste: ' + REL_REGISTRU.replace(os.sep, '/') + '/', file=sys.stderr)
         print('E un DIRECTOR cu cate un fisier JSON per pagina. Se creeaza si se pune in el', file=sys.stderr)
         print('cate o lista pentru fiecare felie de continut.', file=sys.stderr)
         return 1
 
-    cai = sorted(glob.glob(os.path.join(REGISTRU, '*.json')))
+    cai = sorted(glob.glob(os.path.join(registru, '*.json')))
     if not cai:
-        print('Registrul e gol: niciun fisier .json in ' + os.path.relpath(REGISTRU, RADACINA),
+        print('Registrul e gol: niciun fisier .json in ' + REL_REGISTRU.replace(os.sep, '/'),
               file=sys.stderr)
         print('Un registru gol pe un site cu text nu e "curat", e NEMASURAT.', file=sys.stderr)
         return 3
@@ -142,7 +172,7 @@ def main():
     intrari = []
     per_fisier = []
     for c in cai:
-        rel = os.path.relpath(c, RADACINA)
+        rel = os.path.relpath(c, radacina)
         try:
             bucata = json.load(io.open(c, encoding='utf-8'))
         except ValueError as e:
@@ -168,37 +198,54 @@ def main():
     # in acelasi commit, deci fiecare agent o regenera si o comitea, corect. Registrul era
     # deja spart pe fisiere; iesirea nu era, si o iesire partajata reintroduce exact cuplarea
     # pe care intrarea o desfacuse. Acum multimile sunt disjuncte pe tot lantul.
-    os.makedirs(DOSAR_LISTE, exist_ok=True)
+    if scrie_pe_disc:
+        os.makedirs(dosar_liste, exist_ok=True)
     scrise = set()
     for nume, rel, bucata in per_fisier:
-        cale_iesire = os.path.join(DOSAR_LISTE, nume + '.md')
+        cale_iesire = os.path.join(dosar_liste, nume + '.md')
         scrise.add(os.path.basename(cale_iesire))
         asteptat = genereaza_lista(bucata, rel.replace(os.sep, '/'))
         actual = io.open(cale_iesire, encoding='utf-8').read() if os.path.isfile(cale_iesire) else ''
         if actual != asteptat:
-            io.open(cale_iesire, 'w', encoding='utf-8', newline='\n').write(asteptat)
-            print('LISTA REGENERATA: ' + os.path.relpath(cale_iesire, RADACINA)
-                  + ' - adaug-o in acelasi commit')
+            if scrie_pe_disc:
+                io.open(cale_iesire, 'w', encoding='utf-8', newline='\n').write(asteptat)
+                print('LISTA REGENERATA: ' + os.path.relpath(cale_iesire, radacina)
+                      + ' - adaug-o in acelasi commit')
+            else:
+                print('AR REGENERA: ' + os.path.relpath(cale_iesire, radacina)
+                      + ' - difera de registru (nu am scris nimic: --doar-raport)')
             gasite.append('lista pentru ' + nume + ' era invechita')
 
     # Un fisier de iesire ramas dupa ce registrul lui a disparut e o lista care imbatraneste
     # tacut, si cineva o va citi crezand ca e la zi.
-    for orfan in sorted(os.path.basename(p) for p in glob.glob(os.path.join(DOSAR_LISTE, '*.md'))):
+    for orfan in sorted(os.path.basename(q) for q in glob.glob(os.path.join(dosar_liste, '*.md'))):
         if orfan not in scrise:
-            os.remove(os.path.join(DOSAR_LISTE, orfan))
-            print('LISTA STEARSA: ' + orfan + ' - registrul din care venea nu mai exista')
+            if scrie_pe_disc:
+                os.remove(os.path.join(dosar_liste, orfan))
+                print('LISTA STEARSA: ' + orfan + ' - registrul din care venea nu mai exista')
+            else:
+                print('AR STERGE: ' + orfan + ' - registrul din care venea nu mai exista'
+                      + ' (nu am sters nimic: --doar-raport)')
             gasite.append('lista orfana ' + orfan)
 
     # Fisierul unic vechi nu se mai genereaza. Cat timp ramane pe disc, e o a doua lista
     # care nu se mai actualizeaza - exact defectul impotriva caruia exista poarta asta.
-    if os.path.isfile(LISTA):
-        os.remove(LISTA)
-        print('LISTA VECHE STEARSA: ' + os.path.relpath(LISTA, RADACINA)
-              + ' - a fost inlocuita de cate un fisier per registru')
+    if os.path.isfile(lista_veche):
+        if scrie_pe_disc:
+            os.remove(lista_veche)
+            print('LISTA VECHE STEARSA: ' + REL_LISTA_VECHE.replace(os.sep, '/')
+                  + ' - a fost inlocuita de cate un fisier per registru')
+        else:
+            print('AR STERGE: ' + REL_LISTA_VECHE.replace(os.sep, '/')
+                  + ' - forma veche, inlocuita de cate un fisier per registru'
+                  + ' (nu am sters nimic: --doar-raport)')
         gasite.append('lista unica veche mai era pe disc')
 
     neconfirmate = sum(1 for i in intrari if i.get('stare') == 'neconfirmat')
     print('CONTROALE: martor pozitiv OK, martor negativ OK')
+    print('RADACINA: ' + radacina)
+    print('MOD: ' + ('doar-raport (arborele NU a fost atins)' if a.doar_raport
+                     else 'regenerare (arborele poate fi modificat)'))
     print('REGISTRU: ' + str(len(intrari)) + ' afirmatii, din care ' + str(neconfirmate) + ' neconfirmate')
     print('PROBLEME: ' + str(len(gasite)))
     return 1 if gasite else 0
