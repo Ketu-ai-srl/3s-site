@@ -17,6 +17,26 @@ CONTROALE, la fiecare rulare (o poarta fara control pozitiv e decorativa):
 Fixturile se asambleaza la rulare, niciodata scrise pe litere in corpul fisierului:
 altfel poarta care scaneaza depozitul se declanseaza pe propria proba.
 
+CE NU VERIFICA (reziduuri)
+Intrebarea pe care o pune de fapt: "se potriveste vreunul dintre cele sase tipare, fara sa
+existe un cuvant de negare in cele 90 de caractere dinaintea potrivirii?" Nu "e afirmatia
+adevarata" si nu "are afirmatia o sursa".
+  - O formulare echivalenta, cu alte cuvinte, trece: tiparele sunt o lista, nu o intelegere.
+  - Fereastra de negare are 90 de caractere si accepta orice negatie. O negatie fara legatura,
+    aflata in fereastra, tace o incalcare reala. E un fals NEGATIV cunoscut, acceptat ca pret
+    pentru forma onesta care spune ce NU detinem.
+  - Certificarile sunt o lista fixa de trei; a patra trece.
+  - Se citeste SURSA, nu HTML-ul livrat. O afirmatie compusa la randare din bucati nu se vede.
+  - este_site se decide dupa prefixul de cale. Un fisier din src/ care nu ajunge niciodata la
+    vizitator e tratat totusi ca site.
+  - Legatura dintre o afirmatie de pe pagina si o intrare in registru NU se verifica aici, si
+    nici in alta parte: poarta-evidenta.py masoara forma registrului, nu acoperirea lui.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  textul acuzat, rescris atribuit catre entitatea care ar scoate actul.
+      Intrarea din registrul de afirmatii.
+  NU  TIPARE, NEGARI, FEREASTRA, regula care decide este_site, controale().
+
 IESIRE
     0 = nicio afirmatie interzisa, si controalele au trecut
     1 = gasite; fiecare cu fisier, rand si tiparul care a prins

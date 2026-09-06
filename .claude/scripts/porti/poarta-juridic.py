@@ -44,6 +44,30 @@ CONTROALE, la fiecare rulare:
 Tiparele interzise se asambleaza din bucati la RULARE: un link ODR scris intreg
 in corpul acestui fisier ar fi chiar defectul pe care poarta il vaneaza.
 
+CE NU VERIFICA (reziduuri)
+Intrebarea pe care o pune de fapt, pe cod:
+  L-01  "apare valoarea LITERALA a fiecarui camp undeva in pagina livrata?" Un cod fiscal
+        dintr-un comentariu sau dintr-un bloc ascuns satisface verificarea. Nu se masoara ca
+        datele sunt PREZENTATE ca identificare a comerciantului, si nici ca sunt corecte.
+  L-05  "apare undeva sintagma care numeste temeiul, si lipseste tiparul de consimtamant?"
+        Ce face formularul in realitate nu se citeste.
+  L-09, L-10  cautare de tipare in text. O trimitere construita din bucati la randare trece.
+  L-15  "exista rutele juridice?" Nimic despre continutul lor: o pagina goala trece.
+  C-01  resurse SUB-INCARCATE din HTML-ul static, plus o lista de nume de furnizori in sursa.
+        Un tert incarcat la RULARE de un script al paginii e invizibil, fiindca nimeni nu
+        executa pagina aici. Lista de nume e scrisa de mana; un furnizor nelistat trece.
+Si limita cea mai usor de citit gresit: pe STAGING, portile de PREZENTA (L-01, L-15, textul
+cerut de L-05) sunt AVERT, nu OPRESTE. Verde pe staging inseamna "nimic din clasa de absenta
+nu a iesit", nu "site-ul e in regula juridic". Fara HTML construit, jumatatea livrata a lui
+L-01 si a lui C-01 nu ruleaza deloc si se raporteaza ca avertisment.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  fisierul de configurare a entitatii, care se COMPLETEAZA.
+      Paginile juridice si textul formularului.
+      GAZDE_PROPRII si NUME_TERTI prin ADAUGARE, cu motiv scris pe rand.
+  NU  RUTE_JURIDICE, CAMPURI_IDENTITATE, TIPAR_SUBSTITUENT, temeiurile citate, gradarea pe
+      mediu, stergerea unui nume din NUME_TERTI, controale().
+
 IESIRE
     0 = curat (avertismentele se tiparesc, dar nu opresc)
     1 = defecte din clasa OPRESTE

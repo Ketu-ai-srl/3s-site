@@ -16,6 +16,27 @@ CONTROALE la fiecare rulare:
     verdictul e NEMASURAT (iesire 3)
   - martor negativ: un text corect; daca il prinde, tiparele sunt prea late (iesire 3)
 
+CE NU VERIFICA (reziduuri)
+Intrebarea pe care o pune de fapt: "apare vreunul dintre cuvintele din CUVINTE fara
+diacritice, exista o forma de cheie de traducere, si apar in ACELASI fisier si adresarea
+formala si cea informala?" Nu "e romana corecta".
+  - Orice cuvant din afara listei trece. Lista a fost curatata deliberat de intrarile
+    ambigue, deci e o margine de jos prin constructie, nu o acoperire.
+  - Gramatica, acordul, topica si tonul nu se masoara deloc.
+  - Se citeste doar arborele src/. docs/, .github/ si README raman nemasurate de poarta asta.
+  - Din cod se ia doar ce trece de scanerul propriu: sirurile sub LUNGIME_MINIMA_SIR se
+    arunca, si pare_cod arunca orice bucata cu semne de sintaxa ori cu mai putin de doua
+    cuvinte. Un titlu scurt cu o interpolare nu ajunge sa fie masurat.
+  - Fisierele de marcare se citesc BRUT, deci blocurile de cod din ele se analizeaza ca proza.
+  - Amestecul de adresare se masoara PE FISIER. Doua fisiere, cate o adresare in fiecare, trec
+    amandoua, desi site-ul e inconsecvent.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  textul acuzat.
+      Un cuvant se scoate din CUVINTE DOAR cand poarta acuza o forma CORECTA, si scoaterea se
+      scrie in nota deja existenta de mai sus, cu motivul. Adaugarea de cuvinte e libera.
+  NU  LUNGIME_MINIMA_SIR, pare_cod, siruri_din_cod, CAI, EXTENSII, SARITE, controale().
+
 IESIRE: 0 curat · 1 defecte gasite · 2 eroare de folosire · 3 control picat
 """
 import os

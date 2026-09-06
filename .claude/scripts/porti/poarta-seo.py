@@ -43,6 +43,30 @@ CONTROALE, la fiecare rulare:
 Fixturile se asambleaza din bucati la RULARE, niciodata scrise intregi in corpul
 fisierului: altfel poarta ajunge sa se raporteze pe propria proba.
 
+CE NU VERIFICA (reziduuri)
+Intrebarea pe care o pune de fapt: "au fisierele HTML construite forma ceruta la titlu,
+descriere, canonical, antete si blocuri de date structurate?" Nu "se indexeaza site-ul bine".
+  - Titlul si descrierea se masoara pe LUNGIME si pe unicitate in lot. Ce SPUN nu se masoara:
+    un titlu fara niciun sens, de lungime potrivita, trece.
+  - Unicitatea se masoara in interiorul lotului construit acum, nu contra a ce e deja publicat.
+  - PAGINI_SARITE scoate paginile interne de eroare din TOATE verificarile, nu doar din
+    unicitate. Exceptare motivata, dar ramane o gaura daca cineva pune continut acolo.
+  - La datele structurate se verifica parsarea, contextul si ca fiecare tip e in vocabularul
+    declarat. NU se verifica daca nodul are campurile obligatorii ale tipului, si nici daca ce
+    afirma corespunde paginii. Absenta oricarui bloc e AVERT, deliberat.
+  - S-03 (un singur antet de nivel unu, fara sarituri de nivel) e AVERT: nu opreste nimic.
+  - Nu se ating: robots, sitemap, viteza, imagini, legaturi interne, limbi alternative,
+    redirectari.
+  - Se masoara HTML-ul STATIC generat la build. Ce adauga sau schimba codul din browser nu se
+    vede de aici.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  metadata paginii acuzate.
+      PRAGURI numai odata cu documentul de porti, citand sectiunea din el.
+      PAGINI_SARITE numai cu motiv scris pe rand; TIPURI_CUNOSCUTE numai cu un tip real din
+      vocabularul declarat.
+  NU  Culegator, analizeaza_pagina, analizeaza_lot, refuzul buildului invechit, controale().
+
 IESIRE
     0 = curat (eventual cu avertismente tiparite)
     1 = defecte din clasa OPRESTE

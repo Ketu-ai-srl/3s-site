@@ -31,6 +31,25 @@ UTILIZARE
     python .claude/scripts/porti/tipografie-liniute.py --fisiere <cale>...
     python .claude/scripts/porti/tipografie-liniute.py --text-stdin
 
+CE NU VERIFICA (reziduuri)
+Intrebarea pe care o pune de fapt: "apare vreunul dintre cele patru puncte de cod din TINTE?"
+Nu "e tipografia corecta".
+  - Alte liniute lungi din Unicode - forme late, variante de prezentare, alte semne de minus -
+    nu sunt in TINTE si trec.
+  - Ghilimelele tipografice, punctele de suspensie ca un singur caracter si spatiile
+    neintrerupte nu se ating deloc.
+  - In modul pe interval se citesc DOAR randurile adaugate. O liniuta lunga aflata deja pe baza
+    de comparatie e invizibila; scanarea completa se face doar pe lista de fisiere.
+  - Textul se decodeaza ca UTF-8. Un fisier in alta codificare se masoara pe ce a iesit din
+    decodor, nu pe ce a scris autorul.
+  - Raporteaza pozitia; nu repara nimic.
+  - Multimea de fisiere nu se decide aici, ci de cine il apeleaza. Zeroul lui acopera exact
+    lista primita, si atat.
+
+LA ROSU: CE AI VOIE SA EDITEZI
+  DA  fisierul raportat, in care liniuta lunga devine cratima.
+  NU  TINTE, FRATI, controale(). Adaugarea unui punct de cod in TINTE e libera; scoaterea nu.
+
 IESIRE
     0 = zero liniute lungi, si controalele au trecut (deci zeroul are acoperire)
     1 = gasite; fiecare are fisier:rand:coloana si numele caracterului
