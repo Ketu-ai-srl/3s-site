@@ -1,6 +1,6 @@
-// Un rând din secțiunea de răspundere: întrebarea unui serviciu juridic pe
-// prima coloana pe ecran lat, raspunsul pe a doua; la 390 px se stivuiesc, si de aceea
-// textul paginilor nu trimite niciodata la "stanga" sau "dreapta".
+// Un rand din sectiunea de raspundere: intrebarea unui serviciu juridic pe prima coloana
+// pe ecran lat, raspunsul pe a doua; la 390 px se stivuiesc, si de aceea textul paginilor
+// nu trimite niciodata la "stanga" sau "dreapta".
 
 type Props = {
   intrebare: string;
@@ -9,9 +9,11 @@ type Props = {
 
 export default function RandRaspundere({ intrebare, children }: Props) {
   return (
-    <div className="grid gap-2 border-t border-linie-inchis py-6 last:border-b lg:grid-cols-[270px_1fr] lg:gap-8">
-      <h3 className="text-[19px] text-white">{intrebare}</h3>
-      <p className="text-corp text-pe-inchis-2">{children}</p>
+    <div className="grid gap-3 border-t border-linie-suprafata py-7 last:border-b lg:grid-cols-[300px_1fr] lg:gap-10">
+      <h3 className="font-afis text-[22px] font-semibold tracking-[0.03em] uppercase text-cerneala">
+        {intrebare}
+      </h3>
+      <p className="max-w-[64ch] text-corp text-cerneala-2">{children}</p>
     </div>
   );
 }

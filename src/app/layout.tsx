@@ -1,46 +1,50 @@
 import type { Metadata } from "next";
-import { Barlow, Barlow_Condensed, IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
+import { Barlow, Barlow_Condensed, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import DateStructurate from "@/components/DateStructurate";
 import Navigatie from "@/components/Navigatie";
 import Subsol from "@/components/Subsol";
 import { ADRESA_BAZA, indexareaEstePermisa } from "@/content/rute";
 
+// Trei familii, nu cinci. Source Serif 4 si IBM Plex Sans au iesit odata cu directia
+// noua (sep 2026): titlurile sunt Barlow Condensed, textul e Barlow, cotele si citarile
+// sunt Plex Mono. Fiecare familie in plus inseamna fisiere preincarcate pe FIECARE pagina,
+// pentru litere pe care nu le mai foloseste nimeni.
+//
+// NUMELE VARIABILELOR incep cu `--fnt-`, nu cu `--font-`, si nu e cosmetica. Jetoanele
+// Tailwind din `globals.css` se numesc `--font-afis`, `--font-vitrina`, `--font-mono`, iar
+// `next/font` isi pune si el variabila pe elementul cu clasa. Cand amandoua se numeau
+// `--font-afis`, jetonul se definea pe `:root` ca `var(--font-afis), ...` - adica prin el
+// insusi - si depindea de ordinea foilor de stil daca se rezolva sau nu.
+//
+// CLASELE STAU PE `<html>`, NU PE `<body>`, si asta a fost defectul masurat: cu variabila
+// pusa pe `body`, jetonul de pe `:root` (`--font-sans: var(--font-corp), ...`) se evalua pe un
+// element care NU avea `--font-corp`, deci era invalid, iar `body { font-family: var(--font-sans) }`
+// cadea pe fontul de sistem. `getComputedStyle(document.body).fontFamily` dadea stiva
+// `-apple-system, "Segoe UI", ...` pe toate cele 22 de pagini, iar `document.fonts` arata
+// toate fetele IBM Plex Sans `unloaded`. Utilitarele (`font-afis`, `font-mono`) mergeau,
+// fiindca Tailwind le scrie valoarea in clasa, care se evalueaza pe element, sub `body`.
+// Pe `<html>` variabila exista chiar pe `:root`, si jetonul se rezolva.
+//
 // Subsetul `latin-ext` e obligatoriu, nu decorativ: fara el, s si t cu virgula
 // (U+0219 / U+021B) cad pe fontul de rezerva si diacriticele romanesti se vad
 // dintr-o alta familie in mijlocul cuvantului.
-const serifa = Source_Serif_4({
-  variable: "--font-serifa",
-  subsets: ["latin", "latin-ext"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-const corp = IBM_Plex_Sans({
-  variable: "--font-corp",
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-// Fonturile vitrinei. `latin-ext` din acelasi motiv ca la celelalte: fara el, s si t cu
-// virgula cad pe fontul de rezerva in mijlocul cuvantului.
 const afis = Barlow_Condensed({
-  variable: "--font-afis",
+  variable: "--fnt-afis",
   subsets: ["latin", "latin-ext"],
   weight: ["500", "600", "700"],
   display: "swap",
 });
 
 const vitrina = Barlow({
-  variable: "--font-vitrina",
+  variable: "--fnt-vitrina",
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600"],
   display: "swap",
 });
 
 const masina = IBM_Plex_Mono({
-  variable: "--font-masina",
+  variable: "--fnt-masina",
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500"],
   display: "swap",
@@ -82,8 +86,8 @@ export const metadata: Metadata = {
   },
 };
 
-// Bara de anunt, meniul si subsolul stau aici, nu in pagini: sunt aceleasi pe tot site-ul,
-// iar o pagina noua trebuie sa le primeasca fara ca autorul ei sa faca ceva.
+// Meniul si subsolul stau aici, nu in pagini: sunt aceleasi pe tot site-ul, iar o pagina
+// noua trebuie sa le primeasca fara ca autorul ei sa faca ceva.
 //
 // Legatura de sarire tinteste `#zona-continut`, un invelis randat tot aici. Daca ar tinti
 // un identificator din pagina, fiecare pagina noua ar fi obligata sa il puna, iar prima
@@ -95,13 +99,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ro">
-      <body
-        className={`${serifa.variable} ${corp.variable} ${masina.variable} ${afis.variable} ${vitrina.variable} antialiased`}
-      >
+    <html lang="ro" className={`${afis.variable} ${vitrina.variable} ${masina.variable}`}>
+      <body className="antialiased">
         <DateStructurate />
         <a
-          className="absolute top-[-100px] left-4 z-[99] bg-verde px-4 py-3 font-mono text-fisa text-white no-underline focus:top-3"
+          className="absolute top-[-100px] left-4 z-[99] bg-hartie-veche px-4 py-3 font-mono text-fisa text-noapte no-underline focus:top-3"
           href="#zona-continut"
         >
           Săriți la conținut

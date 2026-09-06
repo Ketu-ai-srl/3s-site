@@ -6,6 +6,7 @@ import CardSegment from "./CardSegment";
 import ListaBifa from "./ListaBifa";
 import RandRaspundere from "./RandRaspundere";
 import SectiuneRegistru from "./SectiuneRegistru";
+import { FOTOGRAFII, type CheieFotografie } from "@/content/fotografii";
 import { HUB, type PaginaSegment } from "@/content/segmente";
 
 // Corpul unei pagini de segment, o singura data pentru toate segmentele.
@@ -17,6 +18,21 @@ import { HUB, type PaginaSegment } from "@/content/segmente";
 // adica cinci locuri care se desincronizeaza la prima schimbare de ton.
 //
 // Ordinea benzilor urmeaza pagina de start: fila, hartie, inchis, fila, inchis, fila.
+//
+// FOTOGRAFIA de antet se alege dupa slug, aici si nu in `segmente.ts`, fiindca e o decizie
+// de vitrina, nu un fapt despre domeniu: cele sapte fise sunt surori si se ajunge la ele
+// din aceeasi lista, deci nu au voie sa deschida cu acelasi cadru. Sapte chei distincte
+// pentru sapte fise; hub-ul /solutii ia `dulapuri`, care se repeta o singura data, pe
+// ultima fisa din lista.
+const FOTO_SEGMENT: Record<string, CheieFotografie> = {
+  notari: "maini",
+  primarii: "sertare",
+  contabilitate: "cutii",
+  avocatura: "dosare",
+  constructii: "rafturi",
+  logistica: "legatura",
+  imobiliare: "dulapuri",
+};
 
 type Props = {
   segment: PaginaSegment;
@@ -35,6 +51,7 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
       <main id="continut">
         <AntetPagina
           adresa={adresa}
+          imagine={FOTOGRAFII[FOTO_SEGMENT[slug] ?? "rafturi"]}
           fir={[
             { text: "Pagina de start", href: "/" },
             { text: HUB.titluMeta, href: "/solutii" },
@@ -158,11 +175,11 @@ export default function PaginaDeSegment({ segment, nume, slug }: Props) {
         >
           <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{segment.incheiere.text}</p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
             <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
               Programați o discuție de 30 de minute
             </Buton>
-            <Buton href="/solutii" fel="contur" marime="mare" className="max-sm:w-full">
+            <Buton href="/solutii" fel="text" marime="mare">
               Vedeți toate domeniile
             </Buton>
           </div>

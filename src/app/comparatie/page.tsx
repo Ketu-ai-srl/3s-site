@@ -7,6 +7,7 @@ import ComparatieTabel from "@/components/ComparatieTabel";
 import MecanismRandFisa from "@/components/MecanismRandFisa";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { COMPARATIE as C } from "@/content/comparatie";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Pagina de comparatie. Compara ce compara CLIENTUL: dulapul din birou, colegul care se
 // ocupa si de arhiva, un depozit fara cautare si o arhiva administrata. Nu compara spatii
@@ -29,6 +30,7 @@ export default function Comparatie() {
     <main id="continut">
       <AntetPagina
         adresa="/comparatie"
+        imagine={FOTOGRAFII.maini}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Comparație" }]}
         eticheta={C.eticheta}
         titlu={C.h1}
@@ -134,11 +136,11 @@ export default function Comparatie() {
       >
         <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{C.incheiere.text}</p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
             Programați o discuție de 30 de minute
           </Buton>
-          <Buton href="/investitia" fel="contur" marime="mare" className="max-sm:w-full">
+          <Buton href="/investitia" fel="text" marime="mare">
             Ce determină costul
           </Buton>
         </div>

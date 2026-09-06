@@ -1,23 +1,48 @@
-// Butoanele paginii. `plin` e acțiunea principală (verde institutional),
-// `contur` e cea secundară. Butonul principal duce mereu la discuția de 30 de
-// minute, deci componenta nu are variantă de accent care să concureze cu el.
+import Link from "next/link";
 
-type Fel = "plin" | "contur";
+// Butoanele paginii. `plin` e actiunea principala - acelasi buton ca pe ecranele vitrinei:
+// contur de hartie veche, majuscule condensate, colturi drepte. `text` e drumul al doilea:
+// o legatura subliniata, fara chenar.
+//
+// DE CE A APARUT `text`, si de ce `contur` nu mai e drumul al doilea. Regula directiei e UN
+// buton pe ecran, si tinea in antet, unde `Ecran` are deja slotul `secundar` ca legatura de
+// text. Cadea in blocul de incheiere: numarat pe 17 pagini, pagina de start avea 6 butoane
+// pe toata lungimea ei si niciodata mai mult de unul pe sectiune, in timp ce 14 din cele 16
+// pagini interioare aveau doua butoane de aceeasi greutate in sectiunea de inchidere, iar
+// /termeni, /confidentialitate si /cookies aveau trei, unul langa altul. Doua chenare
+// alaturate nu spun care e pasul urmator; un chenar plus o legatura subliniata spune.
+// `contur` a ramas in semnatura fiindca il mai dau pagini nerescrise, dar e ACELASI stil cu
+// `text` - nu mai deseneaza chenar, deci nu poate reaparea perechea de doua butoane.
+//
+// Semnatura (href, fel, marime, sageata, className) e cea veche, ca paginile care il
+// folosesc sa ramana compilabile si sa treaca singure in directia noua.
+
+type Fel = "plin" | "text" | "contur";
 type Marime = "mic" | "normal" | "mare";
 
 const FEL: Record<Fel, string> = {
-  plin: "border-verde bg-verde text-white hover:bg-verde-apasat",
-  contur: "border-linie-fn bg-transparent text-verde hover:border-verde hover:bg-verde-moale",
+  plin: "border border-cerneala text-cerneala hover:border-cerneala-accent hover:text-cerneala-accent",
+  text: "border-0 text-cerneala-2 underline decoration-cerneala-3 underline-offset-[5px] hover:text-cerneala",
+  contur:
+    "border-0 text-cerneala-2 underline decoration-cerneala-3 underline-offset-[5px] hover:text-cerneala",
 };
 
+// Legatura de text nu poarta chenar, deci nu poarta nici captuseala orizontala: aliniata cu
+// butonul plin de langa ea, nu impinsa de un chenar inexistent.
 const MARIME: Record<Marime, string> = {
-  mic: "px-3.5 py-2.5 text-[14.5px]",
-  normal: "px-5 py-3 text-[15.5px]",
-  mare: "px-6 py-[15px] text-baza",
+  mic: "px-4 py-2.5 text-[13px]",
+  normal: "px-5 py-3 text-[14px]",
+  mare: "px-6 py-3.5 text-[15px]",
+};
+
+const MARIME_TEXT: Record<Marime, string> = {
+  mic: "py-2.5 text-[13px]",
+  normal: "py-3 text-[14px]",
+  mare: "py-3.5 text-[15px]",
 };
 
 const BAZA =
-  "inline-flex items-center justify-center gap-2.5 rounded-[2px] border font-medium no-underline transition-colors duration-150 active:translate-y-px";
+  "group inline-flex items-center justify-center gap-3 bg-transparent font-afis font-semibold tracking-[0.14em] uppercase transition-colors duration-200";
 
 type Props = {
   href: string;
@@ -36,14 +61,20 @@ export default function Buton({
   sageata = false,
   className = "",
 }: Props) {
+  const chenar = fel === "plin";
   return (
-    <a href={href} className={`${BAZA} ${FEL[fel]} ${MARIME[marime]} ${className}`}>
+    <Link
+      href={href}
+      className={`${BAZA} ${chenar ? "no-underline" : ""} ${FEL[fel]} ${
+        chenar ? MARIME[marime] : MARIME_TEXT[marime]
+      } ${className}`}
+    >
       {children}
       {sageata ? (
-        <span aria-hidden className="font-mono text-[14px] opacity-80">
+        <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
           →
         </span>
       ) : null}
-    </a>
+    </Link>
   );
 }

@@ -8,6 +8,7 @@ import ListaBifa from "@/components/ListaBifa";
 import MecanismRandFisa from "@/components/MecanismRandFisa";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { INVESTITIA as I } from "@/content/comparatie";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Pagina de investitie. NU contine preturi si nu contine intervale - nici "de la", nici
 // exemplu de calcul. Decizia e a owner-ului si e scrisa in `CLAUDE.md`; pagina asta o
@@ -29,6 +30,7 @@ export default function Investitia() {
     <main id="continut">
       <AntetPagina
         adresa="/investitia"
+        imagine={FOTOGRAFII.dosare}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Investiția" }]}
         eticheta={I.eticheta}
         titlu={I.h1}
@@ -140,11 +142,11 @@ export default function Investitia() {
       >
         <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{I.incheiere.text}</p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
             Programați o discuție de 30 de minute
           </Buton>
-          <Buton href="/comparatie" fel="contur" marime="mare" className="max-sm:w-full">
+          <Buton href="/comparatie" fel="text" marime="mare">
             Vedeți comparația
           </Buton>
         </div>

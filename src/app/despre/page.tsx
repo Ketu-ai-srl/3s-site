@@ -15,6 +15,7 @@ import {
   NUMELE,
   STAREA_DE_AZI,
 } from "@/content/despre";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Pagina „despre”, scrisă pe dos față de obicei: începe cu ce lipsește, nu cu ce avem.
 //
@@ -37,6 +38,7 @@ export default function Despre() {
     <main id="continut">
       <AntetPagina
         adresa="/despre"
+        imagine={FOTOGRAFII.sertare}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Despre noi" }]}
         eticheta={DESPRE.eticheta}
         titlu={DESPRE.h1}
@@ -128,11 +130,11 @@ export default function Despre() {
           scrieți.
         </p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/contact" marime="mare" sageata className="max-sm:w-full">
             Vedeți cum ne scrieți
           </Buton>
-          <Buton href="/solutii" fel="contur" marime="mare" className="max-sm:w-full">
+          <Buton href="/solutii" fel="text" marime="mare">
             Vedeți domeniile
           </Buton>
         </div>

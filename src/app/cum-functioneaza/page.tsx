@@ -9,6 +9,7 @@ import MecanismLant from "@/components/MecanismLant";
 import MecanismRandFisa from "@/components/MecanismRandFisa";
 import SectiuneRegistru from "@/components/SectiuneRegistru";
 import { CUM_FUNCTIONEAZA as C } from "@/content/mecanism";
+import { FOTOGRAFII } from "@/content/fotografii";
 
 // Pagina de mecanism. Aici ajunge butonul secundar de pe fisele de domeniu si de pe
 // hub, deci sarcina ei e sa raspunda o singura data, complet, la intrebarea pe care o
@@ -30,6 +31,7 @@ export default function CumFunctioneaza() {
     <main id="continut">
       <AntetPagina
         adresa="/cum-functioneaza"
+        imagine={FOTOGRAFII.maini}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Cum funcționează" }]}
         eticheta={C.eticheta}
         titlu={C.h1}
@@ -154,11 +156,11 @@ export default function CumFunctioneaza() {
       >
         <p className="mb-8 max-w-[62ch] text-lead text-tus-2">{C.incheiere.text}</p>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <Buton href="/#discutie" marime="mare" sageata className="max-sm:w-full">
             Programați o discuție de 30 de minute
           </Buton>
-          <Buton href="/arhivare-fizica" fel="contur" marime="mare" className="max-sm:w-full">
+          <Buton href="/arhivare-fizica" fel="text" marime="mare">
             Vedeți partea fizică
           </Buton>
         </div>
