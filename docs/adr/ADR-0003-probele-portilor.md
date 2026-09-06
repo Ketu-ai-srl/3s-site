@@ -107,10 +107,12 @@ cu cost declarat si beneficiu nemasurat.
 
 ## Consecinte
 
-- `verifica` are un pas in plus, de 18,3-52,6 s pe sapte esantioane masurate (6 sep 2026; un al
+- `verifica` are un pas in plus, de 18,3-52,6 s pe esantioanele masurate la 6 sep 2026 (un al
   optulea, relatat de trecerea de control, a dat 59,5 s). Rosul vine mai devreme, nu mai ieftin:
-  in cele trei verdicte ale feliei `porti:probe` a iesit de fiecare data mai scump decat `build`,
-  iar castigul e ordinea cauzala - o poarta stricata se vede inainte sa se plateasca build-ul.
+  in fiecare verdict masurat pana acum `porti:probe` a iesit mai scump decat `build`, iar castigul
+  e ordinea cauzala - o poarta stricata se vede inainte sa se plateasca build-ul. Propozitia nu
+  numara verdictele intentionat: fiecare rulare a portii mai produce unul, si un numar scris aici
+  ar deveni fals fara ca ceva sa se fi stricat.
 - Acoperirea per poarta se numara, nu se presupune. `caz()` inregistreaza perechea (poarta, cod
   cerut), iar la finalul rularii un control cere fiecarei porti macar un caz de 1, unul de 0 si -
   daca nu e in tabelul de scutiri - unul de 3; altfel iesirea e 3, NEMASURAT. Fara el, un corp de
