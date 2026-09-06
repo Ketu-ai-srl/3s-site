@@ -40,6 +40,7 @@ export default function Accesibilitate() {
     <main id="continut">
       <AntetPagina
         adresa="/accesibilitate"
+        forma="banda"
         imagine={FOTOGRAFII.dosare}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Accesibilitate" }]}
         eticheta={A.eticheta}

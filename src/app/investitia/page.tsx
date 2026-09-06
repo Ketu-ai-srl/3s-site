@@ -38,7 +38,13 @@ export default function Investitia() {
     <main id="continut">
       <AntetPagina
         adresa="/investitia"
-        imagine={FOTOGRAFII.dosare}
+        forma="banda"
+        // Cadrul s-a schimbat din `dosare` in `dulapuri` dintr-un motiv masurat, nu de
+        // gust: /accesibilitate foloseste `dosare` cu aceeasi ancora si tot pe banda, iar
+        // cele doua benzi ieseau IDENTICE LA OCTET - hash sha256 al stratului de
+        // fotografie, cu voalul si textul ascunse, 28a89489b6da pe amandoua. Sertarele cu
+        // etichete de interval spun oricum mai bine ce masoara pagina asta.
+        imagine={FOTOGRAFII.dulapuri}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Investiția" }]}
         eticheta={I.eticheta}
         titlu={I.h1}
@@ -47,15 +53,44 @@ export default function Investitia() {
         secundar={{ href: "/comparatie", text: "Vedeți comparația" }}
       />
 
+      {/* Cei sapte factori stau in DOUA sectiuni, nu in una. Masurat inainte: 3368 px la
+          1280, adica 4,21 ecrane si 561 de cuvinte sub un singur titlu, cu sapte randuri de
+          aceeasi forma la rand. Regula directiei e un lucru per ecran, iar pagina aprobata
+          sta la 1,04 ecrane pe sectiune. Taietura e acolo unde se schimba NATURA
+          intrebarii: primele patru masoara fondul si timpul cat sta in depozit - metri,
+          cat se scaneaza, cat de des se cere, ce termen legal are - iar ultimele trei
+          masoara cat timp de OM cere hartia: starea ei, drumul pana in depozit si
+          termenul in care trebuie eliberat spatiul. Totalul de sapte ramane citibil, in
+          cele doua etichete de cota. */}
       <SectiuneRegistru
         id="factori"
         cota="I"
-        eticheta="Ce determină costul"
-        titlu="Șapte elemente, fiecare cu direcția în care mișcă suma."
+        eticheta="Elementele 1-4"
+        titlu="Cât este fondul și cât timp stă în depozit."
         lead="Nu sunt criterii de listă de prețuri, sunt lucrurile pe care le măsurăm la fața locului. Fiecare are scris în ce condiții crește și în ce condiții scade, ca să vă puteți așeza singur fondul undeva pe scară."
       >
         <ol className="m-0 grid list-none gap-0 p-0">
-          {I.factori.map((f) => (
+          {I.factori.slice(0, 4).map((f) => (
+            <InvestitiaFactor
+              key={f.titlu}
+              titlu={f.titlu}
+              text={f.text}
+              creste={f.creste}
+              scade={f.scade}
+            />
+          ))}
+        </ol>
+      </SectiuneRegistru>
+
+      <SectiuneRegistru
+        id="manipularea"
+        cota="II"
+        eticheta="Elementele 5-7"
+        titlu="Cât de greu se mișcă hârtia."
+        lead="Ultimele trei nu depind de cât de mare este fondul, ci de cât timp de om cere: în ce stare este hârtia, pe ce drum ajunge în depozit și cine hotărăște termenul până la care trebuie eliberat spațiul."
+      >
+        <ol className="m-0 grid list-none gap-0 p-0">
+          {I.factori.slice(4).map((f) => (
             <InvestitiaFactor
               key={f.titlu}
               titlu={f.titlu}
@@ -70,7 +105,7 @@ export default function Investitia() {
       <SectiuneRegistru
         id="unic-si-recurent"
         ton="inchis"
-        cota="II"
+        cota="III"
         eticheta="Structura"
         titlu="Ce se plătește o dată și ce se plătește lună de lună."
         lead="Împărțirea contează mai mult decât suma: partea unică se face o singură dată și rămâne făcută, partea recurentă se adună cât ține contractul. Două oferte cu același total pot fi foarte diferite aici."
@@ -100,7 +135,7 @@ export default function Investitia() {
 
       <SectiuneRegistru
         id="fara-pret"
-        cota="III"
+        cota="IV"
         eticheta="De ce nu scrie un preț aici"
         titlu="O cifră dată înainte de a măsura rafturile ar fi o cifră inventată."
         lead="Nu este o tactică de vânzare și nu ascunde nimic: pur și simplu nu se poate calcula corect. Mai jos sunt cele trei motive, plus întrebările cu care puteți verifica pe oricine, inclusiv pe noi."
@@ -115,7 +150,7 @@ export default function Investitia() {
       <SectiuneRegistru
         id="discutia"
         ton="inchis"
-        cota="IV"
+        cota="V"
         eticheta="Discuția de 30 de minute"
         titlu="Ce iese din jumătatea de oră, și ce nu iese."
         lead="Discuția nu este o prezentare. Se măsoară, se scrie și pleacă la dumneavoastră, chiar dacă la final decideți să rămâneți la dulapul din birou."
@@ -137,7 +172,7 @@ export default function Investitia() {
 
       <SectiuneRegistru
         id="discutie"
-        cota="V"
+        cota="VI"
         eticheta="Pasul următor"
         titlu={I.incheiere.titlu}
         lead={I.incheiere.text}

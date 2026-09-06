@@ -45,7 +45,31 @@ export default function CumFunctioneaza() {
     <main id="continut">
       <AntetPagina
         adresa="/cum-functioneaza"
-        imagine={FOTOGRAFII.maini}
+        // Ancora decupajului e scrisa AICI, nu in registru, si are cifre in spate.
+        // `maini-1920.webp` e portret, 1920x2880. La 1280x800 se vede o banda de 1200 de
+        // randuri din sursa, iar cu ancora implicita a registrului (50%) banda incepe la
+        // randul 840 - mana, adica subiectul cadrului, sta intre randurile 432 si 1008 si
+        // iese aproape complet din vedere. Ramanea un fundal maro: luminanta medie 0,027
+        // in cadranul liber (x 700-1260, y 70-300), cel mai intunecat dintre ecranele
+        // paginilor mele si de 6,4 ori sub cel al paginii aprobate.
+        //
+        // Ancora s-a ales prin masurare, nu din ochi, fiindca cele doua cifre trag in
+        // sensuri opuse: cu cat urca fotografia, cu atat se vede mai bine mana SI cu atat
+        // scade contrastul etichetei de 12 px, care sta peste ea. Baleiat 0-50%, media
+        // fundalului de sub litere contra `arama-clar`:
+        //   0%  cadran 0,101  eticheta 4,26   <- sub pragul de 4,5 pentru text mic
+        //   12% cadran 0,105  eticheta 4,54   <- trece, dar fara rezerva
+        //   20% cadran 0,071  eticheta 5,51   <- ales
+        //   30% cadran 0,027  eticheta 6,14   <- mana iese iar din cadru
+        // 20% e punctul in care mana se vede (de 2,6 ori mai multa lumina decat la 50%) si
+        // eticheta pastreaza un metru de rezerva peste prag.
+        //
+        // Registrul pastreaza fisierul si textul alternativ; ancora ramane a paginii,
+        // fiindca acelasi cadru deschide si /solutii/notari, cu alt titlu si alt bloc de
+        // text dedesubt, deci cu alt voal peste aceiasi pixeli. Sub 768 px nu se schimba
+        // nimic: acolo `maini-960` (960x1440) se decupeaza pe LATIME, fiindca cei 844 px
+        // de inaltime depasesc cei 585 la care ar ajunge scalarea pe latime.
+        imagine={{ ...FOTOGRAFII.maini, pozitie: "center 20%" }}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Cum funcționează" }]}
         eticheta={C.eticheta}
         titlu={C.h1}
@@ -54,15 +78,23 @@ export default function CumFunctioneaza() {
         secundar={{ href: "/arhivare-fizica", text: "Vedeți partea fizică" }}
       />
 
+      {/* Cele sase etape stau in DOUA sectiuni, nu in una. Motivul e masurat: intr-un
+          singur bloc, sectiunea avea 3494 px la 1280, adica 4,37 ecrane si 524 de cuvinte
+          sub un singur titlu, cu sase randuri de aceeasi forma unul dupa altul. Regula
+          directiei e un lucru per ecran, iar pagina aprobata sta la 1,04 ecrane pe
+          sectiune. Taietura nu e la jumatatea numarului, ci acolo unde se schimba SENSUL
+          drumului: 1-3 sunt hartia care pleaca de la dumneavoastra, 4-6 sunt ce se
+          intoarce. Numerotarea ramane continua, 1..6, fiindca h1-ul promite sase etape:
+          a doua lista porneste de la `i + 4`. */}
       <SectiuneRegistru
         id="etape"
         cota="I"
-        eticheta="Etapele"
-        titlu="Șase etape, fiecare cu un document semnat."
+        eticheta="Etapele 1-3"
+        titlu="Hârtia care pleacă de la dumneavoastră."
         lead="Nu vă cerem încredere între etape. Fiecare se închide cu o hârtie care spune ce s-a mutat, ce s-a numărat și cine răspunde de fondul dumneavoastră. Unde un pas depinde de un aviz care nu este al nostru, scriem asta pe față."
       >
         <ol className="m-0 grid list-none gap-0 p-0">
-          {C.etape.map((e, i) => (
+          {C.etape.slice(0, 3).map((e, i) => (
             <MecanismEtapa
               key={e.titlu}
               numar={i + 1}
@@ -84,9 +116,29 @@ export default function CumFunctioneaza() {
       </SectiuneRegistru>
 
       <SectiuneRegistru
+        id="intoarcerea"
+        cota="II"
+        eticheta="Etapele 4-6"
+        titlu="Ce se întoarce la dumneavoastră."
+        lead="Ultimele trei etape merg în sens invers. Întrebarea primește documentul și pagina, originalul iese din raft atunci când vi se cere hârtia semnată, iar la încheierea contractului pleacă tot fondul, și cel fizic, și cel digital."
+      >
+        <ol className="m-0 grid list-none gap-0 p-0">
+          {C.etape.slice(3).map((e, i) => (
+            <MecanismEtapa
+              key={e.titlu}
+              numar={i + 4}
+              titlu={e.titlu}
+              text={e.text}
+              urma={e.urma}
+            />
+          ))}
+        </ol>
+      </SectiuneRegistru>
+
+      <SectiuneRegistru
         id="digitizare"
         ton="inchis"
-        cota="II"
+        cota="III"
         eticheta="Ce se scanează"
         titlu="Se digitizează ce se caută, în ordinea în care se caută."
         lead="Împărțirea de mai jos este punctul de plecare al discuției, nu o regulă fixă. Lista finală o hotărâți dumneavoastră, iar ea intră în contract înainte să se deschidă prima cutie."
@@ -103,7 +155,7 @@ export default function CumFunctioneaza() {
 
       <SectiuneRegistru
         id="cautare"
-        cota="III"
+        cota="IV"
         eticheta="Căutarea"
         titlu="De la întrebarea pusă în română până la pagina pe care o citiți singur."
         lead="Cinci verigi, în ordine. Dacă una lipsește, lanțul se oprește acolo și nu vedeți un răspuns pe care nu îl putem susține cu un document."
@@ -118,7 +170,7 @@ export default function CumFunctioneaza() {
       <SectiuneRegistru
         id="hartia"
         ton="inchis"
-        cota="IV"
+        cota="V"
         eticheta="Hârtia"
         titlu="Întrebările care apar când documentul iese din mâna dumneavoastră."
         lead="Sunt întrebările pe care le pune un serviciu juridic sau un auditor intern. Le punem noi primii, cu răspunsul scris, ca să nu pierdeți o săptămână pe corespondență."
@@ -144,7 +196,7 @@ export default function CumFunctioneaza() {
 
       <SectiuneRegistru
         id="dovada"
-        cota="V"
+        cota="VI"
         eticheta="Dovada"
         titlu="Ce puteți verifica, și ce nu putem susține încă."
         lead="Prima listă se poate vedea înainte de semnătură. Pe a doua o scriem tot noi, primii, fiindcă o afirmație nesusținută costă mai mult decât tăcerea."
@@ -158,7 +210,7 @@ export default function CumFunctioneaza() {
       <SectiuneRegistru
         id="discutie"
         ton="inchis"
-        cota="VI"
+        cota="VII"
         eticheta="Pasul următor"
         titlu={C.incheiere.titlu}
         lead={C.incheiere.text}

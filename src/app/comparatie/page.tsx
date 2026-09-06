@@ -46,6 +46,7 @@ export default function Comparatie() {
     <main id="continut">
       <AntetPagina
         adresa="/comparatie"
+        forma="banda"
         imagine={FOTOGRAFII.legatura}
         fir={[{ text: "Pagina de start", href: "/" }, { text: "Comparație" }]}
         eticheta={C.eticheta}

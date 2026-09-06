@@ -250,7 +250,7 @@ export const ACCESIBILITATE = {
     },
     {
       titlu: "Contrastul textului",
-      text: "Aceeași verificare măsoară contrastul dintre text și fundal și cere cel puțin 4,5 la 1 pentru textul de dimensiune normală. Culorile paginilor au fost alese pornind de la pragul acesta, iar perechile care nu îl treceau au fost schimbate înainte de publicare, nu după.",
+      text: "Aceeași verificare măsoară contrastul dintre text și fundal și cere cel puțin 4,5 la 1 pentru textul de dimensiune normală. Culorile paginilor au fost alese pornind de la pragul acesta, iar perechile care nu îl treceau au fost schimbate înainte de publicare, nu după. Verificarea aceasta judecă perechi de culori. Textul așezat peste o fotografie nu intră în ea, iar rândul acela se află mai jos, în coloana nemăsurată.",
     },
     {
       titlu: "Ecran de 390 de puncte în lățime",
@@ -272,6 +272,7 @@ export const ACCESIBILITATE = {
 
   neMasurat: [
     "Nu declarăm conformitatea cu un nivel dintr-un standard de accesibilitate: nu s-a făcut niciun audit al site-ului, nici de noi, nici de altcineva",
+    "Contrastul textului așezat peste fotografie nu este judecat de verificarea automată: motorul îl marchează drept nesigur și îl lasă în afara verdictului, fiindcă nu poate ști ce pixel ajunge sub fiecare literă. Îl măsurăm noi, pe captura paginii, cu literele ascunse, deci cifra aceea vine de la noi și nu oprește singură o publicare",
     "Verificarea automată acoperă o parte din criteriile de accesibilitate, nu pe toate; multe se pot judeca numai de un om",
     "Nu am parcurs site-ul cu un cititor de ecran real, pe tot fluxul, și nu putem spune cum sună",
     "Nu am parcurs site-ul exclusiv de la tastatură, pagină cu pagină, ca probă separată",
