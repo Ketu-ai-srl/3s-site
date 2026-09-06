@@ -1,52 +1,54 @@
-import Eticheta from "./Eticheta";
-
-// Un element care determina costul, pe pagina de investitie.
+// Un element care determină costul, pe pagina de investiție.
 //
-// Forma e cea a randurilor de fisa din restul site-ului - termen pe coloana din stanga,
-// raspuns pe dreapta - cu o singura adaugire: cele doua directii in care se misca
-// elementul. Fara ele, pagina ar spune "costul depinde de metrii liniari", ceea ce e
-// adevarat si inutil. Cu ele, cineva isi poate da singur seama in ce jumatate a
-// intervalului cade fondul lui, fara sa ii dam o cifra pe care nu o putem sustine.
+// FORMA: listă tipografică mare, fără cifre. Pagina nu are voie să conțină prețuri, nici
+// intervale, deci singurul lucru pe care îl poate da omului care citește e SCARA: în ce
+// condiții urcă suma și în ce condiții coboară. De aceea titlul elementului urcă la
+// litera de afiș, iar cele două direcții stau dedesubt, ca două rânduri egale, fiecare cu
+// eticheta ei de mono.
 //
-// Directiile sunt scrise ca lista de definitii, nu ca doua paragrafe: sunt perechi
-// termen-explicatie, si asa se anunta si intr-un cititor de ecran.
+// Numărul elementului a fost SCOS. Forma veche scria „Elementul 4" într-o coloană de
+// margine, unde nu spunea nimic: elementele nu sunt o ordine, sunt o listă, iar un număr
+// care nu se citește e ornament. Ordinea o dă `ol`-ul din pagină, pentru cine navighează
+// cu cititor de ecran.
+//
+// Cele două direcții rămân o listă de definiții, nu două paragrafe: sunt perechi
+// termen-explicație, și așa se anunță și într-un cititor de ecran. Linia de aramă stă pe
+// „crește", singura din pereche care merită accentul - două linii de aramă alăturate ar
+// fi spus că amândouă sunt la fel de importante.
 
 type Props = {
-  numar: number;
   titlu: string;
   text: string;
   creste: string;
   scade: string;
 };
 
-export default function InvestitiaFactor({ numar, titlu, text, creste, scade }: Props) {
+export default function InvestitiaFactor({ titlu, text, creste, scade }: Props) {
   return (
-    <li className="grid gap-3 border-t border-linie py-7 last:border-b lg:grid-cols-[290px_1fr] lg:gap-8">
-      <div>
-        <span className="font-mono text-fisa font-medium tracking-[0.04em] text-arama-inchis">
-          Elementul {numar}
-        </span>
-        <h3 className="mt-1.5 text-[20px] text-tus">{titlu}</h3>
-      </div>
+    <li className="border-t border-linie-suprafata py-10 last:border-b md:py-14">
+      <h3 className="font-afis max-w-[26ch] text-[clamp(1.5rem,2.8vw,2.25rem)] font-bold tracking-[-0.01em] uppercase text-cerneala">
+        {titlu}
+      </h3>
+      <p className="mt-4 max-w-[60ch] text-[17px] leading-[1.6] text-cerneala-2">{text}</p>
 
-      <div>
-        <p className="max-w-[70ch] text-corp text-tus-2">{text}</p>
-
-        <dl className="mt-5 grid gap-4 sm:grid-cols-2 sm:gap-8">
-          <div className="border-l-2 border-arama pl-4">
-            <dt className="m-0">
-              <Eticheta className="text-arama-inchis!">Crește când</Eticheta>
-            </dt>
-            <dd className="m-0 mt-1 text-nota text-tus-2">{creste}</dd>
-          </div>
-          <div className="border-l-2 border-linie-fn pl-4">
-            <dt className="m-0">
-              <Eticheta>Scade când</Eticheta>
-            </dt>
-            <dd className="m-0 mt-1 text-nota text-tus-2">{scade}</dd>
-          </div>
-        </dl>
-      </div>
+      <dl className="mt-7 grid gap-6 sm:grid-cols-2 sm:gap-10">
+        <div className="border-l-2 border-cerneala-accent pl-5">
+          <dt className="m-0 font-mono text-[11px] tracking-[0.22em] uppercase text-cerneala-accent">
+            Crește când
+          </dt>
+          <dd className="m-0 mt-2 max-w-[42ch] text-[15.5px] leading-[1.5] text-cerneala-2">
+            {creste}
+          </dd>
+        </div>
+        <div className="border-l-2 border-linie-suprafata pl-5">
+          <dt className="m-0 font-mono text-[11px] tracking-[0.22em] uppercase text-cerneala-3">
+            Scade când
+          </dt>
+          <dd className="m-0 mt-2 max-w-[42ch] text-[15.5px] leading-[1.5] text-cerneala-2">
+            {scade}
+          </dd>
+        </div>
+      </dl>
     </li>
   );
 }

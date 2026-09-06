@@ -80,7 +80,16 @@ export default function AntetPagina({
         {fir.map((v, i) => (
           <li key={v.text} className="flex items-baseline gap-2">
             {i > 0 ? (
-              <span aria-hidden className="text-cerneala-3">
+              // Bara oblica sta pe `cerneala-2`, nu pe `cerneala-3`, si nu din gust.
+              // Ea cade peste FOTOGRAFIE, unde tabelul de jetoane nu se aplica, iar acolo
+              // pragul de 4,5:1 il decide voalul. Masurat la 1280, pe fundalul curat de sub
+              // ea: cu `cerneala-3` ajungea la 4,38:1 pe /cum-functioneaza si la 4,89 pe
+              // /securitate, adica sub prag pe o pagina si la un fir de el pe alta; cu
+              // `cerneala-2` cea mai mica valoare de pe cele noua pagini masurate urca la
+              // 6,33. Ierarhia ramane citibila fara treapta a treia de culoare: veriga
+              // dinainte e SUBLINIATA, iar pagina curenta sta pe `cerneala`, cea mai
+              // deschisa dintre cele trei.
+              <span aria-hidden className="text-cerneala-2">
                 /
               </span>
             ) : null}

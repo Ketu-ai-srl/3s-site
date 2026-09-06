@@ -60,8 +60,11 @@ export const SECURITATE = {
     "Depozitul și accesul în el, transportul, cotele și inventarul, cine vede ce document și pe ce bază, ieșirea din contract, eliminarea cu aviz.",
   eticheta: "Protecția fondului",
   h1: "O cutie pusă greșit pe raft este tot o pierdere de date.",
+  // Sub 40 de cuvinte, regula direcției. Ce spunea fraza veche despre cine vede ce document
+  // și despre încetarea contractului stă în liniile secțiunilor III și IV, iar împărțirea părții
+  // digitale în măsurat și nemăsurat stă în linia secțiunii V. Nimic nu s-a pierdut.
   lead:
-    "Pagina asta descrie lanțul întreg prin care trece un document la noi: depozitul și cine ajunge în el, transportul și predarea, cota după care se cere din raft, cine are voie să vadă ce și pe ce bază, ce se întâmplă la încetarea contractului și cum se elimină legal ce nu mai trebuie păstrat. Partea digitală vine la final, împărțită în ce am măsurat și ce încă nu putem susține.",
+    "Lanțul întreg prin care trece un document la noi: depozitul și cine ajunge în el, transportul și predarea, cota după care se cere din raft, ieșirea din contract. Partea digitală vine la final.",
 
   // --- I. depozitul -------------------------------------------------------
   depozit: [
@@ -234,8 +237,11 @@ export const ACCESIBILITATE = {
     "Ce se măsoară mecanic la fiecare livrare a site-ului, ce nu a fost măsurat niciodată și cum ne semnalați o problemă de accesibilitate pe care ați întâlnit-o.",
   eticheta: "Accesibilitate",
   h1: "Ce am măsurat din accesibilitatea site-ului, și ce nu.",
+  // Sub 40 de cuvinte. Fraza despre felul în care se scriu de obicei declarațiile de
+  // accesibilitate stă în linia secțiunii II, unde e chiar argumentul ei, iar cuprinsul
+  // paginii îl dau titlurile secțiunilor. Nimic nu s-a pierdut.
   lead:
-    "Declarațiile de accesibilitate se scriu de obicei ca o promisiune de conformitate. Aici este o listă de măsurători: verificările de mai jos rulează automat pe fiecare pagină publică înainte de fiecare publicare, iar dacă una se înroșește, versiunea aceea nu ajunge la dumneavoastră. Urmează ce acoperă ele, ce rămâne neacoperit și pe ce drum ne spuneți dacă ceva nu funcționează pentru dumneavoastră.",
+    "O listă de măsurători. Verificările de mai jos rulează automat pe fiecare pagină publică înainte de fiecare publicare, iar dacă una se înroșește, versiunea aceea nu ajunge la dumneavoastră.",
 
   masurat: [
     {
@@ -244,7 +250,7 @@ export const ACCESIBILITATE = {
     },
     {
       titlu: "Contrastul textului",
-      text: "Aceeași verificare măsoară contrastul dintre text și fundal și cere cel puțin 4,5 la 1 pentru textul de dimensiune normală. Culorile paginilor au fost alese pornind de la pragul acesta, iar perechile care nu îl treceau au fost schimbate înainte de publicare, nu după.",
+      text: "Aceeași verificare măsoară contrastul dintre text și fundal și cere cel puțin 4,5 la 1 pentru textul de dimensiune normală. Culorile paginilor au fost alese pornind de la pragul acesta, iar perechile care nu îl treceau au fost schimbate înainte de publicare, nu după. Verificarea aceasta judecă perechi de culori. Textul așezat peste o fotografie nu intră în ea, iar rândul acela se află mai jos, în coloana nemăsurată.",
     },
     {
       titlu: "Ecran de 390 de puncte în lățime",
@@ -266,6 +272,7 @@ export const ACCESIBILITATE = {
 
   neMasurat: [
     "Nu declarăm conformitatea cu un nivel dintr-un standard de accesibilitate: nu s-a făcut niciun audit al site-ului, nici de noi, nici de altcineva",
+    "Contrastul textului așezat peste fotografie nu este judecat de verificarea automată: motorul îl marchează drept nesigur și îl lasă în afara verdictului, fiindcă nu poate ști ce pixel ajunge sub fiecare literă. Îl măsurăm noi, pe captura paginii, cu literele ascunse, deci cifra aceea vine de la noi și nu oprește singură o publicare",
     "Verificarea automată acoperă o parte din criteriile de accesibilitate, nu pe toate; multe se pot judeca numai de un om",
     "Nu am parcurs site-ul cu un cititor de ecran real, pe tot fluxul, și nu putem spune cum sună",
     "Nu am parcurs site-ul exclusiv de la tastatură, pagină cu pagină, ca probă separată",

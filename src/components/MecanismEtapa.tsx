@@ -1,17 +1,23 @@
-import Eticheta from "./Eticheta";
-
-// O etapa din mecanism, cu urma scrisa care ramane dupa ea.
+// O etapă dintr-un lanț, cu urma scrisă care rămâne după ea.
 //
-// De ce nu e `Pas` din pagina de start: `Pas` arata un titlu si un paragraf, si atat.
-// Aici fiecare etapa se incheie cu un DOCUMENT, iar documentul e jumatate din argument -
-// exact partea pe care o poate arata cineva la un control. Pusa in paragraf, s-ar citi
-// ca o promisiune printre altele; pusa pe rand separat, se numara.
+// FORMA, în direcția nouă: un ecran scurt, nu un rând de tabel. Cota etapei stă în
+// margine, în mono, iar titlul urcă la o treaptă condensată cu majuscule - destul cât
+// să se citească de la distanța de la care se derulează, nu atât cât să concureze cu
+// titlul secțiunii (`text-titlu-2`). Textul rămâne sub 60 de cuvinte, iar dedesubt vine
+// ștampila.
 //
-// Rama urmei e o linie punctata, nu o banda colorata: componenta se foloseste si pe
-// benzi albe, si pe hartie, iar o banda cu fundal propriu ar fi invizibila pe una din
-// ele. In plus, arama pe arama-moale da 4,47:1, sub pragul de 4,5:1 din WCAG 1.4.3 -
-// masurat pe valorile din `globals.css` inainte de a scrie componenta, tocmai fiindca
-// poarta de accesibilitate opreste lotul pe asa ceva. Pe hartie, aceeasi arama da 4,75:1.
+// DE CE ȘTAMPILĂ, și nu încă un paragraf. Fiecare etapă se închide cu un DOCUMENT, iar
+// documentul e jumătate din argument - exact partea pe care o poate arăta cineva la un
+// control. Topită în paragraf, s-ar citi ca o promisiune printre altele; ridicată pe un
+// bloc propriu, cu eticheta ei de mono și cu linia de aramă în stânga, se numără.
+//
+// Cerneala vine din SUPRAFAȚĂ (`text-cerneala*`), nu din paletă scrisă pe litere:
+// componenta stă azi pe `noapte` în trei pagini, iar ștampila își pune singură treapta
+// `noapte-2`, deci literele ei se recalculează acolo. Arama pe `noapte-2` rămâne peste
+// pragul de text mic; cifrele măsurate sunt în `docs/design/DIRECTIA.md`.
+//
+// Numărul e scris, nu ornamental: „Etapa 3" se citește, iar `01/02/03` mare, pus ca
+// decor, e chiar tiparul pe care direcția îl refuză.
 
 type Props = {
   numar: number;
@@ -22,17 +28,22 @@ type Props = {
 
 export default function MecanismEtapa({ numar, titlu, text, urma }: Props) {
   return (
-    <li className="grid gap-3 border-t border-linie py-7 last:border-b sm:grid-cols-[92px_1fr] sm:gap-8">
-      <span className="font-mono text-[13.5px] font-medium tracking-[0.04em] text-arama sm:pt-[7px]">
+    <li className="border-t border-linie-suprafata py-12 last:border-b md:grid md:grid-cols-[7rem_minmax(0,1fr)] md:gap-x-12 md:py-16 lg:gap-x-20">
+      <span className="mb-5 block font-mono text-[12px] tracking-[0.22em] uppercase text-cerneala-accent md:mb-0 md:pt-3">
         Etapa {numar}
       </span>
 
       <div>
-        <h3 className="mb-2 text-[22px]">{titlu}</h3>
-        <p className="mb-4 max-w-[68ch] text-corp text-tus-2">{text}</p>
-        <p className="flex max-w-[68ch] flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-dashed border-linie-fn pt-3 text-[15px] text-tus-2">
-          <Eticheta className="text-arama!">Rămâne scris</Eticheta>
-          <span className="flex-1 basis-[22ch]">{urma}</span>
+        <h3 className="font-afis max-w-[20ch] text-[clamp(1.6rem,3vw,2.5rem)] font-bold tracking-[-0.01em] uppercase text-cerneala">
+          {titlu}
+        </h3>
+        <p className="mt-5 max-w-[54ch] text-[17px] leading-[1.55] text-cerneala-2">{text}</p>
+
+        <p className="mt-7 max-w-[54ch] border-l-2 border-cerneala-accent bg-noapte-2 px-5 py-4 text-[15.5px] leading-[1.5] text-cerneala-2">
+          <span className="mb-2 block font-mono text-[11px] tracking-[0.22em] uppercase text-cerneala-accent">
+            Rămâne scris
+          </span>
+          {urma}
         </p>
       </div>
     </li>

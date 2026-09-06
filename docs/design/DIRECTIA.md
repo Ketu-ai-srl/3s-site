@@ -108,13 +108,31 @@ uriaș, O linie sub 40 de cuvinte, UN buton. Conținutul trebuie să încapă, c
 într-un ecran de 800 px - butonul nu are voie să cadă sub margine. Se măsoară, nu se presupune:
 poziția marginii de jos a butonului, pe fiecare pagină, la 1280x800 și la 390x844.
 
-**Excepția: documentele și uneltele.** /termeni, /confidentialitate, /cookies și
-/instrumente/termene-de-pastrare deschid cu `Ecran forma="banda"` - un antet de 478 px la
-1280, cu titlul în stânga și linia plus butonul în dreapta. Acolo omul a venit după o clauză
-sau după un termen, iar un afiș de film de 800 px îl ține departe de răspuns. Pe pagina care
-ESTE o unealtă, acțiunea principală a antetului duce la unealtă, nu la o întâlnire, iar prima
+**Excepția: documentele și uneltele.** /termeni, /confidentialitate, /cookies,
+/instrumente/termene-de-pastrare, /securitate, /accesibilitate, /investitia și /comparatie
+deschid cu `Ecran forma="banda"` - un antet de 478-549 px la 1280, cu titlul în stânga și
+linia plus butonul în dreapta. Acolo omul a venit după o clauză, după un termen sau după o
+cifră, iar un afiș de film de 800 px îl ține departe de răspuns. Pe pagina care ESTE o
+unealtă, acțiunea principală a antetului duce la unealtă, nu la o întâlnire, iar prima
 secțiune e `dens`: măsurat, primul rând din tabelul de termene a urcat de la 1800 px (2,25
 ecrane) la 773 px (0,97 ecrane) la 1280.
+
+Cele patru pagini-document au trecut pe bandă pe 6 sep 2026, și nu din gust. Cu ecranul plin
+pe fiecare pagină, șapte cadre trebuie să deschidă 22 de pagini, iar rezultatul a fost
+măsurat, la octet: hash sha256 al stratului de fotografie, cu voalul și textul ascunse, pe
+toate cele 22. Ieșeau 14 amprente distincte și șase repetări, dintre care două perfecte pe
+pagini vecine în meniu - /securitate era IDENTICĂ cu pagina de start (`35d334799f1c`, același
+cadru, aceeași ancoră, aceeași înălțime de secțiune) și /accesibilitate cu /investitia
+(`9f6787429eb7`). Control: /comparatie contra paginii de start dă amprente diferite, deci
+metoda deosebește. Ecranul plin rămâne un gest de vitrină; pe bandă fotografia e textură, iar
+un cadru care se repetă acolo nu mai citește ca aceeași pagină reintitulată.
+
+**Ce cere un ecran plin cu fotografie:** un cadru cu subiect care se vede sub voal, și un
+cadru pe care nu îl mai deschide altă pagină. Amândouă se măsoară: luminanța medie în
+cadranul liber (x 700-1260, y 70-300 la 1280x800, unde voalul e același pe toate paginile) și
+amprenta stratului de fotografie. Reper: pagina aprobată stă la 0,174 medie cu un maxim de
+0,847 - adică are un subiect luminat. Cadrele care nu ajung acolo se pun pe bandă, nu pe
+ecran plin.
 
 Sub el vin secțiunile, pe fundal de noapte, cu `py-24 md:py-36` între ele, titluri condensate
 cu majuscule și text sub 60 de cuvinte pe bloc.
@@ -142,7 +160,10 @@ altele.
 
 **Fiecare pagină are una.** Registrul e `src/content/fotografii.ts` - un singur loc care ține
 numele fișierului, textul alternativ și ancora decupajului; pagina alege cheia, nu scrie
-descrierea. Același cadru ajunge pe două-trei pagini, deci două descrieri scrise de mână ar
+descrierea. Ancora se poate rescrie din pagină (`{{ ...FOTOGRAFII.maini, pozitie: "center
+20%" }}`) când același cadru deschide două pagini cu titluri de înălțimi diferite, dar numai
+cu cifra pe care o dă baleiajul de pe captură scrisă lângă ea - vezi
+`src/app/cum-functioneaza/page.tsx`. Fișierul și textul alternativ rămân ale registrului. Același cadru ajunge pe două-trei pagini, deci două descrieri scrise de mână ar
 diverge la prima editare. Cheile se aleg ca paginile VECINE să nu deschidă la fel: cele șase
 intrări din bara de sus au șase cadre diferite, iar cele șapte fișe de domeniu au șapte.
 
@@ -152,11 +173,21 @@ coloana de text; cele două treimi din dreapta rămân fotografie. Sub 768 px vo
 fiindcă acolo textul ține toată lățimea și nu mai există jumătate de fotografie de apărat.
 Antetul-bandă are voalul lui, mai uniform, fiindcă amândouă coloanele lui poartă text.
 
-Contrastul textului peste fotografie NU e măsurat de `axe`. Se măsoară pe captură, cu textul
-ascuns și cu pixelii citiți sub dreptunghiurile strânse pe litere. Pragul: media peste 4,5:1
-pentru text mic - eticheta de 11 px și firul de navigare sunt cele care cad primele. Măsurat
-pe toate cele 22 de pagini, la 1280 și la 390: cea mai mică medie este 5,18:1. **O fotografie
-nouă, o mutare de decupaj sau o schimbare de înălțime a titlului cer remăsurarea.** A treia nu
+Contrastul textului peste fotografie NU e măsurat de `axe`: regula `color-contrast` întoarce
+`incomplete` pentru textul așezat peste o imagine și îl lasă în afara verdictului. Se măsoară
+pe captură, cu textul ascuns și cu pixelii citiți sub dreptunghiurile strânse pe litere.
+Pragul: media peste 4,5:1 pentru text mic - eticheta de 11-12 px și firul de navigare sunt
+cele care cad primele.
+
+Cifra de 5,18:1 „cea mai mică medie pe toate cele 22 de pagini" venea dintr-o măsurătoare
+care lua media pixelilor din dreptunghiul literelor. Remăsurat pe 6 sep 2026 cu literele
+ASCUNSE, adică pe fundalul curat, eticheta de 12 px în `arama-clar` dădea 4,39:1 mediană pe
+/accesibilitate și 4,60 pe /investitia - sub prag, pe chiar pagina care promite pragul. După
+trecerea celor patru documente pe bandă, cele șase pagini de mecanism stau la 4,82-6,71
+mediană (cea mai mică: /arhivare-fizica). **Pe paginile de vitrină pe care nu le-a atins
+felia 27 măsurătoarea nu s-a repetat cu metoda nouă, iar percentila 90 a fundalului scade
+acolo până la 1,22 (/solutii/imobiliare) - de verificat separat.** **O fotografie nouă, o
+mutare de decupaj sau o schimbare de înălțime a titlului cer remăsurarea.** A treia nu
 e evidentă și a fost prinsă chiar aici: titlurile mai înalte urcă blocul de text, iar blocul e
 lipit de marginea de jos, deci eticheta iese din zona groasă a voalului.
 

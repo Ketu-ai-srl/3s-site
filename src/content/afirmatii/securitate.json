@@ -208,10 +208,10 @@
   },
   {
     "id": "accesibilitate-contrast-4-5",
-    "text": "Aceeasi verificare masoara contrastul dintre text si fundal si cere cel putin 4,5 la 1 pentru textul de dimensiune normala",
+    "text": "Aceeasi verificare masoara contrastul dintre text si fundal si cere cel putin 4,5 la 1 pentru textul de dimensiune normala; ea judeca perechi de culori, iar textul asezat peste fotografie nu intra in verdictul ei",
     "unde": "src/content/securitate.ts",
     "stare": "confirmat",
-    "sursa": "regula `color-contrast` din axe-core face parte din setul rulat de tests/browser/accesibilitate.spec.ts, iar martorul POZITIV al probei cere explicit ca detectorul sa intoarca `color-contrast` pe o pagina cu contrast prost, deci verificarea nu poate trece tacand; rulat de Ketu pe felia 14, lot 2026-09-05: bash .claude/scripts/fabrica/poarta.sh a iesit 0 cu POARTA_3S_TOTUL_VERDE, 7 din 7 pasi, iar pasul de browser a raportat 91 de probe rulate, 0 picate, martor pozitiv si martor negativ rulate",
+    "sursa": "regula `color-contrast` din axe-core face parte din setul rulat de tests/browser/accesibilitate.spec.ts, iar martorul POZITIV al probei cere explicit ca detectorul sa intoarca `color-contrast` pe o pagina cu contrast prost, deci verificarea nu poate trece tacand; rulat de Ketu pe felia 14, lot 2026-09-05: bash .claude/scripts/fabrica/poarta.sh a iesit 0 cu POARTA_3S_TOTUL_VERDE, 7 din 7 pasi, iar pasul de browser a raportat 91 de probe rulate, 0 picate, martor pozitiv si martor negativ rulate. Ingustarea din 6 sep 2026: regula `color-contrast` din axe marcheaza `incomplete`, nu `violation`, textul care sta peste o imagine, iar proba cere multime vida numai pentru serious/critical, deci acele bucati nu sunt acoperite - lucru scris si in nota lunga din src/components/Ecran.tsx. Randul din coloana nemasurata il spune acum pe pagina",
     "confirmat_de": "masuratoare rulata de Ketu pe felia 14",
     "data": "2026-09-05"
   },
@@ -277,5 +277,14 @@
     "sursa": "",
     "confirmat_de": "",
     "data": ""
+  },
+  {
+    "id": "accesibilitate-contrast-peste-fotografie-nemasurat",
+    "text": "Contrastul textului asezat peste fotografie nu e judecat de verificarea automata: axe il marcheaza drept nesigur si il lasa in afara verdictului; il masuram noi, pe captura paginii, cu literele ascunse",
+    "unde": "src/content/securitate.ts",
+    "stare": "confirmat",
+    "sursa": "regula `color-contrast` din axe-core intoarce rezultatul `incomplete` pentru textul asezat peste o imagine de fundal, iar tests/browser/accesibilitate.spec.ts cere multime vida numai pentru incalcarile serious/critical, deci bucatile acelea nu intra in verdict. Masurat de Ketu pe felia 27, 6 sep 2026, la 1280x800 pe build-ul din arbore: pe /accesibilitate eticheta mono de 12 px in `arama-clar` statea la 4,39:1 fata de mediana pixelilor de sub litere si la 2,14:1 fata de percentila 90, adica sub pragul de 4,5:1, in timp ce axe raporta zero incalcari serious/critical pe aceeasi pagina. Control: cu fotografia ascunsa aceeasi eticheta da 6,76:1, exact valoarea calculata de mana pentru #c98a4b pe #0b0b0c, deci scaderea vine din fotografie, nu din metoda",
+    "confirmat_de": "masuratoare rulata de Ketu pe felia 27",
+    "data": "2026-09-06"
   }
 ]

@@ -1,30 +1,30 @@
-// Un rand de fisa: termenul sau intrebarea pe coloana din stanga, raspunsul pe dreapta.
+// Un rând de fișă: termenul sau întrebarea pe coloana din stânga, răspunsul pe dreapta.
 //
-// Aceeasi forma cu randurile de temei juridic din `PaginaDeSegment`, scoasa in componenta
-// fiindca acum o folosesc trei sectiuni de pe doua pagini: glosarul de arhivistica,
-// pasii selectionarii si actele normative. Copiata a patra oara, ar fi devenit patru
-// locuri care se desincronizeaza la prima schimbare de latime a coloanei.
+// Aceeași formă cu rândurile de temei juridic din `PaginaDeSegment`, scoasă în componentă
+// fiindcă o folosesc acum șase secțiuni de pe patru pagini: glosarul de arhivistică, pașii
+// selecționării, actele normative, variantele de comparație. Copiată a patra oară, ar fi
+// devenit patru locuri care se desincronizează la prima schimbare de lățime a coloanei.
 //
-// `inchis` muta perechea de culori pe banda intunecata. Nu e o optiune de stil: pe verde
-// adanc, `text-tus-2` da un contrast sub prag si poarta de accesibilitate opreste lotul.
+// CE S-A SCHIMBAT ÎN DIRECȚIA NOUĂ. Titlul rândului trece pe litera de afiș, condensată
+// cu majuscule: la lățimea coloanei din stânga, un titlu de 19 px cu litere mici se
+// pierdea lângă răspunsul de aceeași mărime, iar ochiul nu mai vedea unde începe rândul
+// următor. Perechea de culori nu se mai alege din pagină: `text-cerneala` și
+// `text-cerneala-2` se recalculează pe suprafața de deasupra, deci același rând stă corect
+// și pe `noapte`, și pe `noapte-2`. Parametrul `inchis` a dispărut odată cu benzile verzi
+// care îl cereau.
 
 type Props = {
   titlu: string;
   children: React.ReactNode;
-  inchis?: boolean;
 };
 
-export default function MecanismRandFisa({ titlu, children, inchis = false }: Props) {
+export default function MecanismRandFisa({ titlu, children }: Props) {
   return (
-    <div
-      className={`grid gap-2 border-t py-6 last:border-b lg:grid-cols-[290px_1fr] lg:gap-8 ${
-        inchis ? "border-linie-inchis" : "border-linie"
-      }`}
-    >
-      <h3 className={`text-[19px] ${inchis ? "text-white" : "text-tus"}`}>{titlu}</h3>
-      <p className={`max-w-[70ch] text-corp ${inchis ? "text-pe-inchis-2" : "text-tus-2"}`}>
-        {children}
-      </p>
+    <div className="grid gap-3 border-t border-linie-suprafata py-8 last:border-b lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-8 lg:py-10">
+      <h3 className="font-afis max-w-[24ch] text-[clamp(1.15rem,1.9vw,1.5rem)] font-semibold tracking-[0.02em] uppercase text-cerneala">
+        {titlu}
+      </h3>
+      <p className="max-w-[64ch] text-[17px] leading-[1.6] text-cerneala-2">{children}</p>
     </div>
   );
 }
