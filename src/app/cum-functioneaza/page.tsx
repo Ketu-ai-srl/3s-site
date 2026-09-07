@@ -136,20 +136,20 @@ export default function CumFunctioneaza() {
       </SectiuneRegistru>
 
       <SectiuneRegistru
-        id="digitizare"
+        id="digitalizare"
         ton="inchis"
         cota="III"
         eticheta="Ce se scanează"
-        titlu="Se digitizează ce se caută, în ordinea în care se caută."
+        titlu="Se digitalizează ce se caută, în ordinea în care se caută."
         lead="Împărțirea de mai jos este punctul de plecare al discuției, nu o regulă fixă. Lista finală o hotărâți dumneavoastră, iar ea intră în contract înainte să se deschidă prima cutie."
       >
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <ListaBifa titlu="Ce intră la scanat, de obicei" elemente={C.digitizat} />
+          <ListaBifa titlu="Ce intră la scanat, de obicei" elemente={C.digitalizat} />
           <ListaBifa titlu="Ce rămâne pe hârtie, cel puțin la început" elemente={C.peHartie} />
         </div>
 
         <BlocDovada fel="limite" eticheta="Ce nu propunem din start" className="mt-12">
-          {C.notaDigitizare}
+          {C.notaDigitalizare}
         </BlocDovada>
       </SectiuneRegistru>
 

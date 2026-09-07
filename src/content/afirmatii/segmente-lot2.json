@@ -208,7 +208,7 @@
   },
   {
     "id": "segmente-lot2-fara-pret-pe-pagina",
-    "text": "Costul se face pe metri liniari si pe ce anume se digitizeaza; niciuna dintre cele trei pagini nu publica pret",
+    "text": "Costul se face pe metri liniari si pe ce anume se digitalizeaza; niciuna dintre cele trei pagini nu publica pret",
     "unde": "src/content/segmente.ts",
     "stare": "neconfirmat",
     "sursa": "",

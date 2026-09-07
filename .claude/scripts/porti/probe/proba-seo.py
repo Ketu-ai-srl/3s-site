@@ -48,7 +48,7 @@ def scrie(cale, continut):
 
 
 def pagina(titlu='Arhiva care raspunde cu pagina exacta',
-           descriere='Arhivare autorizata, digitizare si cautare care citeaza pagina din care vine raspunsul.',
+           descriere='Arhivare autorizata, digitalizare si cautare care citeaza pagina din care vine raspunsul.',
            canonical='https://exemplu.test/',
            antete='<h1>Unu</h1><h2>Doi</h2><h3>Trei</h3>',
            ld=None):

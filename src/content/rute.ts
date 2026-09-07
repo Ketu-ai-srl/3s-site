@@ -37,7 +37,7 @@ export const RUTE: Ruta[] = [
     cale: "/",
     scurt: "Acasă",
     descriere:
-      "Arhivare fizică, digitizare și căutare care citează pagina din care vine răspunsul.",
+      "Arhivare fizică, digitalizare și căutare care citează pagina din care vine răspunsul.",
     // Pagina de start NU se repeta ca element de meniu: sigla din stanga duce deja acolo,
     // pe fiecare pagina. Un al doilea drum catre acelasi loc ocupa un rand in bara de sus
     // fara sa adauge nimic. In subsol apare, fiindca acolo lista e un cuprins, nu o bara.
@@ -102,7 +102,7 @@ export const RUTE: Ruta[] = [
     cale: "/cum-functioneaza",
     scurt: "Cum funcționează",
     descriere:
-      "Mecanismul cap la cap: preluare, inventar, digitizare, căutare cu sursa citată, retur, ieșire.",
+      "Mecanismul cap la cap: preluare, inventar, digitalizare, căutare cu sursa citată, retur, ieșire.",
     inMeniu: true,
     inHarta: true,
   },
@@ -293,7 +293,7 @@ export const RUTE: Ruta[] = [
     cale: "/solutii/notari",
     scurt: "Birouri notariale",
     descriere:
-      "Preluare cu proces-verbal și inventar, digitizare și căutare care citează pagina.",
+      "Preluare cu proces-verbal și inventar, digitalizare și căutare care citează pagina.",
     // Pagina de segment nu urca in bara de sus: intrarea in domenii se face prin hub,
     // iar o bara care creste cu fiecare segment nou devine ilizibila la al treilea.
     inMeniu: false,

@@ -27,7 +27,7 @@
     "data": ""
   },
   {
-    "id": "mecanism-digitizare-selectiva",
+    "id": "mecanism-digitalizare-selectiva",
     "text": "Se scaneaza numai ce se cere des, pe o lista convenita in scris inainte de prima cutie deschisa, iar restul fondului ramane pe raft",
     "unde": "src/content/mecanism.ts",
     "stare": "neconfirmat",

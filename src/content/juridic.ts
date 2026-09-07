@@ -127,7 +127,7 @@ export const TERMENI: PaginaJuridica = {
         {
           fel: "paragraf",
           text: [
-            "Site-ul prezintă serviciile de arhivare, digitizare și căutare în documente și primește cereri de discuție. Atât. Ca să nu rămână loc de interpretare, scriem și lista a ceea ce nu se întâmplă aici:",
+            "Site-ul prezintă serviciile de arhivare, digitalizare și căutare în documente și primește cereri de discuție. Atât. Ca să nu rămână loc de interpretare, scriem și lista a ceea ce nu se întâmplă aici:",
           ],
         },
         {

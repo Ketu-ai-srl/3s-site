@@ -39,7 +39,7 @@ export default function Acasa() {
           alt: "Rafturi metalice de arhivă cu cutii numerotate, fotografie ilustrativă",
           pozitie: "center 40%",
         }}
-        eticheta="Arhivare fizică · Digitizare · Căutare cu sursă"
+        eticheta="Arhivare fizică · Digitalizare · Căutare cu sursă"
         titlu={
           <>
             Când vine controlul,
@@ -66,7 +66,7 @@ export default function Acasa() {
             se scanează.
           </>
         }
-        text="Nu digitizăm tot. Digitizăm ce se caută, iar originalul rămâne pe raft, cu cotă, și se întoarce când îl cereți pe hârtie."
+        text="Nu digitalizăm tot. Digitalizăm ce se caută, iar originalul rămâne pe raft, cu cotă, și se întoarce când îl cereți pe hârtie."
         actiune={{ href: "/cum-functioneaza", text: "Cum funcționează" }}
       />
 

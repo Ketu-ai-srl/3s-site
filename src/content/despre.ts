@@ -48,7 +48,7 @@ export const STAREA_DE_AZI: FaptDespre[] = [
 
 /** Ce vine de la firma-mamă. Fiecare rând este o afirmație despre ADRIA, nu despre 3S. */
 export const MOSTENIT: string[] = [
-  "Arhivarea fizică și digitizarea, făcute din 2019, în județul Argeș",
+  "Arhivarea fizică și digitalizarea, făcute din 2019, în județul Argeș",
   "Depozitul de la Golești, cu condițiile lui de temperatură, umiditate și acces",
   "Autorizațiile pentru arhivare, pe care le puteți cere scanate înainte de semnătură",
   "Preluarea cu proces-verbal, măsurarea în metri liniari și ținerea opisului la zi",
@@ -89,7 +89,7 @@ export const NESCRIS: string[] = [
   "Cod fiscal, număr de registru sau sediu, fiindcă nu există înainte de înmatriculare",
   "Certificări: nu deținem certificare ISO 27001 și nu punem sigle de standarde în pagină",
   "Un număr de clienți deserviți sau sigle de referință",
-  "Prețuri pe pagină, cât timp costul depinde de volum și de ce se digitizează întâi",
+  "Prețuri pe pagină, cât timp costul depinde de volum și de ce se digitalizează întâi",
   "Nume și funcții ale echipei, cât timp organigrama firmei noi nu este stabilită",
 ];
 

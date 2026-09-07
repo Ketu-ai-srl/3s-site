@@ -348,7 +348,7 @@ def fabrica_pagina_corecta():
         '<html><head>',
         '<title>' + 'Arhiva care raspunde cu pagina' + '</title>',
         '<meta name="' + 'description' + '" content="'
-        + 'Arhivare autorizata, digitizare si cautare care citeaza pagina din care vine raspunsul.'
+        + 'Arhivare autorizata, digitalizare si cautare care citeaza pagina din care vine raspunsul.'
         + '"/>',
         '<link rel="' + 'canonical' + '" href="' + 'https://exemplu-corect.test/' + '"/>',
         '<script type="' + 'application/ld+json' + '">' + ld + '</script>',

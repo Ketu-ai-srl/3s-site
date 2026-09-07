@@ -143,7 +143,7 @@ export default function Contact() {
             elemente={[
               "Un răspuns în aceeași zi lucrătoare, cu două intervale de discuție propuse",
               "O estimare a volumului, în metri liniari și în cutii, după discuție",
-              "Ce se digitizează primul și ce poate aștepta un an",
+              "Ce se digitalizează primul și ce poate aștepta un an",
               "Un calendar de preluare, cu datele scrise",
             ]}
           />

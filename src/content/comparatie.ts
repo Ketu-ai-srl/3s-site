@@ -162,7 +162,7 @@ export const COMPARATIE = {
         "Metrii pătrați ocupați de arhivă se plătesc la prețul biroului, nu la cel al unui depozit. Costul nu apare pe nicio factură, fiindcă este deja în chirie.",
         "Același cost al spațiului, plus orele în care cineva plătit pentru altceva caută prin cutii.",
         "Spațiul se eliberează, iar costul devine vizibil: apare pe factură, măsurat pe metru liniar.",
-        "La fel ca la depozitare: spațiul se eliberează, iar costul devine o linie pe care o puteți compara. Ce se adaugă este digitizarea a ceea ce se caută des.",
+        "La fel ca la depozitare: spațiul se eliberează, iar costul devine o linie pe care o puteți compara. Ce se adaugă este digitalizarea a ceea ce se caută des.",
       ],
     },
     {
@@ -183,7 +183,7 @@ export const COMPARATIE = {
     {
       titlu: "Costul apare, și apare înainte de primul răspuns",
       text:
-        "Un dulap în birou nu are factură lunară. Preluarea, inventarierea și digitizarea sunt o cheltuială reală, plătită înainte să vedeți primul răspuns cu pagina citată. Dacă bugetul de anul acesta nu are loc pentru ea, comparația se oprește aici, și este un răspuns corect, nu o obiecție de tratat.",
+        "Un dulap în birou nu are factură lunară. Preluarea, inventarierea și digitalizarea sunt o cheltuială reală, plătită înainte să vedeți primul răspuns cu pagina citată. Dacă bugetul de anul acesta nu are loc pentru ea, comparația se oprește aici, și este un răspuns corect, nu o obiecție de tratat.",
     },
     {
       titlu: "Originalul nu mai este la doi pași",
@@ -216,7 +216,7 @@ export const COMPARATIE = {
     {
       titlu: "Fondul urmează la selecționare chiar anul acesta",
       text:
-        "Nu se plătește depozitarea și digitizarea a ceea ce se elimină legal peste câteva luni. Întâi selecționarea, cu avizul cerut de lege, apoi discuția despre ce rămâne. Dacă intrați invers în ordinea asta, plătiți transport și rafturi pentru hârtie care se distruge.",
+        "Nu se plătește depozitarea și digitalizarea a ceea ce se elimină legal peste câteva luni. Întâi selecționarea, cu avizul cerut de lege, apoi discuția despre ce rămâne. Dacă intrați invers în ordinea asta, plătiți transport și rafturi pentru hârtie care se distruge.",
     },
     {
       titlu: "Caietul de sarcini cere o certificare pe care nu o deținem",
@@ -261,9 +261,9 @@ export const INVESTITIA = {
     {
       titlu: "Cât se scanează și cât rămâne doar depozitat",
       text:
-        "Digitizarea este partea cea mai scumpă a proiectului, iar fiecare pagină scanată fără să fie căutată vreodată este bani cheltuiți degeaba. Împărțirea între ce se scanează și ce rămâne pe raft se face înainte de prima cutie deschisă și intră în contract.",
+        "Digitalizarea este partea cea mai scumpă a proiectului, iar fiecare pagină scanată fără să fie căutată vreodată este bani cheltuiți degeaba. Împărțirea între ce se scanează și ce rămâne pe raft se face înainte de prima cutie deschisă și intră în contract.",
       creste:
-        "se cere digitizarea integrală a fondului, inclusiv a ceea ce nu s-a mai deschis de ani buni",
+        "se cere digitalizarea integrală a fondului, inclusiv a ceea ce nu s-a mai deschis de ani buni",
       scade:
         "se scanează întâi categoriile cerute des, iar restul rămâne pe raft și vine la cerere",
     },
@@ -314,8 +314,8 @@ export const INVESTITIA = {
     "Preluarea la sediul dumneavoastră, cu proces-verbal, și transportul inițial",
     "Inventarierea fondului pe unități arhivistice, cu cotă pentru fiecare",
     "Întocmirea nomenclatorului arhivistic, atunci când lipsește sau nu este avizat",
-    "Digitizarea lotului convenit în scris înainte de prima cutie deschisă",
-    "Punerea fondului digitizat în index, ca o întrebare să poată primi documentul și pagina",
+    "Digitalizarea lotului convenit în scris înainte de prima cutie deschisă",
+    "Punerea fondului digitalizat în index, ca o întrebare să poată primi documentul și pagina",
   ],
 
   costRecurent: [
@@ -323,7 +323,7 @@ export const INVESTITIA = {
     "Accesul și căutarea, pe toată durata contractului",
     "Aducerea originalelor la cerere, cu ieșirea și returul consemnate pe cotă",
     "Selecționarea periodică a fondului, cu avizul cerut de lege",
-    "Digitizarea loturilor adăugate după preluarea inițială",
+    "Digitalizarea loturilor adăugate după preluarea inițială",
   ],
 
   notaCosturi:

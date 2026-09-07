@@ -116,7 +116,7 @@ export type Segment = {
 export const NOTARI: PaginaSegment = {
   titluMeta: "Arhivă pentru birouri notariale",
   descriereMeta:
-    "Ce facem pentru un birou notarial: preluare cu proces-verbal și inventar, digitizare și căutare care citează pagina. Temeiul legal, numit pe față.",
+    "Ce facem pentru un birou notarial: preluare cu proces-verbal și inventar, digitalizare și căutare care citează pagina. Temeiul legal, numit pe față.",
   eticheta: "Domenii · Birouri notariale",
   h1: "Un act din 2009, o cerere de azi, și rafturile dintre ele.",
   lead:
@@ -164,7 +164,7 @@ export const NOTARI: PaginaSegment = {
   deschise: [
     "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
     "Nu avem un birou notarial pe care să îl dăm ca referință, fiindcă 3S este o firmă nouă",
-    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitalizează",
     "Nu scriem un timp de răspuns în secunde sau minute, fiindcă nu l-am măsurat pe un fond real",
     "Nu scriem termenul de păstrare pe categorii de acte notariale, fiindcă nu îl putem cita pe articol",
   ],
@@ -216,7 +216,7 @@ export const NOTARI: PaginaSegment = {
 
   incheiere: {
     titlu: "De luni, cererea de la ghișeu se pune ca întrebare.",
-    text: "O discuție de treizeci de minute, în care ne uităm la arhiva biroului așa cum arată ea azi: câți metri liniari, ce se cere cel mai des și ce urmează să se predea. Plecați cu o estimare a volumului, cu ordinea în care s-ar digitiza și cu un calendar de preluare scris.",
+    text: "O discuție de treizeci de minute, în care ne uităm la arhiva biroului așa cum arată ea azi: câți metri liniari, ce se cere cel mai des și ce urmează să se predea. Plecați cu o estimare a volumului, cu ordinea în care s-ar digitaliza și cu un calendar de preluare scris.",
     buton: "Cereți calendarul de preluare",
   },
 };
@@ -283,7 +283,7 @@ export const PRIMARII: PaginaSegment = {
   deschise: [
     "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
     "Nu avem o primărie pe care să o dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
-    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitalizează",
     "Nu scriem în zile termenul din Legea nr. 544/2001: el obligă instituția, nu furnizorul de arhivă, și se citește din act",
     "Nu ne pronunțăm asupra procedurii de achiziție: forma contractului o stabiliți dumneavoastră, cu compartimentul juridic",
     "Nu scriem un timp de răspuns în secunde, fiindcă nu l-am măsurat pe un fond real de primărie",
@@ -340,8 +340,8 @@ export const PRIMARII: PaginaSegment = {
 
   incheiere: {
     titlu: "Începem de la ce vă cere cel mai des cetățeanul.",
-    text: "O discuție de treizeci de minute, în care ne uităm la arhiva instituției așa cum arată ea azi: câți metri liniari, ce se cere cel mai des la ghișeu și ce categorii au termen permanent. Plecați cu o estimare a volumului și cu ordinea în care s-ar digitiza, începând cu fondul care produce cozi.",
-    buton: "Cereți ordinea digitizării",
+    text: "O discuție de treizeci de minute, în care ne uităm la arhiva instituției așa cum arată ea azi: câți metri liniari, ce se cere cel mai des la ghișeu și ce categorii au termen permanent. Plecați cu o estimare a volumului și cu ordinea în care s-ar digitaliza, începând cu fondul care produce cozi.",
+    buton: "Cereți ordinea digitalizării",
   },
 };
 
@@ -396,7 +396,7 @@ export const CONTABILITATE: PaginaSegment = {
   deschise: [
     "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
     "Nu avem un birou de contabilitate pe care să îl dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
-    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitalizează",
     "Nu dăm consultanță fiscală și nu vă spunem noi ce se poate elimina: propunerea rămâne a dumneavoastră și a comisiei de selecționare",
     "Nu prezentăm termenul dosarelor de personal ca literă de lege: cei 75 de ani sunt practica din nomenclatoarele avizate, nu un articol general",
     "Nu scriem un timp de răspuns în secunde, fiindcă nu l-am măsurat pe un fond real de birou de contabilitate",
@@ -495,7 +495,7 @@ export const AVOCATURA: PaginaSegment = {
     },
     {
       titlu: "Originalul stă închis, copia circulă",
-      text: "Ce se cere des se digitizează și devine căutabil; originalul rămâne în raft, la Golești, și vine înapoi la cabinet când chiar aveți nevoie de el pe hârtie, în termenul scris în contract.",
+      text: "Ce se cere des se digitalizează și devine căutabil; originalul rămâne în raft, la Golești, și vine înapoi la cabinet când chiar aveți nevoie de el pe hârtie, în termenul scris în contract.",
     },
   ],
 
@@ -509,7 +509,7 @@ export const AVOCATURA: PaginaSegment = {
   deschise: [
     "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
     "Nu avem o casă de avocatură pe care să o dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
-    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitalizează",
     "Nu scriem un termen de păstrare pentru dosarele unui cabinet, fiindcă nu am găsit o normă generală pe care să o putem cita cu articol",
     "Nu interpretăm ce impune statutul profesiei: acela se citește la barou, nu la furnizorul de arhivă",
     "Nu scriem un timp de aducere a originalului ca promisiune generală de pagină: se negociază pe categorii și se scrie în contract",
@@ -631,7 +631,7 @@ export const CONSTRUCTII: PaginaSegment = {
   deschise: [
     "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
     "Nu avem o firmă de construcții pe care să o dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
-    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitalizează",
     "Nu întocmim cartea tehnică și nu ne substituim dirigintelui de șantier sau responsabilului tehnic cu execuția: ducem hârtia, evidența și predarea, nu răspunderea tehnică",
     "Nu scriem în ani durata răspunderii pentru vicii și nici perioada de garanție: sunt termene care se citesc din contract și din actul normativ, nu de pe pagina unui furnizor de arhivă",
     "Nu dăm preț pe planșe fără să le vedem: peste formatul A3 se schimbă și scanerul, și felul în care stau pe raft, iar o estimare făcută înainte de măsurare nu ar ține",
@@ -745,7 +745,7 @@ export const LOGISTICA: PaginaSegment = {
   deschise: [
     "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
     "Nu avem o firmă de transport pe care să o dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
-    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitalizează",
     "Nu promitem că citim orice scris de mână: o mențiune făcută cu pixul pe un exemplar la indigo poate rămâne necitibilă, iar atunci o marcăm ca atare în loc să o ghicim",
     "Nu scriem termenul de păstrare pentru datele din tahograf și pentru evidența timpilor de conducere și odihnă: au alt regim decât documentele contabile, iar articolul nu îl putem cita încă",
     "Nu ne pronunțăm dacă un anume document justifică sau nu o înregistrare contabilă: acela e răspunsul contabilului dumneavoastră, nu al arhivarului",
@@ -859,7 +859,7 @@ export const IMOBILIARE: PaginaSegment = {
   deschise: [
     "Nu deținem certificare ISO 27001 și nu ne prezentăm ca și cum am avea",
     "Nu avem o agenție imobiliară pe care să o dăm ca referință: 3S este o firmă nouă, iar arhivarea din 2019 este a firmei-mamă, ADRIA Servicii Arhivare SRL",
-    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitizează",
+    "Nu publicăm preț: costul se face pe metri liniari și pe ce anume se digitalizează",
     "Nu scriem un termen de păstrare pentru dosarele de tranzacție: nu am găsit o normă generală pe care să o putem cita cu articol",
     "Nu facem evaluarea de impact și nu stabilim noi ce date aveți dreptul să păstrați: acela e răspunsul celui care răspunde de protecția datelor în agenție",
     "Nu ștergem nimic din proprie inițiativă: la o cerere de ștergere executăm ce ne cereți în scris și vă dăm dovada, iar decizia rămâne a dumneavoastră",
@@ -978,7 +978,7 @@ export const SEGMENTE: Segment[] = [
 export const HUB = {
   titluMeta: "Soluții pe domenii",
   descriereMeta:
-    "Arhivare fizică, digitizare și căutare cu sursa citată, pe domenii: notariat, primării, contabilitate, avocatură, construcții, transport, imobiliare.",
+    "Arhivare fizică, digitalizare și căutare cu sursa citată, pe domenii: notariat, primării, contabilitate, avocatură, construcții, transport, imobiliare.",
   eticheta: "Domenii deservite",
   // Ruperea de rand e scrisa AICI, in date, nu duplicata in pagina: pagina o randeaza
   // taind sirul la newline. Fara ea, titlul se rupea la marginea de 24ch si lasa
@@ -988,7 +988,7 @@ export const HUB = {
   // `listaLead`, ca linie a sectiunii cu lista - nu s-a taiat: acolo e chiar la locul ei,
   // deasupra listei despre care vorbeste.
   lead:
-    "Pașii sunt aceiași peste tot: ridicăm, inventariem, digitizăm, răspundem. Ce diferă este ce se cere des, cine controlează și cât se păstrează.",
+    "Pașii sunt aceiași peste tot: ridicăm, inventariem, digitalizăm, răspundem. Ce diferă este ce se cere des, cine controlează și cât se păstrează.",
   /** Linia de deasupra listei de domenii. */
   listaLead:
     "Paginile de mai jos scriu diferența, domeniu cu domeniu, și spun pe față unde nu avem încă un răspuns.",

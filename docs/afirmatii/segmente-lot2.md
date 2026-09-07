@@ -33,7 +33,7 @@ Pana atunci, afirmatiile stau pe site ca text redactional, nu ca fapt verificat.
 | 21 | Termenul in care originalul pe hartie ajunge inapoi la cabinet se stabileste pe categorii si se scrie in contract, nu se publica pe pagina ca promisiune generala | `src/content/segmente.ts` |
 | 22 | La incetarea colaborarii fondul digital se preda in format deschis, PDF cu index CSV, fara format proprietar si fara o cheie retinuta de 3S | `src/content/segmente.ts` |
 | 23 | 3S nu are client de referinta in niciunul dintre cele trei segmente noi; arhivarea din 2019 este a firmei-mama, ADRIA Servicii Arhivare SRL | `src/content/segmente.ts` |
-| 24 | Costul se face pe metri liniari si pe ce anume se digitizeaza; niciuna dintre cele trei pagini nu publica pret | `src/content/segmente.ts` |
+| 24 | Costul se face pe metri liniari si pe ce anume se digitalizeaza; niciuna dintre cele trei pagini nu publica pret | `src/content/segmente.ts` |
 | 25 | Nu se publica un timp de raspuns in secunde pentru niciunul dintre cele trei segmente, fiindca nu a fost masurat pe un fond real | `src/content/segmente.ts` |
 | 26 | Depozitul se afla la Golesti, judetul Arges, si poate fi vazut inainte de semnatura, cu tot cu conditiile de temperatura, umiditate si acces | `src/content/segmente.ts` |
 | 27 | Documentele clientilor nu sunt folosite pentru antrenarea niciunui model de limbaj, iar furnizorul de procesare, regiunea si politica de pastrare a interogarilor se arata la prima discutie | `src/content/segmente.ts` |

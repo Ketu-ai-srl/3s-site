@@ -54,8 +54,8 @@
     "data": ""
   },
   {
-    "id": "investitia-digitizarea-e-partea-cea-mai-scumpa",
-    "text": "Digitizarea este partea cea mai scumpa dintr-un proiect de arhivare, mai scumpa decat preluarea, inventarierea si depozitarea",
+    "id": "investitia-digitalizarea-e-partea-cea-mai-scumpa",
+    "text": "Digitalizarea este partea cea mai scumpa dintr-un proiect de arhivare, mai scumpa decat preluarea, inventarierea si depozitarea",
     "unde": "src/content/comparatie.ts",
     "stare": "neconfirmat",
     "sursa": "",
@@ -64,7 +64,7 @@
   },
   {
     "id": "investitia-cost-unic",
-    "text": "Sunt costuri unice: preluarea cu proces-verbal si transportul initial, inventarierea pe unitati arhivistice, intocmirea nomenclatorului cand lipseste, digitizarea lotului convenit si punerea lui in index",
+    "text": "Sunt costuri unice: preluarea cu proces-verbal si transportul initial, inventarierea pe unitati arhivistice, intocmirea nomenclatorului cand lipseste, digitalizarea lotului convenit si punerea lui in index",
     "unde": "src/content/comparatie.ts",
     "stare": "neconfirmat",
     "sursa": "",
@@ -73,7 +73,7 @@
   },
   {
     "id": "investitia-cost-recurent",
-    "text": "Sunt costuri recurente: depozitarea masurata pe metru liniar, accesul si cautarea pe durata contractului, aducerea originalelor la cerere, selectionarea periodica si digitizarea loturilor adaugate ulterior",
+    "text": "Sunt costuri recurente: depozitarea masurata pe metru liniar, accesul si cautarea pe durata contractului, aducerea originalelor la cerere, selectionarea periodica si digitalizarea loturilor adaugate ulterior",
     "unde": "src/content/comparatie.ts",
     "stare": "neconfirmat",
     "sursa": "",

@@ -270,7 +270,7 @@ def html_seo(canonical='https://exemplu.test/'):
     def construieste(d):
         bucati = ['<html><head>',
                   '<title>Arhiva care raspunde cu pagina exacta</title>',
-                  '<meta name="description" content="Arhivare autorizata, digitizare si cautare '
+                  '<meta name="description" content="Arhivare autorizata, digitalizare si cautare '
                   'care citeaza pagina din care vine raspunsul."/>']
         if canonical is not None:
             bucati.append('<link rel="canonical" href="' + canonical + '"/>')
